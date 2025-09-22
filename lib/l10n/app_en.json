@@ -1,0 +1,231 @@
+{
+  "lang": "en",
+  "ride_the_wave": "Ride The Wave Of\nFitness",
+  "start_journey": "Start your fitness journey today",
+  "login": "Log In",
+  "signup": "Sign Up",
+  "guest": "Continue As A Guest !",
+
+
+  "email": "Email",
+  "password": "Password",
+  "forget_password": "Forgot Password?",
+  "dont_have_account": "Don't have an account?",
+  "sign_up": "Sign Up",
+  "or_sign_up_with": "or sign up with",
+  "please_enter_email": "Please enter your email",
+  "invalid_email": "Please enter a valid email",
+  "please_enter_password": "Please enter your password",
+  "short_password": "Password must be at least 6 characters",
+
+
+  "reset_password_title": "Reset Your Password",
+  "reset_password_description": "Enter your email address below\nand we'll send you a link with instructions",
+  "email_address": "Email Address",
+  "enter_email_address": "Enter Email Address",
+  "send_verification": "Send Verification Code",
+  "sending": "Sending...",
+  "email_sent_success": "Email Sent Successfully!",
+  "check_inbox": "Check your inbox for reset instructions.",
+  "verification_sent_snackbar": "Verification code sent to",
+
+
+
+  "confirmYourEmail": "Confirm Your Email",
+  "verificationCodeSentTo": "We've sent 5 digits verification code\nto {email}",
+  "enterVerificationCode": "Enter Verification Code",
+  "pleaseEnterCode": "Please enter the verification code",
+  "pleaseEnter5Digits": "Please enter a 5-digit code",
+  "resend": "Resend",
+  "resendIn": "Resend in {time}",
+  "verifyAndSetNewPassword": "Verify and Set New Password",
+  "verifying": "Verifying...",
+  "codeVerified": "Code verified successfully!",
+  "sendingNewCode": "Sending new verification code...",
+  "newCodeSent": "New verification code sent!",
+
+
+  "enter_new_password": "Enter New Password",
+  "password_description": "Set complex passwords that contain a capital letter and special character",
+  "confirm_password": "Confirm Password",
+  "enter_your_password": "Enter your password",
+  "passwords_do_not_match": "Passwords do not match",
+  "password_min_length": "Password must be at least 8 characters",
+  "password_uppercase": "Password must contain an uppercase letter",
+  "password_special_char": "Password must contain a special character",
+  "set_new_password": "Set New Password",
+  "setting_password": "Setting Password...",
+  "password_success": "Password set successfully!",
+  "password_requirements": "Password Requirements:",
+  "at_least_8_chars": "At least 8 characters",
+  "contains_uppercase": "Contains uppercase letter",
+  "contains_special_char": "Contains special character",
+  "passwords_match": "Passwords match",
+
+
+
+  "full_name": "Full name",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "enter_first_name": "Enter your first name",
+  "enter_last_name": "Enter your last name",
+  "first_name_required": "First name is required",
+  "last_name_required": "Last name is required",
+  "enter_email": "Enter your email",
+  "email_required": "Email is required",
+  "email_invalid": "Please enter a valid email",
+  "mobile_number": "Mobile Number",
+  "enter_mobile": "Enter your number",
+  "mobile_required": "Mobile number is required",
+  "dob": "Date of Birth",
+  "dob_hint": "YYYY-MM-DD",
+  "dob_required": "Date of birth is required",
+  "gender": "Gender",
+  "male": "Male",
+  "medical_conditions": "Medical Conditions",
+  "medical_conditions_hint": "Please disclose any medical conditions, injuries, or health concerns that may affect your participation in fitness activities (optional)",
+  "female": "Female",
+  "terms_agree": "By continuing, you agree to ",
+  "terms_of_use": "Terms of Use",
+  "settings_currency": "Currency",
+  "privacy_policy": "Privacy Policy",
+  "next": "Next",
+  "other": "Other",
+  "and": "and",
+  "already_have_account": "Already have an account? ",
+  "agree_terms_error": "Please agree to Terms of Use and Privacy Policy",
+
+
+  "emergency_number": "Emergency Number",
+  "emergency_number_hint": "Emergency number",
+  "emergency_number_required": "Emergency number required",
+  "upload_your_image": "Upload Your Image",
+  "click_here": "Click Here",
+  "by_continuing": "By continuing, you agree to ",
+  "password_required": "Password is required",
+  "confirm_password_required": "Please confirm your password",
+  "emergency_required": "Emergency number is required",
+  "agree_terms": "Please agree to the Terms and Privacy Policy",
+  "account_created_success": "Account created successfully!",
+  "error_picking_image": "Error picking image",
+
+
+
+  "home_welcomeBack": "Welcome back,",
+  "home_guest": "Guest",
+  "home_heroBanner": "Dive into WaveX and transform your fitness today!",
+  "home_knowCoaches": "Know Our Coaches",
+  "home_chooseClass": "Choose your Class",
+  "home_bookNow": "Book Now",
+  "home_notifications": "Notifications",
+
+  "classes_explore": "Explore WaveX Classes",
+  "classes_book_now": "Book Now",
+
+
+  "bookProgram_payment_success": "Payment successful",
+  "bookProgram_payment_canceled": "Payment canceled",
+  "bookProgram_payment_error": "Something went wrong",
+  "bookProgram_location": "Location",
+  "bookProgram_fully_booked": "Fully Booked",
+  "bookProgram_seats_left": "Seats left",
+  "bookProgram_capacity": "Capacity",
+  "bookProgram_book_session": "Book Session",
+  "bookProgram_fully_booked_message": "Location {index} is fully booked",
+
+
+  "calendar_mon": "Mon",
+  "calendar_tue": "Tue",
+  "calendar_wed": "Wed",
+  "calendar_thu": "Thu",
+  "calendar_fri": "Fri",
+  "calendar_sat": "Sat",
+  "calendar_sun": "Sun",
+
+
+  "settings_title": "Settings",
+  "settings_search": "Search settings",
+  "settings_notifications": "Notifications",
+  "settings_language": "Language",
+  "settings_changePassword": "Change Password",
+
+
+  "my_profile": "My Profile",
+  "guest_mode": "This feature is only available for registered users",
+  "profile": "Profile",
+  "my_sessions": "My Sessions",
+  "my_orders": "My Orders",
+  "settings": "Settings",
+  "addresses": "Addresses",
+  "logout": "Logout",
+  "logout_confirmation": "Are you sure you want to log out?",
+  "yes_logout": "Yes, Logout",
+  "cancel": "Cancel",
+  "logout_success": "You have logged out successfully",
+
+
+  "shop_cart_header": "Cart Items",
+  "shop_cart_checkout": "Checkout Now !",
+  "shop_cart_remove": "Remove",
+  "shop_cart_added_to_cart": "Added {product} to cart",
+  "shop_cart_item_removed": "Item removed from cart",
+  "shop_cart_filters_reset": "Filters reset",
+  "shop_cart_filters_applied": "Filters applied: {fromPrice} {toPrice} Sort: {sortBy}",
+  "shop_cart_filter_title": "Filter Your Page",
+  "shop_cart_price": "Price",
+  "shop_cart_sort_by": "Sort By",
+  "shop_cart_from": "From",
+  "shop_cart_to": "To",
+  "shop_cart_apply": "Apply",
+  "shop_cart_reset": "Reset",
+  "shop_cart_add_to_cart": "Add To Cart",
+  "shop_cart_search_hint": "Search...",
+  "shop_cart_shop_now": "Shop Now",
+  "shop_cart_description": "Description Description Description Description Description Description Description Description Description",
+
+
+  "checkout_now": "Checkout Now",
+  "total_price": "Total Price",
+  "payment_security_text": "Your payment is 100% safe and secure. We use encryption to protect your data and only work with verified payment gateways. Your trust is a priority for us.",
+  "continue_btn": "Continue",
+
+
+  "choose_payment_option": "Choose one of the payment options",
+  "apple_pay": "Apple Pay",
+  "google_pay": "Google Pay",
+  "pay_by_card": "Pay by Card",
+  "card_payment_desc": "To pay, please enter your VISA, MasterCard or Maestro payment card information.",
+  "pay_via_banking": "Pay via Internet Banking",
+  "banking_payment_desc": "Do you have access to internet banking and want to pay immediately? Just select your bank and make the payment.",
+  "address": "Address",
+  "change_address": "Change Address",
+  "checkout_now_btn": "Checkout Now !",
+  "my_addresses": "My Addresses",
+  "add_new": "+ Add New",
+
+
+  "login_required": "Login Required",
+  "login_required_message": "You need to be logged in to book sessions",
+  "login_required_subtitle": "Please login or create an account to continue with your booking.",
+
+
+
+  "shop_now": "Shop Now",
+  "search_products_hint": "Search products...",
+  "filter_your_page": "Filter Your Page",
+  "price": "Price",
+  "sort_by": "Sort By",
+  "from": "From",
+  "to": "To",
+  "reset": "Reset",
+  "apply": "Apply",
+  "add_to_cart": "Add To Cart",
+  "filters_reset": "Filters reset",
+  "filters_applied": "Filters applied",
+
+
+  "soon" : "Coming Soon..."
+
+
+
+}

@@ -1,0 +1,231 @@
+{
+  "lang": "ar",
+  "ride_the_wave": "اركب موجة\nاللياقة",
+  "start_journey": "ابدأ رحلتك الرياضية اليوم",
+  "login": "تسجيل الدخول",
+  "signup": "إنشاء حساب",
+  "guest": "المتابعة كضيف",
+  "medical_conditions": "الحالات الطبية",
+  "medical_conditions_hint": "يرجى الكشف عن أي حالات طبية أو إصابات أو مخاوف صحية قد تؤثر على مشاركتك في أنشطة اللياقة البدنية (اختياري)",
+
+
+  "email": "البريد الإلكتروني",
+  "other": "غير ذلك",
+  "password": "كلمة المرور",
+  "forget_password": "هل نسيت كلمة المرور؟",
+  "dont_have_account": "ليس لديك حساب؟",
+  "sign_up": "إنشاء حساب",
+  "or_sign_up_with": "أو سجل باستخدام",
+  "please_enter_email": "الرجاء إدخال البريد الإلكتروني",
+  "invalid_email": "الرجاء إدخال بريد إلكتروني صحيح",
+  "please_enter_password": "الرجاء إدخال كلمة المرور",
+  "short_password": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+
+
+
+  "reset_password_title": "إعادة تعيين كلمة المرور",
+  "reset_password_description": "أدخل بريدك الإلكتروني أدناه\nوسنرسل لك رابطًا مع التعليمات",
+  "email_address": "البريد الإلكتروني",
+  "enter_email_address": "أدخل البريد الإلكتروني",
+  "send_verification": "إرسال رمز التحقق",
+  "sending": "جارٍ الإرسال...",
+  "email_sent_success": "تم إرسال البريد الإلكتروني بنجاح!",
+  "check_inbox": "تحقق من بريدك الوارد للحصول على التعليمات.",
+  "verification_sent_snackbar": "تم إرسال رمز التحقق إلى",
+
+
+
+  "confirmYourEmail": "تأكيد بريدك الإلكتروني",
+  "verificationCodeSentTo": "لقد أرسلنا رمز تحقق مكون من 5 أرقام إلى {email}",
+  "enterVerificationCode": "أدخل رمز التحقق",
+  "pleaseEnterCode": "الرجاء إدخال رمز التحقق",
+  "pleaseEnter5Digits": "الرجاء إدخال رمز مكون من 5 أرقام",
+  "resend": "إعادة الإرسال",
+  "resendIn": "إعادة الإرسال بعد {time}",
+  "verifyAndSetNewPassword": "تحقق واضبط كلمة مرور جديدة",
+  "verifying": "جاري التحقق...",
+  "codeVerified": "تم التحقق من الرمز بنجاح!",
+  "sendingNewCode": "جاري إرسال رمز تحقق جديد...",
+  "newCodeSent": "تم إرسال رمز تحقق جديد!",
+
+
+
+  "enter_new_password": "أدخل كلمة مرور جديدة",
+  "password_description": "أنشئ كلمة مرور معقدة تحتوي على حرف كبير ورمز خاص",
+  "confirm_password": "تأكيد كلمة المرور",
+  "enter_your_password": "أدخل كلمة المرور",
+  "passwords_do_not_match": "كلمتا المرور غير متطابقتين",
+  "password_min_length": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+  "password_uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير",
+  "password_special_char": "يجب أن تحتوي كلمة المرور على رمز خاص",
+  "set_new_password": "تعيين كلمة مرور جديدة",
+  "setting_password": "جاري تعيين كلمة المرور...",
+  "password_success": "تم تعيين كلمة المرور بنجاح!",
+  "password_requirements": "متطلبات كلمة المرور:",
+  "at_least_8_chars": "ثمانية أحرف على الأقل",
+  "contains_uppercase": "تحتوي على حرف كبير",
+  "contains_special_char": "تحتوي على رمز خاص",
+  "passwords_match": "كلمتا المرور متطابقتان",
+
+
+
+  "full_name": "الاسم الكامل",
+  "first_name": "الاسم الاول",
+  "last_name": "الاسم الاخير",
+  "enter_first_name": "أدخل اسمك الاول",
+  "enter_last_name": "أدخل اسمك الخير",
+  "first_name_required": "الاسم الاول مطلوب",
+  "last_name_required": "الاسم الاخير مطلوب",
+  "enter_email": "أدخل بريدك الإلكتروني",
+  "email_required": "البريد الإلكتروني مطلوب",
+  "email_invalid": "الرجاء إدخال بريد إلكتروني صالح",
+  "mobile_number": "رقم الهاتف",
+  "enter_mobile": "أدخل رقمك",
+  "mobile_required": "رقم الهاتف مطلوب",
+  "dob": "تاريخ الميلاد",
+  "dob_hint": "سنة-شهر-يوم",
+  "dob_required": "تاريخ الميلاد مطلوب",
+  "gender": "الجنس",
+  "male": "ذكر",
+  "female": "أنثى",
+  "terms_agree": "بالمتابعة، فإنك توافق على ",
+  "terms_of_use": "شروط الاستخدام",
+  "privacy_policy": "سياسة الخصوصية",
+  "next": "التالي",
+  "and": " و ",
+  "already_have_account": "هل لديك حساب بالفعل؟ ",
+  "agree_terms_error": "الرجاء الموافقة على شروط الاستخدام وسياسة الخصوصية",
+
+
+
+  "password_required": "كلمة المرور مطلوبة",
+  "confirm_password_required": "الرجاء تأكيد كلمة المرور",
+  "emergency_number": "رقم الطوارئ",
+  "emergency_number_hint": "رقم الطوارئ",
+  "emergency_number_required": "رقم الطوارئ مطلوب",
+  "upload_your_image": "قم بتحميل صورتك",
+  "click_here": "اضغط هنا",
+  "by_continuing": "بالمتابعة، فإنك توافق على ",
+  "account_created_success": "تم إنشاء الحساب بنجاح!",
+  "please_agree": "يرجى الموافقة على الشروط وسياسة الخصوصية",
+  "error_picking_image": "خطأ في اختيار الصورة",
+
+  "home_welcomeBack": "مرحباً بعودتك،",
+  "home_guest": "زائر",
+  "home_heroBanner": "انضم إلى WaveX وابدأ رحلة لياقتك اليوم!",
+  "home_knowCoaches": "تعرّف على مدربينا",
+  "home_chooseClass": "اختر حصتك",
+  "home_bookNow": "احجز الآن",
+  "home_notifications": "الإشعارات",
+
+  "classes_explore": "استكشف حصص WaveX",
+  "classes_book_now": "احجز الآن",
+
+
+  "bookProgram_payment_success": "تم الدفع بنجاح",
+  "bookProgram_payment_canceled": "تم إلغاء الدفع",
+  "bookProgram_payment_error": "حدث خطأ ما",
+  "bookProgram_location": "المكان",
+  "bookProgram_fully_booked": "ممتلئ",
+  "bookProgram_seats_left": "مقاعد متبقية",
+  "bookProgram_capacity": "السعة",
+  "bookProgram_book_session": "احجز الجلسة",
+  "bookProgram_fully_booked_message": "المكان {index} ممتلئ بالكامل",
+
+
+  "calendar_mon": "الإثنين",
+  "calendar_tue": "الثلاثاء",
+  "calendar_wed": "الأربعاء",
+  "calendar_thu": "الخميس",
+  "calendar_fri": "الجمعة",
+  "calendar_sat": "السبت",
+  "calendar_sun": "الأحد",
+
+
+  "settings_title": "الإعدادات",
+  "settings_search": "ابحث في الإعدادات",
+  "settings_notifications": "الإشعارات",
+  "settings_language": "اللغة",
+  "settings_changePassword": "تغيير كلمة المرور",
+
+
+  "my_profile": "ملفي الشخصي",
+  "guest_mode": "هذا الخيار متاح للمستخدمين المسجلين فقط",
+  "profile": "الملف الشخصي",
+  "my_sessions": "جلساتي",
+  "my_orders": "طلباتي",
+  "settings": "الإعدادات",
+  "addresses": "العناوين",
+  "logout": "تسجيل الخروج",
+  "logout_confirmation": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "yes_logout": "نعم، تسجيل الخروج",
+  "cancel": "إلغاء",
+  "logout_success": "تم تسجيل الخروج بنجاح",
+
+
+
+  "shop_cart_header": "عناصر السلة",
+  "shop_cart_checkout": "الدفع الآن !",
+  "shop_cart_remove": "حذف",
+  "shop_cart_added_to_cart": "تمت إضافة {product} إلى السلة",
+  "shop_cart_item_removed": "تمت إزالة العنصر من السلة",
+  "shop_cart_filters_reset": "تم إعادة تعيين الفلاتر",
+  "shop_cart_filters_applied": "تم تطبيق الفلاتر: {fromPrice} {toPrice} ترتيب: {sortBy}",
+  "shop_cart_filter_title": "فلترة الصفحة",
+  "shop_cart_price": "السعر",
+  "shop_cart_sort_by": "ترتيب حسب",
+  "shop_cart_from": "من",
+  "shop_cart_to": "إلى",
+  "shop_cart_apply": "تطبيق",
+  "shop_cart_reset": "إعادة تعيين",
+  "shop_cart_add_to_cart": "أضف إلى السلة",
+  "shop_cart_search_hint": "ابحث...",
+  "shop_cart_shop_now": "تسوق الآن",
+  "shop_cart_description": "الوصف الوصف الوصف الوصف الوصف الوصف الوصف الوصف الوصف",
+
+
+  "checkout_now": "إتمام الشراء",
+  "total_price": "إجمالي السعر",
+  "payment_security_text": "دفعك آمن 100٪. نحن نستخدم التشفير لحماية بياناتك ونعمل فقط مع بوابات دفع موثوقة. ثقتك أولوية بالنسبة لنا.",
+  "continue_btn": "متابعة",
+
+
+
+  "choose_payment_option": "اختر إحدى طرق الدفع",
+  "apple_pay": "آبل باي",
+  "google_pay": "جوجل باي",
+  "pay_by_card": "الدفع بالبطاقة",
+  "card_payment_desc": "للدفع، يرجى إدخال معلومات بطاقة VISA أو MasterCard أو Maestro الخاصة بك.",
+  "pay_via_banking": "الدفع عبر الإنترنت البنكي",
+  "banking_payment_desc": "هل لديك حساب بنكي على الإنترنت وترغب بالدفع فوراً؟ فقط اختر البنك وأكمل الدفع.",
+  "address": "العنوان",
+  "change_address": "تغيير العنوان",
+  "checkout_now_btn": "إتمام الدفع !",
+  "my_addresses": "عناويني",
+  "add_new": "+ إضافة جديد",
+
+
+  "login_required": "تسجيل الدخول مطلوب",
+  "login_required_message": "يجب تسجيل الدخول لحجز الجلسات",
+  "login_required_subtitle": "يرجى تسجيل الدخول أو إنشاء حساب للمتابعة في الحجز.",
+
+
+  "shop_now": "تسوق الآن",
+  "search_products_hint": "ابحث عن المنتجات...",
+  "filter_your_page": "فلتر صفحتك",
+  "price": "السعر",
+  "sort_by": "ترتيب حسب",
+  "from": "من",
+  "to": "إلى",
+  "reset": "إعادة تعيين",
+  "apply": "تطبيق",
+  "add_to_cart": "أضف إلى السلة",
+  "filters_reset": "تم إعادة تعيين الفلاتر",
+  "filters_applied": "تم تطبيق الفلاتر",
+  "settings_currency": "العملة",
+
+
+  "soon" : "قريباً..."
+
+
+}
