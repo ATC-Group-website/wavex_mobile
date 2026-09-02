@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wavex/features/add_manual_address_screen/data/repository/address_repository.dart';
 import 'package:wavex/features/auth/login_screen/data/repository/login_repository.dart';
@@ -10,6 +9,8 @@ import 'package:wavex/features/my_addresses_screen/data/repository/my_address_re
 import 'package:wavex/features/order_details_screen/data/repository/orders_details_repository.dart';
 import 'package:wavex/features/orders_screen/data/repository/orders_repository.dart';
 import 'package:wavex/features/payment_options_screen/data/repository/payment_options_repository.dart';
+import 'package:wavex/features/region_selection/data/repository/region_repository.dart';
+import 'package:wavex/features/region_selection/logic/region_cubit.dart';
 import 'package:wavex/features/sessions_screen/logic/sessions_cubit.dart';
 import 'package:wavex/features/shop_cart_screen/data/repository/shop_cart_repository.dart';
 import 'package:wavex/features/shop_screen/data/repository/shop_repository.dart';
@@ -78,6 +79,10 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<ProgramsCubit>(() => ProgramsCubit(getIt<ProgramsRepository>()));
   getIt.registerLazySingleton<ProgramsRepository>(
       () => ProgramsRepository());
+
+  // Region selection
+  getIt.registerLazySingleton<RegionCubit>(() => RegionCubit(getIt<RegionRepository>()));
+  getIt.registerLazySingleton<RegionRepository>(() => RegionRepository());
 
   // BookProgram
   getIt.registerLazySingleton<BookProgramCubit>(() => BookProgramCubit(getIt<BookProgramsRepository>()));

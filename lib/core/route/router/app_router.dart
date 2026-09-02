@@ -68,6 +68,8 @@ import '../../../features/pay_order_transaction_failed_screen/presentation/scree
 import '../../../features/payment_options_screen/logic/payment_options_cubit.dart';
 import '../../../features/payment_options_screen/presentation/screen/payment_options_screen.dart';
 import '../../../features/profile_screen/presentation/screen/profile_screen.dart';
+import '../../../features/region_selection/logic/region_cubit.dart';
+import '../../../features/region_selection/presentation/screen/region_selection_screen.dart';
 import '../../../features/schedule_time_screen/presentation/screen/schedule_time_screen.dart';
 import '../../../features/sessions_screen/logic/sessions_cubit.dart';
 import '../../../features/sessions_screen/presentation/screen/sessions_screen.dart';
@@ -94,6 +96,13 @@ class AppRouter {
       case RouteStrings.splashScreen:
         return MaterialPageRoute(
           builder: (context) => SplashScreen(),
+        );
+      case RouteStrings.regionSelectionScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: getIt<RegionCubit>(),
+            child: const RegionSelectionScreen(),
+          ),
         );
       case RouteStrings.authScreen:
         return MaterialPageRoute(
