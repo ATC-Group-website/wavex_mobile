@@ -224,7 +224,17 @@
   "filters_applied": "Filters applied",
 
 
-  "soon" : "Coming Soon..."
+  "soon" : "Coming Soon...",
+  "waiver_title": "Waiver and Release of Liability",
+  "waiver_body": "By participating in WaveX fitness sessions, I acknowledge and agree to the following:\n\nAssumption of Risk\nI understand that fitness activities involve inherent risks, including the possibility of personal injury, property damage, or other unforeseen harm. I voluntarily assume all such risks, whether known or unknown.\n\nRelease of Liability\nIn consideration for being allowed to participate in these activities, I hereby release WaveX, its owners, employees, instructors, partners, and affiliates from claims or liability arising from my participation, except where prohibited by law.",
+  "waiver_ok": "OK",
+  "branch_title": "Choose a Branch",
+  "branch_region_label": "Region",
+  "change_region": "Change region",
+  "branch_empty": "No branches are available in this region right now.",
+  "branch_load_error": "Could not load branches. Please try again.",
+  "branch_missing_region": "Choose a region before selecting a branch.",
+  "try_again": "Try again"
 
 
 

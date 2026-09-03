@@ -8,7 +8,9 @@ import 'package:wavex/features/region_selection/data/models/country.dart';
 import 'package:wavex/features/region_selection/logic/region_cubit.dart';
 
 class RegionSelectionScreen extends StatefulWidget {
-  const RegionSelectionScreen({super.key});
+  const RegionSelectionScreen({super.key, this.returnToBranches = false});
+
+  final bool returnToBranches;
 
   @override
   State<RegionSelectionScreen> createState() => _RegionSelectionScreenState();
@@ -28,7 +30,12 @@ class _RegionSelectionScreenState extends State<RegionSelectionScreen> {
         if (state is RegionSaved) {
           Navigator.of(
             context,
-          ).pushNamedAndRemoveUntil(RouteStrings.authScreen, (route) => false);
+          ).pushNamedAndRemoveUntil(
+            widget.returnToBranches
+                ? RouteStrings.branchSelectionScreen
+                : RouteStrings.authScreen,
+            (route) => false,
+          );
         }
       },
       builder: (context, state) {

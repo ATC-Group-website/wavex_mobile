@@ -23,8 +23,8 @@ class _AuthScreenState extends State<AuthScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (CacheHelper.getdata(key: "userToken") != null) {
         navigatorKey.currentState!.pushNamedAndRemoveUntil(
-          RouteStrings.homeScreen,
-              (route) => false,
+          RouteStrings.waiverAcknowledgementScreen,
+          (route) => false,
         );
       }
     });
@@ -94,7 +94,7 @@ class _AuthScreenState extends State<AuthScreen>
                               // Tagline
                                Text(
                                  AppLocalizations.of(context).translate("ride_the_wave"),
-                                 textAlign: TextAlign.center,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w300,
@@ -173,7 +173,10 @@ class _AuthScreenState extends State<AuthScreen>
                                 GestureDetector(
                                   onTap: () {
                                     // Navigate to main app as guest
-                                    navigatorKey.currentState!.pushNamedAndRemoveUntil(RouteStrings.homeScreen, (route) => false,);
+                                    navigatorKey.currentState!.pushNamedAndRemoveUntil(
+                                      RouteStrings.waiverAcknowledgementScreen,
+                                      (route) => false,
+                                    );
                                     print('Continue as Guest');
                                   },
                                   child:  Text(

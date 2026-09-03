@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen>
                             LoginCubit.get(context).passwordController.clear();
 
                             navigatorKey.currentState!.pushNamedAndRemoveUntil(
-                              RouteStrings.homeScreen,
+                              RouteStrings.waiverAcknowledgementScreen,
                               (route) => false,
                             );
                             // Handle successful login

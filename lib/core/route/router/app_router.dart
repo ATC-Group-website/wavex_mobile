@@ -70,6 +70,9 @@ import '../../../features/payment_options_screen/presentation/screen/payment_opt
 import '../../../features/profile_screen/presentation/screen/profile_screen.dart';
 import '../../../features/region_selection/logic/region_cubit.dart';
 import '../../../features/region_selection/presentation/screen/region_selection_screen.dart';
+import '../../../features/branch_selection/logic/branch_cubit.dart';
+import '../../../features/branch_selection/presentation/screen/branch_selection_screen.dart';
+import '../../../features/liability_acknowledgement/presentation/screen/liability_acknowledgement_screen.dart';
 import '../../../features/schedule_time_screen/presentation/screen/schedule_time_screen.dart';
 import '../../../features/sessions_screen/logic/sessions_cubit.dart';
 import '../../../features/sessions_screen/presentation/screen/sessions_screen.dart';
@@ -98,10 +101,22 @@ class AppRouter {
           builder: (context) => SplashScreen(),
         );
       case RouteStrings.regionSelectionScreen:
+        final returnToBranches = settings.arguments == true;
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
             value: getIt<RegionCubit>(),
-            child: const RegionSelectionScreen(),
+            child: RegionSelectionScreen(returnToBranches: returnToBranches),
+          ),
+        );
+      case RouteStrings.waiverAcknowledgementScreen:
+        return MaterialPageRoute(
+          builder: (context) => const LiabilityAcknowledgementScreen(),
+        );
+      case RouteStrings.branchSelectionScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: getIt<BranchCubit>(),
+            child: const BranchSelectionScreen(),
           ),
         );
       case RouteStrings.authScreen:
