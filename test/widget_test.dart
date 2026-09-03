@@ -28,3 +28,24 @@
 //     expect(find.text('1'), findsOneWidget);
 //   });
 // }
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:wavex/features/branch_selection/data/models/branch.dart';
+
+void main() {
+  test('parses the mobile branch API contract', () {
+    final branch = Branch.fromJson({
+      'id': 7,
+      'name': 'Cairo Central Branch',
+      'regionId': 3,
+      'address': '100 Main Street',
+      'phone': '+201000000000',
+      'isActive': true,
+    });
+
+    expect(branch.id, 7);
+    expect(branch.regionId, 3);
+    expect(branch.name, 'Cairo Central Branch');
+    expect(branch.isActive, isTrue);
+  });
+}

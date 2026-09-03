@@ -2,6 +2,8 @@ class RouteStrings {
   static const introVideoScreen = "/";
   static const splashScreen = "/splashScreen";
   static const regionSelectionScreen = "/regionSelectionScreen";
+  static const waiverAcknowledgementScreen = "/waiverAcknowledgementScreen";
+  static const branchSelectionScreen = "/branchSelectionScreen";
   static const authScreen = "/AuthScreen";
   static const emailVerificationScreen = "/EmailVerificationScreen";
   static const setNewPasswordScreen = "/SetNewPasswordScreen";

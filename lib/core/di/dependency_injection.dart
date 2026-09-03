@@ -11,6 +11,8 @@ import 'package:wavex/features/orders_screen/data/repository/orders_repository.d
 import 'package:wavex/features/payment_options_screen/data/repository/payment_options_repository.dart';
 import 'package:wavex/features/region_selection/data/repository/region_repository.dart';
 import 'package:wavex/features/region_selection/logic/region_cubit.dart';
+import 'package:wavex/features/branch_selection/data/repository/branch_repository.dart';
+import 'package:wavex/features/branch_selection/logic/branch_cubit.dart';
 import 'package:wavex/features/sessions_screen/logic/sessions_cubit.dart';
 import 'package:wavex/features/shop_cart_screen/data/repository/shop_cart_repository.dart';
 import 'package:wavex/features/shop_screen/data/repository/shop_repository.dart';
@@ -83,6 +85,11 @@ Future<void> setupGetIt() async {
   // Region selection
   getIt.registerLazySingleton<RegionCubit>(() => RegionCubit(getIt<RegionRepository>()));
   getIt.registerLazySingleton<RegionRepository>(() => RegionRepository());
+
+  // Branch selection
+  getIt.registerLazySingleton<BranchCubit>(() => BranchCubit(getIt<BranchRepository>()));
+  getIt.registerLazySingleton<BranchRepository>(
+      () => BranchRepository());
 
   // BookProgram
   getIt.registerLazySingleton<BookProgramCubit>(() => BookProgramCubit(getIt<BookProgramsRepository>()));
