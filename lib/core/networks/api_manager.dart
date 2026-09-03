@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import '../../main.dart';
 import '../helper/cache_helper/cache_helper.dart';
 import '../route/route_strings/route_strings.dart';
-import 'api_exception.dart';
 import 'api_response.dart';
 import 'request_body.dart';
+
 class ApiException implements Exception {
   final bool isRedirect;
   final String message;
@@ -19,6 +19,7 @@ class ApiException implements Exception {
 class ApiManager {
   static final Dio _dio = Dio();
   static const bool _isTestMode = true;
+  static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
 
   static void init() {
     //  default configs
@@ -69,6 +70,7 @@ class ApiManager {
       ),
     );
   }
+
   static Future<ApiResponse?> sendRequest({
     required String link,
     RequestBody? body,
@@ -84,7 +86,7 @@ class ApiManager {
     if (CacheHelper.getdata(key: "userToken") != null) {
       headers.putIfAbsent(
         "Authorization",
-            () => "Bearer ${CacheHelper.getdata(key: "userToken").toString()}",
+        () => "Bearer ${CacheHelper.getdata(key: "userToken").toString()}",
       );
     }
 
@@ -240,6 +242,12 @@ class ApiManager {
   // }
 
   static String getBaseUrl() {
+    if (_baseUrlOverride.isNotEmpty) {
+      return _baseUrlOverride.endsWith('/')
+          ? _baseUrlOverride
+          : '$_baseUrlOverride/';
+    }
+
     if (_isTestMode) {
       return 'https://dev-api.wavexsports.com/api/';
     } else {

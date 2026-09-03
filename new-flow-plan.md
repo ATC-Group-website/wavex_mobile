@@ -1,289 +1,110 @@
-# WaveX New Booking Flow Plan
+# WaveX Region, Branch, and Session Flow Plan
 
 ## Purpose
 
-We will update the WaveX mobile app to match the new Figma flow, starting from region selection and ending with booking success or failure.
-
-Important note: many booking and payment parts already exist in the app and backend. This is not a full rebuild. Some parts need to be added, and some existing parts need to be updated to match the new design and flow.
-
-## New Flow
+The primary new flow is region-first session discovery:
 
 1. User opens the app.
-2. User sees the intro and splash screens.
-3. User selects their region.
-4. User continues as guest, logs in, or creates an account.
-5. User reaches the Home screen.
-6. User chooses a class.
-7. User opens the booking page.
-8. User chooses a location.
-9. User chooses a date and session.
-10. User taps Book Now.
-11. If the session is free, booking is completed directly.
-12. If the session is paid, user completes payment.
-13. User sees a success or failure screen.
-14. Successful bookings appear in My Bookings / My Sessions.
+2. User selects and confirms a region.
+3. The app loads branches available in that region.
+4. User selects a branch.
+5. The app loads all available sessions for that branch.
+6. User selects a session and continues through the existing booking/payment flow.
 
-## What Already Exists
+The Figma region page is a required entry step, not an optional settings feature.
 
-The current app and backend already include many parts of this flow.
+## Figma Scope
 
-Already available:
+The supplied design shows a WaveX welcome/entry screen and a dedicated region-selection page with a region dropdown, Confirm, and Cancel. The wider Figma file also has account and commerce screens, but they are secondary to this release’s region → branch → available sessions journey.
 
-- Intro and splash screens
-- Login
-- Signup
-- Guest mode
-- Home screen
-- Classes/programs screen
-- Program booking page
-- Locations
-- Sessions by date and location
-- Free session booking
-- Paid session payment
-- Success screen
-- Failure screen
-- My Sessions / My Bookings
-- Backend support for programs
-- Backend support for locations
-- Backend support for sessions
-- Backend support for booking
-- Backend support for payment
-- Backend support for countries
-- Backend support for payment success and failure handling
-- Backend package and membership code exists, but it is not fully connected to the mobile API yet
+## Target Journey
 
-## What Is New Or Needs To Change
+### 1. Startup and Region Selection
 
-## 1. Region Selection
+- Keep the required splash/intro flow, then show the region page before session discovery.
+- Load active regions from the backend.
+- Keep Confirm disabled until a valid region is selected.
+- Cancel returns to the prior entry screen and must not silently select a region.
+- Persist the confirmed region locally for returning users.
+- If a saved region becomes inactive or invalid, clear it and request a new selection.
 
-This is the most important new starting point from the Figma design.
+### 2. Branch Discovery
 
-We need to add a new region selection screen before the user enters the app.
+- After region confirmation, request branches belonging to that region only.
+- Do not show branches from another region.
+- When the user changes region, clear the selected branch and session before loading the new branch list.
+- Provide loading, empty, retry, and invalid-saved-region states.
 
-The app should:
+### 3. Available Sessions
 
-- Show the new region selection design
-- Let the user choose a region
-- Remember the selected region
-- Use that region when showing classes, locations, sessions, and prices
+- After branch selection, request sessions for that branch.
+- Display only bookable sessions with program/class name, date, time, price/free label, seats left, and availability status.
+- Do not allow selection of fully booked, cancelled, expired, or unavailable sessions.
+- Date or program filters added later may refine the selected branch’s sessions but cannot bypass the region/branch relationship.
+- Show an empty state when a branch has no available sessions.
 
-The backend already has country support, but we need to confirm if this is the same thing as the new Figma “region” selection.
+### 4. Booking and Payment
 
-If “region” means country, we can use the existing country system.
+- Selecting an available session continues into the existing booking flow.
+- Free sessions use the current free-booking endpoint; paid sessions use the backend-owned payment flow.
+- Revalidate region, branch, session, and availability on the backend when booking is created.
+- Never expose payment secret keys to the app.
 
-If “region” means something different, the backend will need a small update.
+## Data and API Contract
 
-Backend change needed:
+The app needs a connected hierarchy:
 
-- Add a clean mobile API for the app to get the available countries/regions.
-- Example: the app asks the backend “what regions can the user choose from?”
-- The backend returns only active regions.
+| Data | Relationship | Minimum fields |
+| --- | --- | --- |
+| Region | Top-level active selection | id, name, isActive |
+| Branch | Belongs to one active region | id, name, regionId, address/contact details, isActive |
+| Session | Belongs to one branch | id, branchId, program/class, start/end time, price, seats left, status, booking eligibility |
 
-This should be a small backend change because the country data already exists.
+Required backend behavior:
 
-## 2. Startup Flow
+1. Return active regions for the region page.
+2. Return active branches for the selected region only.
+3. Return bookable/available sessions for the selected branch only.
+4. Reject a branch that does not belong to the supplied region.
+5. Revalidate session availability and hierarchy during booking.
 
-The app currently goes from splash to the welcome/login screen.
+Confirm whether Figma’s “region” maps directly to the existing backend “country.” If so, reuse the country model through a mobile region API. Otherwise, add a distinct region-to-branch relationship.
 
-We need to update it so the flow becomes:
+## Secondary Scope
 
-- Splash
-- Region selection
-- Welcome/login screen
+Home, Programs, Profile, More, My Sessions, packages, orders, addresses, settings, privacy, and logout remain secondary. They must respect the selected region where relevant, but they must not delay this core release.
 
-If the user already selected a region before, the app can skip the region screen.
+## Delivery Phases
 
-## 3. Home Screen Design
+### Phase 1 — Region Foundation
 
-The Home screen already exists.
+- Confirm region meaning and data ownership.
+- Expose active-region API.
+- Build the Figma region screen.
+- Persist and validate the selected region.
 
-We need to update the design to match the new Figma version.
+### Phase 2 — Branch and Session Discovery
 
-The updated Home screen should show:
+- Expose region-scoped branches and build branch selection.
+- Expose branch-scoped available sessions and build the session view.
+- Add loading, empty, retry, and unavailable states.
 
-- Main banner
-- Book a Session button
-- Programs shortcut
-- My Booking shortcut
-- Featured programs
-- Instructor preview
-- Location/map preview
-- Bottom navigation
+### Phase 3 — Booking Integration
 
-## 4. Classes Screen Design
+- Connect available sessions to existing free and paid booking.
+- Revalidate hierarchy and capacity server-side.
+- Refresh My Sessions/Bookings after success.
 
-The Classes screen already exists.
+### Phase 4 — Secondary Screens and Quality
 
-We need to update the design and make sure it shows the correct classes for the selected region.
+- Update remaining Figma screens in priority order.
+- Test accessibility, slow/offline behavior, saved-selection recovery, authorization, and booking regression.
 
-Backend change needed:
+## Acceptance Checklist
 
-- Classes/programs should be filtered by the selected region.
-- This means the app should not show classes from another region after the user chooses their region.
-
-## 5. Booking Page Design
-
-The booking page already exists.
-
-We need to update it to match the new Figma design.
-
-The updated page should show:
-
-- Class name
-- Class image
-- Class description
-- Location choices
-- Date choices
-- Available sessions
-- Session time
-- Seats left
-- Price
-- Discounts
-- Free session information
-- Book Now button
-
-Backend change needed:
-
-- Locations should be filtered by the selected region.
-- Sessions should be filtered by selected class, location, and date.
-- The backend already supports sessions, locations, prices, capacity, and booking status.
-- The main backend update is making sure the selected region is used correctly.
-
-## 6. Session Rules
-
-The backend already supports session availability, capacity, booking, and payment.
-
-We need to confirm the app displays these states clearly:
-
-- Available
-- Fully booked
-- Scheduled
-- Free session
-- Discounted session
-- Already booked
-
-Fully booked sessions should not be bookable.
-
-## 7. Payment
-
-Payment already exists.
-
-We need to connect it cleanly to the new booking page design.
-
-For paid sessions:
-
-- App starts payment
-- User completes payment
-- Success screen appears if payment succeeds
-- Failure screen appears if payment fails
-
-Security note: the mobile app should not contain any secret payment key. Secret payment keys must stay only in the backend.
-
-Backend change needed:
-
-- No new payment system is needed.
-- We only need to make sure the app uses the correct backend payment flow.
-- The backend should keep all secret payment keys.
-- The app should only receive the safe payment information it needs to complete checkout.
-
-## 8. Success And Failure Screens
-
-Success and failure screens already exist.
-
-We need to update their design and make sure they show the right result after booking or payment.
-
-Success should confirm:
-
-- Booking completed
-- Class name
-- Location
-- Date
-- Time
-
-Failure should allow:
-
-- Try again
-- Go back to booking
-- Return Home
-
-## 9. My Bookings / My Sessions
-
-My Sessions already exists.
-
-We need to make sure a successful booking appears there with:
-
-- Class name
-- Instructor
-- Location
-- Date
-- Time
-- Booking status
-- Payment status
-
-Backend change needed:
-
-- No major new backend work is expected here.
-- We only need to make sure the existing My Sessions data includes the information shown in the new design.
-
-## Backend Work Confirmed From Current Code
-
-After checking the backend, these are the backend changes that are actually needed:
-
-1. Add or expose a proper mobile API for countries/regions.
-2. Confirm that Figma “region” means the existing backend “country”.
-3. Filter programs/classes by selected region.
-4. Filter locations by selected region.
-5. Filter sessions by selected region, class, location, and date.
-6. Make sure the app uses the newer session and payment flow where needed.
-7. Keep payment secret keys only in the backend.
-
-These backend changes are mostly connection and filtering work. The backend already has the main booking, session, payment, country, package, and membership foundations.
-
-## Backend Work That Is Not Needed As A Full Rebuild
-
-We do not need to rebuild these from zero:
-
-- Booking system
-- Payment system
-- Session system
-- Location system
-- Program/class system
-- Success and failure handling
-- My Sessions base API
-- Country database structure
-
-These already exist and should be reused.
-
-## Main Work Summary
-
-The main work is:
-
-- Add the new region selection step
-- Connect selected region to the app flow
-- Confirm whether backend country support matches the Figma region requirement
-- Add backend filtering so region affects programs, locations, and sessions
-- Update the UI to match the new Figma screens
-- Reconnect the existing booking and payment logic to the new design
-- Clean up membership/package APIs only if those screens are included now
-- Test the full journey from app open to booking success or failure
-
-## Final Testing Flow
-
-We will test:
-
-1. Open app.
-2. Select region.
-3. Continue as guest or log in.
-4. Open Home.
-5. Choose a class.
-6. Choose location.
-7. Choose date and session.
-8. Book a free session.
-9. Book a paid session.
-10. Complete successful payment.
-11. Test failed payment.
-12. Confirm booking appears in My Bookings.
-
-## Final Result
-
-The user will have a complete booking flow that matches the new Figma design, while reusing the booking and payment work that already exists.
+- A new user cannot enter session discovery without confirming a region.
+- Returning users reuse a valid saved region and are prompted again if it is invalid.
+- Every displayed branch belongs to the selected region.
+- Every displayed session belongs to the selected branch and is available to book.
+- Changing region clears incompatible branch and session selections.
+- The backend rejects cross-region branch/session requests and stale bookings.

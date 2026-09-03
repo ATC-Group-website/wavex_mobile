@@ -51,9 +51,8 @@ class _RegionSelectionScreenState extends State<RegionSelectionScreen> {
                   AppColors.figmaA7D2E3,
                   AppColors.figma9BCCD9,
                   AppColors.figma5EAEC3,
-                  AppColors.figma4B899E,
                 ],
-                stops: [0, 0.16, 0.38, 0.72],
+                stops: [0, 0.35, 1],
               ),
             ),
             child: SafeArea(
@@ -138,7 +137,7 @@ class _RegionSelectionScreenState extends State<RegionSelectionScreen> {
                                 'Could not load regions. Please try again.',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.outfit(
-                                  color: AppColors.figma316D80,
+                                  color: AppColors.figmaFFFFFF,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -151,7 +150,7 @@ class _RegionSelectionScreenState extends State<RegionSelectionScreen> {
                                 child: Text(
                                   'Try again',
                                   style: GoogleFonts.outfit(
-                                    color: Colors.white,
+                                    color: AppColors.figmaFFFFFF,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -163,7 +162,7 @@ class _RegionSelectionScreenState extends State<RegionSelectionScreen> {
                                 'No regions are available right now.',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.outfit(
-                                  color: AppColors.figma316D80,
+                                  color: AppColors.figmaFFFFFF,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -209,7 +208,7 @@ class _RegionDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.figma316D80.withValues(alpha: 0.78),
+        color: AppColors.figma316D80,
         borderRadius: BorderRadius.circular(15),
       ),
       child: SizedBox(
@@ -238,6 +237,20 @@ class _RegionDropdown extends StatelessWidget {
                 color: AppColors.figmaFFFFFF,
                 fontSize: 21,
               ),
+              selectedItemBuilder: (context) => regions
+                  .map(
+                    (region) => Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        region.name,
+                        style: GoogleFonts.outfit(
+                          color: AppColors.figmaFFFFFF,
+                          fontSize: 21,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
               items: regions
                   .map(
                     (region) => DropdownMenuItem<Country>(
@@ -284,14 +297,19 @@ class _ActionButton extends StatelessWidget {
         onPressed: isEnabled ? onPressed : null,
         style: OutlinedButton.styleFrom(
           backgroundColor: filled ? AppColors.figmaFFFFFF : Colors.transparent,
-          foregroundColor: AppColors.figma4B899E,
-          disabledForegroundColor: AppColors.figma4B899E.withValues(
-            alpha: 0.45,
-          ),
+          foregroundColor:
+              filled ? AppColors.figma316D80 : AppColors.figmaFFFFFF,
+          disabledForegroundColor: filled
+              ? AppColors.figma316D80.withValues(alpha: 0.45)
+              : AppColors.figmaFFFFFF.withValues(
+                  alpha: 0.45,
+                ),
           side: BorderSide(
             color: filled
                 ? AppColors.figmaFFFFFF
-                : AppColors.figmaFFFFFF.withValues(alpha: 0.9),
+                : AppColors.figmaFFFFFF.withValues(
+                    alpha: 0.9,
+                  ),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -301,7 +319,10 @@ class _ActionButton extends StatelessWidget {
             ? const SizedBox(
                 width: 20,
                 height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.figma316D80,
+                ),
               )
             : Text(
                 label,
