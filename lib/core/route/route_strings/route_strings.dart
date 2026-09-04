@@ -4,6 +4,7 @@ class RouteStrings {
   static const regionSelectionScreen = "/regionSelectionScreen";
   static const waiverAcknowledgementScreen = "/waiverAcknowledgementScreen";
   static const branchSelectionScreen = "/branchSelectionScreen";
+  static const locationFormScreen = "/LocationFormScreen";
   static const authScreen = "/AuthScreen";
   static const emailVerificationScreen = "/EmailVerificationScreen";
   static const setNewPasswordScreen = "/SetNewPasswordScreen";

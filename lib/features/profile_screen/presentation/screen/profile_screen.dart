@@ -27,7 +27,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _currentIndex = 3; // Highlight the profile icon in bottom nav
+  int _currentIndex = 2; // Highlight the profile icon in bottom nav
   bool _showLogoutDialog = false;
 
   void _hideLogoutDialog() {

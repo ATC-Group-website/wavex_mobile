@@ -31,6 +31,8 @@ import '../../features/contact_us_screen/data/repository/contact_us_repository.d
 import '../../features/contact_us_screen/logic/contact_us_cubit.dart';
 import '../../features/home_screen/logic/home_cubit.dart';
 import '../../features/instructors_screen/logic/instructors_cubit.dart';
+import '../../features/location_form/data/repository/location_form_repository.dart';
+import '../../features/location_form/logic/location_form_cubit.dart';
 import '../../features/my_addresses_screen/logic/my_address_cubit.dart';
 import '../../features/order_details_screen/logic/order_details_cubit.dart';
 import '../../features/orders_screen/logic/orders_cubit.dart';
@@ -148,5 +150,10 @@ Future<void> setupGetIt() async {
 
   //Settings
   getIt.registerLazySingleton<SettingsCubit>(() => SettingsCubit());
+
+  getIt.registerLazySingleton<LocationFormRepository>(
+      () => LocationFormRepository());
+  getIt.registerLazySingleton<LocationFormCubit>(
+      () => LocationFormCubit(getIt<LocationFormRepository>()));
 
 }

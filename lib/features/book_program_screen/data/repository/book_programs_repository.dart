@@ -52,7 +52,8 @@ class BookProgramsRepository {
       Map<String, dynamic> query = {
         "session_date": date,
         "relations[instructor][fields]": "id,first_name,last_name",
-        "relations[location][fields]": "id,area_name,venue_name",
+        "relations[location][fields]":
+            "id,area_name,venue_name,requires_form_submission",
         "relations[program][fields]": "id,name",
       };
 

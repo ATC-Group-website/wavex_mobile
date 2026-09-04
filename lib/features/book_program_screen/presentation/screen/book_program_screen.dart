@@ -163,6 +163,44 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
 
   int? loadingSessionId;
 
+  Future<void> _handleBook(SessionData session) async {
+    final locationRequiresForm = session.location?.requiresFormSubmission ??
+        session.requiresFormSubmission == true;
+    final submissionStatus =
+        session.location?.formSubmissionStatus ?? session.formSubmissionStatus;
+    if (locationRequiresForm && submissionStatus != 'approved') {
+      if (submissionStatus == 'pending') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Your branch request is still awaiting approval.'),
+        ));
+        return;
+      }
+      final submitted = await navigatorKey.currentState!.pushNamed(
+        RouteStrings.locationFormScreen,
+        arguments: {
+          'locationId': session.locationId ?? session.location?.id ?? 0,
+          'sessionId': session.id,
+        },
+      );
+      if (submitted == true && mounted) {
+        BookProgramCubit.get(context).getSessions(
+          date:
+              "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
+          programId: selectedProgramId,
+          locationId: locationId == 0 ? null : locationId,
+        );
+      }
+      return;
+    }
+
+    setState(() => loadingSessionId = session.id);
+    if (session.isFree == true) {
+      BookProgramCubit.get(context).bookFreeSession(sessionId: session.id ?? 0);
+    } else {
+      BookProgramCubit.get(context).payment(sessionId: session.id ?? 0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -879,23 +917,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                               session.currentBookings!) ==
                                           0
                                       ? null
-                                      : session.isFree!
-                                          ? () {
-                                              setState(() => loadingSessionId =
-                                                  session.id);
-                                              BookProgramCubit.get(context)
-                                                  .bookFreeSession(
-                                                sessionId: session.id ?? 0,
-                                              );
-                                            }
-                                          : () {
-                                              setState(() => loadingSessionId =
-                                                  session.id);
-                                              BookProgramCubit.get(context)
-                                                  .payment(
-                                                sessionId: session.id ?? 0,
-                                              );
-                                            }
+                                      : () => _handleBook(session)
                           : session.isBooked!
                               ? null
                               : isLoading
@@ -907,25 +929,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                                   session.currentBookings!) ==
                                               0
                                           ? null
-                                          : session.isFree!
-                                              ? () {
-                                                  setState(() =>
-                                                      loadingSessionId =
-                                                          session.id);
-                                                  BookProgramCubit.get(context)
-                                                      .bookFreeSession(
-                                                    sessionId: session.id ?? 0,
-                                                  );
-                                                }
-                                              : () {
-                                                  setState(() =>
-                                                      loadingSessionId =
-                                                          session.id);
-                                                  BookProgramCubit.get(context)
-                                                      .payment(
-                                                    sessionId: session.id ?? 0,
-                                                  );
-                                                },
+                                          : () => _handleBook(session),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: (session.maxCapacity! -
                                     session.currentBookings!) ==

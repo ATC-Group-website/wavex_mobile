@@ -220,7 +220,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 painter: BottomWavePainter(),
               ),
               const BottomNavigation(
-                currentIndex: 3,
+                currentIndex: 2,
               ),
             ],
           ),

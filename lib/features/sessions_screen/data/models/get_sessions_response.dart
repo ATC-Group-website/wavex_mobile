@@ -46,6 +46,8 @@ class SessionData {
   String? updatedAt;
   bool? isBooked;
   bool? isFree;
+  bool? requiresFormSubmission;
+  String? formSubmissionStatus;
   Location? location;
   Instructor? instructor;
   Program? program;
@@ -55,6 +57,8 @@ class SessionData {
       this.programId,
       this.locationId,
       this.isFree,
+      this.requiresFormSubmission,
+      this.formSubmissionStatus,
       this.instructorId,
       this.sessionDate,
       this.startTime,
@@ -92,6 +96,8 @@ class SessionData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isFree = json['is_free'];
+    requiresFormSubmission = json['requires_form_submission'];
+    formSubmissionStatus = json['form_submission_status'];
     location = json['location'] != null
         ? new Location.fromJson(json['location'])
         : null;
@@ -111,6 +117,8 @@ class SessionData {
     data['session_date'] = this.sessionDate;
     data['start_time'] = this.startTime;
     data['is_free'] = this.isFree;
+    data['requires_form_submission'] = this.requiresFormSubmission;
+    data['form_submission_status'] = this.formSubmissionStatus;
     data['is_booked'] = this.isBooked;
     data['end_time'] = this.endTime;
     data['max_capacity'] = this.maxCapacity;
@@ -143,6 +151,8 @@ class Location {
   String? fullAddress;
   String? updatedAt;
   bool? isActive;
+  bool? requiresFormSubmission;
+  String? formSubmissionStatus;
 
   Location(
       {this.id,
@@ -161,6 +171,9 @@ class Location {
     fullAddress = json['full_address'];
     updatedAt = json['updated_at'];
     isActive = json['is_active'];
+    requiresFormSubmission =
+        json['requires_form_submission'] ?? json['requires_user_submission'];
+    formSubmissionStatus = json['form_submission_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -172,6 +185,8 @@ class Location {
     data['full_address'] = this.fullAddress;
     data['updated_at'] = this.updatedAt;
     data['is_active'] = this.isActive;
+    data['requires_form_submission'] = this.requiresFormSubmission;
+    data['form_submission_status'] = this.formSubmissionStatus;
     return data;
   }
 }
