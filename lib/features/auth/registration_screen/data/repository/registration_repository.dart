@@ -1,4 +1,6 @@
 import 'package:wavex/core/networks/request_body.dart';
+import 'package:wavex/core/constants/cache_keys.dart';
+import 'package:wavex/core/helper/cache_helper/cache_helper.dart';
 import '../../../../../core/networks/api_manager.dart';
 import '../../../../../core/networks/api_response.dart';
 
@@ -30,6 +32,11 @@ class RegistrationRepository {
         "device_token": deviceToken ?? "",
         "medical_conditions": medicalConditions ?? "",
       };
+      final selectedCountryId =
+          CacheHelper.getdata(key: CacheKeys.selectedCountryId);
+      if (selectedCountryId != null) {
+        body["country_id"] = selectedCountryId;
+      }
       if (image != null && image.isNotEmpty) {
         body["image"] = "data:image/jpg;base64,$image";
       }
