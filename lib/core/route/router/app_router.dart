@@ -73,6 +73,7 @@ import '../../../features/region_selection/presentation/screen/region_selection_
 import '../../../features/branch_selection/logic/branch_cubit.dart';
 import '../../../features/branch_selection/presentation/screen/branch_selection_screen.dart';
 import '../../../features/liability_acknowledgement/presentation/screen/liability_acknowledgement_screen.dart';
+import '../../../features/location_form/presentation/screen/location_form_screen.dart';
 import '../../../features/schedule_time_screen/presentation/screen/schedule_time_screen.dart';
 import '../../../features/sessions_screen/logic/sessions_cubit.dart';
 import '../../../features/sessions_screen/presentation/screen/sessions_screen.dart';
@@ -111,6 +112,14 @@ class AppRouter {
       case RouteStrings.waiverAcknowledgementScreen:
         return MaterialPageRoute(
           builder: (context) => const LiabilityAcknowledgementScreen(),
+        );
+      case RouteStrings.locationFormScreen:
+        final data = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => LocationFormScreen(
+            locationId: data['locationId'] as int,
+            sessionId: data['sessionId'] as int?,
+          ),
         );
       case RouteStrings.branchSelectionScreen:
         return MaterialPageRoute(
