@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wavex/core/route/router/app_router.dart';
+import 'package:wavex/core/constants/cache_keys.dart';
+import 'package:wavex/core/helper/cache_helper/cache_helper.dart';
+import 'package:wavex/features/region_selection/data/repository/region_repository.dart';
 import 'package:wavex/main.dart';
 
 import '../../../../core/route/route_strings/route_strings.dart';
-import '../../../auth/auth_screen/presentation/screen/auth_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -12,6 +13,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  static const bool _forceRegionSelection =
+      bool.fromEnvironment('FORCE_REGION_SELECTION');
+
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
@@ -42,11 +46,47 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    // Navigate to next screen after 3 seconds
-    Future.delayed(Duration(seconds:7), () {
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthScreen()));
-      navigatorKey.currentState!.pushReplacementNamed(RouteStrings.authScreen);
-    });
+    _routeAfterSplash();
+  }
+
+  Future<void> _routeAfterSplash() async {
+    await Future<void>.delayed(const Duration(seconds: 7));
+
+    final savedCountryId = CacheHelper.getdata(
+      key: CacheKeys.selectedCountryId,
+    );
+    var hasValidSavedRegion = false;
+
+    if (!_forceRegionSelection && savedCountryId is int) {
+      try {
+        final regions = await RegionRepository().getRegions();
+        hasValidSavedRegion = regions.any(
+          (region) => region.id == savedCountryId,
+        );
+      } catch (_) {
+        // Do not trust an unverified cached region. The selection screen
+        // presents the retry state when the backend cannot be reached.
+      }
+    }
+
+    if (!hasValidSavedRegion) {
+      await Future.wait([
+        CacheHelper.removeData(key: CacheKeys.selectedCountryId),
+        CacheHelper.removeData(key: CacheKeys.selectedCountryName),
+        CacheHelper.removeData(key: CacheKeys.selectedCountryIsoCode),
+        CacheHelper.removeData(key: CacheKeys.selectedCurrencyCode),
+      ]);
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    navigatorKey.currentState!.pushReplacementNamed(
+      hasValidSavedRegion
+          ? RouteStrings.authScreen
+          : RouteStrings.regionSelectionScreen,
+    );
   }
 
   @override
@@ -135,34 +175,46 @@ class WavePainter extends CustomPainter {
     // First wave
     path1.moveTo(0, size.height * 0.3);
     path1.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.1,
-      size.width * 0.5, size.height * 0.3,
+      size.width * 0.25,
+      size.height * 0.1,
+      size.width * 0.5,
+      size.height * 0.3,
     );
     path1.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.5,
-      size.width, size.height * 0.3,
+      size.width * 0.75,
+      size.height * 0.5,
+      size.width,
+      size.height * 0.3,
     );
 
     // Second wave
     path2.moveTo(0, size.height * 0.5);
     path2.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.3,
-      size.width * 0.5, size.height * 0.5,
+      size.width * 0.25,
+      size.height * 0.3,
+      size.width * 0.5,
+      size.height * 0.5,
     );
     path2.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.7,
-      size.width, size.height * 0.5,
+      size.width * 0.75,
+      size.height * 0.7,
+      size.width,
+      size.height * 0.5,
     );
 
     // Third wave
     path3.moveTo(0, size.height * 0.7);
     path3.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.5,
-      size.width * 0.5, size.height * 0.7,
+      size.width * 0.25,
+      size.height * 0.5,
+      size.width * 0.5,
+      size.height * 0.7,
     );
     path3.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.9,
-      size.width, size.height * 0.7,
+      size.width * 0.75,
+      size.height * 0.9,
+      size.width,
+      size.height * 0.7,
     );
 
     canvas.drawPath(path1, paint);
