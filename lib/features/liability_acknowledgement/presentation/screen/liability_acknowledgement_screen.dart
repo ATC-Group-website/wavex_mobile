@@ -52,7 +52,7 @@ class _LiabilityAcknowledgementScreenState
   void _openBranches() {
     if (!mounted) return;
     Navigator.of(context).pushNamedAndRemoveUntil(
-      RouteStrings.branchSelectionScreen,
+      RouteStrings.homeScreen,
       (route) => false,
     );
   }

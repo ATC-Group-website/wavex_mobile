@@ -119,13 +119,15 @@ class _LoginScreenState extends State<LoginScreen>
                                 value: state.loginResponse.user?.phone ?? "");
                             CacheHelper.saveData(
                                 key: "firstName",
-                                value: state.loginResponse.user?.firstName ?? "");
+                                value:
+                                    state.loginResponse.user?.firstName ?? "");
                             CacheHelper.saveData(
                                 key: "gender",
                                 value: state.loginResponse.user?.gender ?? "");
                             CacheHelper.saveData(
                                 key: "lastName",
-                                value: state.loginResponse.user?.lastName ?? "");
+                                value:
+                                    state.loginResponse.user?.lastName ?? "");
                             CacheHelper.saveData(
                                 key: "userName",
                                 value:
@@ -140,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen>
                             LoginCubit.get(context).passwordController.clear();
 
                             navigatorKey.currentState!.pushNamedAndRemoveUntil(
-                              RouteStrings.waiverAcknowledgementScreen,
+                              RouteStrings.homeScreen,
                               (route) => false,
                             );
                             // Handle successful login

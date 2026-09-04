@@ -23,7 +23,7 @@ class _AuthScreenState extends State<AuthScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (CacheHelper.getdata(key: "userToken") != null) {
         navigatorKey.currentState!.pushNamedAndRemoveUntil(
-          RouteStrings.waiverAcknowledgementScreen,
+          RouteStrings.homeScreen,
           (route) => false,
         );
       }
@@ -50,8 +50,6 @@ class _AuthScreenState extends State<AuthScreen>
     ));
 
     _animationController.forward();
-
-
   }
 
   @override
@@ -92,8 +90,9 @@ class _AuthScreenState extends State<AuthScreen>
                               Image.asset("assets/images/wavex_logo.png"),
 
                               // Tagline
-                               Text(
-                                 AppLocalizations.of(context).translate("ride_the_wave"),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate("ride_the_wave"),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 22,
@@ -118,8 +117,9 @@ class _AuthScreenState extends State<AuthScreen>
                         // Welcome Message
                         FadeTransition(
                           opacity: _fadeAnimation,
-                          child:  Text(
-                            AppLocalizations.of(context).translate("start_journey"),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate("start_journey"),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 21,
@@ -140,7 +140,8 @@ class _AuthScreenState extends State<AuthScreen>
                               children: [
                                 // Log In Button
                                 _buildAuthButton(
-                                  text: AppLocalizations.of(context).translate("login"),
+                                  text: AppLocalizations.of(context)
+                                      .translate("login"),
                                   backgroundColor: const Color(0xFF45A3B7),
                                   textColor: Colors.white,
                                   onPressed: () {
@@ -156,7 +157,8 @@ class _AuthScreenState extends State<AuthScreen>
 
                                 // Sign Up Button
                                 _buildAuthButton(
-                                  text: AppLocalizations.of(context).translate("signup"),
+                                  text: AppLocalizations.of(context)
+                                      .translate("signup"),
                                   backgroundColor: const Color(0xFF52757B),
                                   textColor: Colors.white,
                                   onPressed: () {
@@ -173,14 +175,16 @@ class _AuthScreenState extends State<AuthScreen>
                                 GestureDetector(
                                   onTap: () {
                                     // Navigate to main app as guest
-                                    navigatorKey.currentState!.pushNamedAndRemoveUntil(
-                                      RouteStrings.waiverAcknowledgementScreen,
+                                    navigatorKey.currentState!
+                                        .pushNamedAndRemoveUntil(
+                                      RouteStrings.homeScreen,
                                       (route) => false,
                                     );
                                     print('Continue as Guest');
                                   },
-                                  child:  Text(
-                                    AppLocalizations.of(context).translate("guest"),
+                                  child: Text(
+                                    AppLocalizations.of(context)
+                                        .translate("guest"),
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
