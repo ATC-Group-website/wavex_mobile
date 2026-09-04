@@ -6,6 +6,8 @@ import 'package:wavex/core/components/header_widget.dart';
 import 'package:wavex/core/helper/cache_helper/cache_helper.dart';
 import 'package:wavex/features/book_program_screen/data/models/get_program_by_id_response.dart';
 import 'package:wavex/features/book_program_screen/logic/book_program_cubit.dart';
+import 'package:wavex/features/classes_screen/data/models/get_programs_response.dart'
+    as programs;
 import 'package:wavex/main.dart';
 import '../../../../core/app_localization.dart';
 import '../../../../core/components/bottom_navigation_bar.dart';
@@ -33,8 +35,11 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
 
   ProgramData programData = ProgramData();
   int locationId = 0;
+  int? selectedProgramId;
   List<LocationData> locations = [];
+  List<programs.ProgramData> programFilters = [];
   List<SessionData> sessions = [];
+  int sessionsAnimationKey = 0;
 
   bool _isPaymentInProgress = false;
   bool isLoading = false;
@@ -43,9 +48,10 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
   void initState() {
     BookProgramCubit.get(context).getProgramById(id: widget.id);
     BookProgramCubit.get(context).getLocations();
+    BookProgramCubit.get(context).getPrograms();
     BookProgramCubit.get(context).getSessions(
       date: "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
-      programId: widget.id,
+      programId: selectedProgramId,
     );
     super.initState();
   }
@@ -67,9 +73,11 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     // ✅ ده هيتنادى لما ترجع للـ screen دي
     BookProgramCubit.get(context).getProgramById(id: widget.id);
     BookProgramCubit.get(context).getLocations();
+    BookProgramCubit.get(context).getPrograms();
     BookProgramCubit.get(context).getSessions(
       date: "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
-      programId: widget.id,
+      programId: selectedProgramId,
+      locationId: locationId == 0 ? null : locationId,
     );
   }
 
@@ -231,8 +239,16 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                     locationId = 0;
                   });
                 }
+                if (state is GetProgramsSuccessState) {
+                  setState(() {
+                    programFilters = state.programsResponse.data ?? [];
+                  });
+                }
                 if (state is GetSessionsSuccessState) {
-                  setState(() => sessions = state.sessionsResponse.data ?? []);
+                  setState(() {
+                    sessions = state.sessionsResponse.data ?? [];
+                    sessionsAnimationKey++;
+                  });
                 }
               },
               builder: (context, state) {
@@ -262,6 +278,8 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
           _buildClassImage(),
           _buildLocationTabs(),
           _buildCalendar(),
+          _buildAvailabilityHeader(),
+          _buildProgramTabs(),
           _buildSessionsBookings(),
           const SizedBox(height: 50),
         ],
@@ -329,7 +347,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
               BookProgramCubit.get(context).getSessions(
                 date:
                     "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
-                programId: widget.id,
+                programId: selectedProgramId,
                 locationId: locationId == 0 ? null : locationId,
               );
             },
@@ -364,12 +382,123 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     setState(() => this.selectedDate = selectedDate);
     BookProgramCubit.get(context).getSessions(
       date: "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
-      programId: widget.id,
-      locationId: locationId,
+      programId: selectedProgramId,
+      locationId: locationId == 0 ? null : locationId,
     );
   }
 
   Widget _buildCalendar() => CalendarPager(onTap: setDate);
+
+  Widget _buildAvailabilityHeader() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      color: const Color(0x4DFCE566),
+      child: Text(
+        "Available Locations on date ${selectedDate.day}-${selectedDate.month}-${selectedDate.year} for :",
+        style: GoogleFonts.poppins().copyWith(
+          color: const Color(0xFF2F545F),
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  List<programs.ProgramData> get _programTabs {
+    final currentProgram = programs.ProgramData(
+      id: programData.id,
+      name: programData.name,
+      subtitle: programData.subtitle,
+      description: programData.description,
+      mainImage: programData.mainImage,
+      coverImage: programData.coverImage,
+      benefits: programData.benefits,
+      isActive: programData.isActive,
+    );
+
+    final tabs = <programs.ProgramData>[];
+    for (final program in [currentProgram, ...programFilters]) {
+      if (program.id == null || tabs.any((item) => item.id == program.id)) {
+        continue;
+      }
+      tabs.add(program);
+    }
+    return tabs;
+  }
+
+  Widget _buildProgramTabs() {
+    final tabs = _programTabs;
+
+    return Container(
+      height: 58,
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 14),
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        scrollDirection: Axis.horizontal,
+        itemCount: tabs.length + 1,
+        separatorBuilder: (context, index) => const SizedBox(width: 10),
+        itemBuilder: (context, index) {
+          final isAll = index == 0;
+          final program = isAll ? null : tabs[index - 1];
+          final isSelected = isAll
+              ? selectedProgramId == null
+              : selectedProgramId == program?.id;
+
+          return InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () {
+              setState(() => selectedProgramId = program?.id);
+              BookProgramCubit.get(context).getSessions(
+                date:
+                    "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
+                programId: selectedProgramId,
+                locationId: locationId == 0 ? null : locationId,
+              );
+            },
+            child: _buildProgramTab(
+              isAll ? "All Programs" : program?.name ?? "",
+              isSelected,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildProgramTab(String text, bool isSelected) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+      constraints: const BoxConstraints(minWidth: 128),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF4B899E) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF45818B)
+                .withValues(alpha: isSelected ? 0.55 : 0.35),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: GoogleFonts.bellotaText().copyWith(
+            color: isSelected ? Colors.white : const Color(0xFF4B899E),
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    );
+  }
 
   String formatTime(String time) {
     final parts = time.split(":");
@@ -382,50 +511,140 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
   Widget _buildSessionsBookings() {
     return BlocBuilder<BookProgramCubit, BookProgramState>(
       builder: (context, state) {
-        if (state is GetSessionsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (sessions.isNotEmpty) {
-          return ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: sessions.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              final loc = sessions[index];
-              return _buildLocationCard(loc, index + 1);
-            },
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset("assets/images/not_found.png"),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  "No sessions found Within this day",
-                  style: GoogleFonts.inter().copyWith(
-                    color: const Color(0xFF8DADAF),
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+        final isUpdating = state is GetSessionsLoadingState;
+
+        if (isUpdating && sessions.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 32),
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
           );
         }
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 520),
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
+          layoutBuilder: (currentChild, previousChildren) {
+            return Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                ...previousChildren,
+                if (currentChild != null) currentChild,
+              ],
+            );
+          },
+          transitionBuilder: (child, animation) {
+            final offsetAnimation = Tween<Offset>(
+              begin: const Offset(0, 0.04),
+              end: Offset.zero,
+            ).animate(animation);
+
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              ),
+            );
+          },
+          child: _buildSessionsContent(
+            key: ValueKey(sessionsAnimationKey),
+            isUpdating: isUpdating,
+          ),
+        );
       },
     );
   }
 
+  Widget _buildSessionsContent({
+    required Key key,
+    required bool isUpdating,
+  }) {
+    return Stack(
+      key: key,
+      children: [
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: 360),
+          opacity: isUpdating ? 0.55 : 1,
+          child: _buildSessionsList(),
+        ),
+        if (isUpdating)
+          const Positioned(
+            top: 0,
+            left: 16,
+            right: 16,
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              child: LinearProgressIndicator(
+                minHeight: 3,
+                backgroundColor: Colors.transparent,
+                color: Color(0xFF4B899E),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSessionsList() {
+    if (sessions.isNotEmpty) {
+      return ListView.separated(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: sessions.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) {
+          final loc = sessions[index];
+          return _buildLocationCard(loc, index + 1);
+        },
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset("assets/images/not_found.png"),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              "No sessions found Within this day",
+              style: GoogleFonts.inter().copyWith(
+                color: const Color(0xFF8DADAF),
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   Widget _buildLocationCard(SessionData session, int index) {
+    final remainingSeats =
+        (session.maxCapacity ?? 0) - (session.currentBookings ?? 0);
+    final isFullyBooked = remainingSeats == 0;
+    final statusText = isFullyBooked
+        ? AppLocalizations.of(context).translate("bookProgram_fully_booked")
+        : session.isFree == true
+            ? "Available Now"
+            : "Scheduled";
+    final statusColor = isFullyBooked
+        ? Colors.red
+        : session.isFree == true
+            ? const Color(0xFF44858F)
+            : const Color(0xFFF37E10);
+    final locationText = [
+      session.location?.areaName,
+      session.location?.venueName,
+    ].where((item) => item != null && item.isNotEmpty).join(" - ");
+
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -434,10 +653,10 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
         borderRadius: BorderRadius.circular(20),
         border: Border(
           left: BorderSide(
-            color: session.maxCapacity == session.currentBookings
+            color: isFullyBooked
                 ? Colors.red
                 : session.isFree == true
-                    ? Colors.green // Green border for free sessions
+                    ? const Color(0xFF44858F)
                     : const Color(0xFF45818B),
             width: 4,
           ),
@@ -447,10 +666,10 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
         children: [
           Image.asset(
             "assets/images/water_drop_icon.png",
-            color: session.maxCapacity == session.currentBookings
+            color: isFullyBooked
                 ? Colors.red
                 : session.isFree == true
-                    ? Colors.green // Green icon for free sessions
+                    ? const Color(0xFF44858F)
                     : const Color(0xFF45818B),
           ),
           const SizedBox(width: 5),
@@ -462,32 +681,22 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                   children: [
                     Expanded(
                       child: Text(
-                        '${session.location?.areaName ?? ''} - ${session.location?.venueName ?? ''}',
+                        session.program?.name ?? programData.name ?? "",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF45818B),
+                          color: Color(0xFF2F545F),
                         ),
                       ),
                     ),
-                    // FREE badge for free sessions
-                    if (session.isFree == true)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Text(
-                          'FREE',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                    Text(
+                      statusText,
+                      style: GoogleFonts.poppins().copyWith(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: statusColor,
                       ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -518,16 +727,14 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                   children: [
                     Expanded(
                       child: Text(
-                        (session.maxCapacity! - session.currentBookings!) == 0
+                        isFullyBooked
                             ? AppLocalizations.of(context)
                                 .translate("bookProgram_fully_booked")
-                            : "${(session.maxCapacity! - session.currentBookings!)} ${AppLocalizations.of(context).translate("bookProgram_seats_left")}",
+                            : "$remainingSeats ${AppLocalizations.of(context).translate("bookProgram_seats_left")}",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: (session.maxCapacity! -
-                                      session.currentBookings!) ==
-                                  0
+                          color: isFullyBooked
                               ? Colors.red
                               : const Color(0xFF45818B),
                         ),
@@ -542,9 +749,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: (session.maxCapacity! -
-                                        session.currentBookings!) ==
-                                    0
+                            color: isFullyBooked
                                 ? Colors.red
                                 : const Color(0xFF45818B),
                           ),
@@ -553,6 +758,17 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                     ),
                   ],
                 ),
+                if (locationText.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    locationText,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF2F545F),
+                    ),
+                  ),
+                ],
 
                 // Modified pricing section to handle free sessions
                 if (session.isFree !=
@@ -580,7 +796,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                 Row(
                                   children: [
                                     Text(
-                                      session.price.toString() ?? "",
+                                      session.price.toString(),
                                       style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
@@ -597,7 +813,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                         color: Colors.red,
                                       ),
                                       child: Text(
-                                        "${session.discountPercentage.toString() ?? ""}% OFF",
+                                        "${session.discountPercentage.toString()}% OFF",
                                         style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,

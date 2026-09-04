@@ -220,18 +220,15 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
         // 🎯 Responsive sizes
         double itemSize = 50;
         double selectedItemSize = 80;
-        int itemsPerPage = 3;
 
         if (screenWidth > 1200) {
           // Large screen (Web / Desktop)
           itemSize = 100;
           selectedItemSize = 130;
-          itemsPerPage = 6;
         } else if (screenWidth > 800) {
           // Tablet
           itemSize = 80;
           selectedItemSize = 100;
-          itemsPerPage = 4;
         }
 
         return SizedBox(
