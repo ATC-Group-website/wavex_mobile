@@ -48,28 +48,30 @@ class SessionData {
   bool? isFree;
   Location? location;
   Instructor? instructor;
+  Program? program;
 
   SessionData(
       {this.id,
-        this.programId,
-        this.locationId,
-        this.isFree,
-        this.instructorId,
-        this.sessionDate,
-        this.startTime,
-        this.endTime,
-        this.maxCapacity,
-        this.isBooked,
-        this.currentBookings,
-        this.status,
-        this.price,
-        this.discountedPrice,
-        this.discountAmount,
-        this.discountPercentage,
-        this.createdAt,
-        this.updatedAt,
-        this.location,
-        this.instructor});
+      this.programId,
+      this.locationId,
+      this.isFree,
+      this.instructorId,
+      this.sessionDate,
+      this.startTime,
+      this.endTime,
+      this.maxCapacity,
+      this.isBooked,
+      this.currentBookings,
+      this.status,
+      this.price,
+      this.discountedPrice,
+      this.discountAmount,
+      this.discountPercentage,
+      this.createdAt,
+      this.updatedAt,
+      this.location,
+      this.program,
+      this.instructor});
 
   SessionData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -93,6 +95,8 @@ class SessionData {
     location = json['location'] != null
         ? new Location.fromJson(json['location'])
         : null;
+    program =
+        json['program'] != null ? new Program.fromJson(json['program']) : null;
     instructor = json['instructor'] != null
         ? new Instructor.fromJson(json['instructor'])
         : null;
@@ -121,6 +125,9 @@ class SessionData {
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
+    if (this.program != null) {
+      data['program'] = this.program!.toJson();
+    }
     if (this.instructor != null) {
       data['instructor'] = this.instructor!.toJson();
     }
@@ -139,12 +146,12 @@ class Location {
 
   Location(
       {this.id,
-        this.areaName,
-        this.venueName,
-        this.phone,
-        this.fullAddress,
-        this.updatedAt,
-        this.isActive});
+      this.areaName,
+      this.venueName,
+      this.phone,
+      this.fullAddress,
+      this.updatedAt,
+      this.isActive});
 
   Location.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -169,15 +176,35 @@ class Location {
   }
 }
 
+class Program {
+  int? id;
+  String? name;
+
+  Program({this.id, this.name});
+
+  Program.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
 class Instructor {
   int? id;
   String? firstName;
   String? lastName;
 
-  Instructor(
-      {this.id,
-        this.firstName,
-        this.lastName,});
+  Instructor({
+    this.id,
+    this.firstName,
+    this.lastName,
+  });
 
   Instructor.fromJson(Map<String, dynamic> json) {
     id = json['id'];

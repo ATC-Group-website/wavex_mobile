@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:wavex/core/networks/request_body.dart';
 
 import '../../../../core/networks/api_manager.dart';
@@ -31,20 +30,39 @@ class BookProgramsRepository {
     }
   }
 
+  Future<ApiResponse?> getPrograms() async {
+    try {
+      ApiResponse? response = await ApiManager.sendRequest(
+        link: 'programs',
+        method: Method.GET,
+      );
+      return response;
+    } catch (e) {
+      print("error error: $e");
+      return null;
+    }
+  }
+
   Future<ApiResponse?> getSessions({
     required String date,
-    required int programId,
+    int? programId,
     int? locationId,
   }) async {
     try {
       Map<String, dynamic> query = {
         "session_date": date,
         "relations[instructor][fields]": "id,first_name,last_name",
-        "program_id": programId,
-        "relations[location][fields]": "id,area_name,venue_name"
+        "relations[location][fields]": "id,area_name,venue_name",
+        "relations[program][fields]": "id,name",
       };
 
-      if (locationId != 0) {
+      if (programId != null && programId != 0) {
+        query.addAll({
+          "program_id": programId,
+        });
+      }
+
+      if (locationId != null && locationId != 0) {
         query.addAll({
           "location_id": locationId,
         });
@@ -78,7 +96,9 @@ class BookProgramsRepository {
       // Don’t swallow the error
       rethrow;
     }
-  }  Future<ApiResponse?> bookFreeSession({
+  }
+
+  Future<ApiResponse?> bookFreeSession({
     required int sessionId,
   }) async {
     try {

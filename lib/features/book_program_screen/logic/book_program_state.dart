@@ -33,6 +33,20 @@ final class GetLocationsErrorState extends BookProgramState {
   GetLocationsErrorState({required this.error});
 }
 
+final class GetProgramsLoadingState extends BookProgramState {}
+
+final class GetProgramsSuccessState extends BookProgramState {
+  final programs.GetProgramsResponse programsResponse;
+
+  GetProgramsSuccessState({required this.programsResponse});
+}
+
+final class GetProgramsErrorState extends BookProgramState {
+  final String error;
+
+  GetProgramsErrorState({required this.error});
+}
+
 final class GetSessionsLoadingState extends BookProgramState {}
 
 final class GetSessionsSuccessState extends BookProgramState {
@@ -53,7 +67,7 @@ final class PaymentSuccessState extends BookProgramState {
   final PaymentResponse paymentResponse;
   final int sessionId;
 
-  PaymentSuccessState({required this.paymentResponse,required this.sessionId});
+  PaymentSuccessState({required this.paymentResponse, required this.sessionId});
 }
 
 final class PaymentErrorState extends BookProgramState {
@@ -68,7 +82,8 @@ final class BookFreeSessionSuccessState extends BookProgramState {
   final BookFreeSessionResponse bookFreeSessionResponse;
   final int sessionId;
 
-  BookFreeSessionSuccessState({required this.bookFreeSessionResponse,required this.sessionId});
+  BookFreeSessionSuccessState(
+      {required this.bookFreeSessionResponse, required this.sessionId});
 }
 
 final class BookFreeSessionErrorState extends BookProgramState {

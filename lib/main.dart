@@ -1,11 +1,9 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:wavex/core/constants/constants.dart';
-import 'package:wavex/features/transaction_failed_screen/presentation/screen/transaction_failed_screen.dart';
 import 'core/app_cubit/app_cubit.dart';
 import 'core/app_localization.dart';
 import 'core/di/dependency_injection.dart';
@@ -14,9 +12,7 @@ import 'core/helper/cache_helper/cache_helper.dart';
 import 'core/networks/api_manager.dart';
 import 'core/route/router/app_router.dart';
 import 'features/home_screen/logic/home_cubit.dart';
-import 'features/profile_screen/presentation/screen/profile_screen.dart';
-import 'features/transaction_success_screen/presentation/screen/transaction_success_screen.dart';
-import 'package:device_preview/device_preview.dart';
+// import 'package:device_preview/device_preview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'firebase_options.dart';
@@ -33,28 +29,29 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) =>
-          BlocProvider(
-            create: (context) => AppCubit(),
-            child: MyApp(
-              appRouter: AppRouter(),
-              initialLocale: Locale(selectedLanguage!),
-            ),
-          ), // Wrap your app
-    ),
-  );
-
   // runApp(
-  //   MyApp(
-  //     appRouter: AppRouter(),
-  //     initialLocale: Locale(selectedLanguage!),
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) =>
+  //         BlocProvider(
+  //           create: (context) => AppCubit(),
+  //           child: MyApp(
+  //             appRouter: AppRouter(),
+  //             initialLocale: Locale(selectedLanguage!),
+  //           ),
+  //         ), // Wrap your app
   //   ),
   // );
-  //
-  //
+
+  runApp(
+    BlocProvider(
+      create: (context) => AppCubit(),
+      child: MyApp(
+        appRouter: AppRouter(),
+        initialLocale: Locale(selectedLanguage!),
+      ),
+    ),
+  );
 }
 
 Future<void> _initializeApp() async {
@@ -133,7 +130,7 @@ class _MyAppState extends State<MyApp> {
             ],
             localeResolutionCallback: (locale, supportedLocales) {
               return supportedLocales.firstWhere(
-                      (element) => element.languageCode == locale?.languageCode,
+                  (element) => element.languageCode == locale?.languageCode,
                   orElse: () => supportedLocales.first);
             },
             localizationsDelegates: const [
