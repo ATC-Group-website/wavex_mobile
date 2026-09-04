@@ -409,7 +409,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 size: Size(MediaQuery.of(context).size.width, 0),
                 painter: BottomWavePainter(),
               ),
-              const BottomNavigation(currentIndex: 3),
+              const BottomNavigation(currentIndex: 2),
             ],
           ),
         ],

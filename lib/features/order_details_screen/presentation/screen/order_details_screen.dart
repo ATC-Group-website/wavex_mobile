@@ -421,7 +421,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 painter: BottomWavePainter(),
               ),
               const BottomNavigation(
-                currentIndex: 3,
+                currentIndex: 2,
               ),
             ],
           ),

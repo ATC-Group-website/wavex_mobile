@@ -396,7 +396,7 @@ class _AddManualAddressScreenState extends State<AddManualAddressScreen> {
                     painter: BottomWavePainter(),
                   ),
                   const BottomNavigation(
-                    currentIndex: 3,
+                    currentIndex: 2,
                   ),
                 ],
               ),

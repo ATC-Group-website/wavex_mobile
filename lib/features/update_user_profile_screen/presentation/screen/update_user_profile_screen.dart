@@ -28,7 +28,7 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _emergencyNumber = TextEditingController();
-  final int _currentIndex = 3; // Highlight the profile icon in bottom nav
+  final int _currentIndex = 2; // Highlight the profile icon in bottom nav
 
   Map<String, String> splitFullName(String fullName) {
     List<String> parts = fullName.trim().split(" ");

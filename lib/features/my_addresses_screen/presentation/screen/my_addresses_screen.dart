@@ -481,7 +481,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                 painter: BottomWavePainter(),
               ),
               const BottomNavigation(
-                currentIndex: 3,
+                currentIndex: 2,
               ),
             ],
           ),

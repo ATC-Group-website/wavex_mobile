@@ -174,7 +174,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 painter: BottomWavePainter(),
               ),
               const BottomNavigation(
-                currentIndex: 3,
+                currentIndex: 2,
               ),
             ],
           ),

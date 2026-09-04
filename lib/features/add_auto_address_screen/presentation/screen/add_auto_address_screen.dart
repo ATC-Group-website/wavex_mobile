@@ -341,7 +341,7 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
                 painter: BottomWavePainter(),
               ),
               const BottomNavigation(
-                currentIndex: 3,
+                currentIndex: 2,
               ),
             ],
           ),

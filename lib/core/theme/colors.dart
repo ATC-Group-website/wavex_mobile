@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const scaffoldBackGroundColor = Color(0xfff6f6f6);
-  static const containerBorderColor = Color(0xFFDEDEDE);
+  static const scaffoldBackGroundColor = Color(0xFFF7F8FA);
+  static const containerBorderColor = Color(0xFF6DAFB9);
   static const whiteColor = Colors.white;
-  static const primaryColor = Color(0xFF44858F);
+  static const primaryColor = Color(0xFF4B899E);
   static const orangeColor = Color(0xFFFE832A);
-  static const blackColor = Color(0xFF4A4A4A);
+  static const blackColor = Color(0xFF2F545F);
   static const greenColor = Colors.green;
+
+  static const figmaBackground = Color(0xFFF7F8FA);
+  static const figmaInputFill = Color(0xFFD6E9F0);
+  static const figmaText = Color(0xFF2F545F);
+  static const figmaPrimary = Color(0xFF4B899E);
+  static const figmaFormBorder = Color(0xFF6DAFB9);
 
   // New Figma palette reference.
   static const figma316D80 = Color(0xFF316D80);

@@ -1406,7 +1406,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                   painter: BottomWavePainter(),
                 ),
                 const BottomNavigation(
-                  currentIndex: 3,
+                  currentIndex: 2,
                 ),
               ],
             ),
