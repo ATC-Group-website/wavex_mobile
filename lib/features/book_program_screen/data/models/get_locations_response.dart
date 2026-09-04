@@ -35,6 +35,8 @@ class LocationData {
   String? fullAddress;
   String? updatedAt;
   bool? isActive;
+  bool? requiresFormSubmission;
+  String? formSubmissionStatus;
 
   LocationData(
       {this.id,
@@ -53,6 +55,9 @@ class LocationData {
     fullAddress = json['full_address'];
     updatedAt = json['updated_at'];
     isActive = json['is_active'];
+    requiresFormSubmission = json['requires_form_submission'] ??
+        json['user_requires_form_submission'];
+    formSubmissionStatus = json['form_submission_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +69,8 @@ class LocationData {
     data['full_address'] = this.fullAddress;
     data['updated_at'] = this.updatedAt;
     data['is_active'] = this.isActive;
+    data['requires_form_submission'] = this.requiresFormSubmission;
+    data['form_submission_status'] = this.formSubmissionStatus;
     return data;
   }
 }
