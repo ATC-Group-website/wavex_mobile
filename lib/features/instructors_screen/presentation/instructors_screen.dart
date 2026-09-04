@@ -197,7 +197,7 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
         //   ],
         // ),
         SizedBox(height: 8),
-        Center](
+        Center(
           child: Text(
             'Find Your Favorite instructor now and know more about them',
             textAlign: TextAlign.center,
@@ -241,13 +241,14 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
               IconButton(
                 onPressed: currentPage > 0
                     ? () {
-                  setState(() {
-                    currentPage--;
-                    _updateVisibleInstructors();
-                  });
-                }
+                        setState(() {
+                          currentPage--;
+                          _updateVisibleInstructors();
+                        });
+                      }
                     : null,
-                icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF26C6DA)),
+                icon:
+                    const Icon(Icons.arrow_back_ios, color: Color(0xFF26C6DA)),
               ),
               Expanded(
                 child: Row(
@@ -259,7 +260,7 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
                           setState(() {
                             selectedInstructorIndex = startIndex + i;
                             selectedInstructor =
-                            instructors[selectedInstructorIndex];
+                                instructors[selectedInstructorIndex];
                           });
                         },
                         child: Container(
@@ -267,19 +268,22 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
                           child: Column(
                             children: [
                               Container(
-                                width: (startIndex + i == selectedInstructorIndex)
-                                    ? selectedItemSize
-                                    : itemSize,
-                                height: (startIndex + i == selectedInstructorIndex)
-                                    ? selectedItemSize
-                                    : itemSize,
+                                width:
+                                    (startIndex + i == selectedInstructorIndex)
+                                        ? selectedItemSize
+                                        : itemSize,
+                                height:
+                                    (startIndex + i == selectedInstructorIndex)
+                                        ? selectedItemSize
+                                        : itemSize,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  border: (startIndex + i == selectedInstructorIndex)
+                                  border: (startIndex + i ==
+                                          selectedInstructorIndex)
                                       ? Border.all(
-                                    color: AppColors.primaryColor,
-                                    width: 2,
-                                  )
+                                          color: AppColors.primaryColor,
+                                          width: 2,
+                                        )
                                       : null,
                                   image: DecorationImage(
                                     image: NetworkImage(
@@ -289,7 +293,8 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
                                   ),
                                 ),
                               ),
-                              if (startIndex + i == selectedInstructorIndex) ...[
+                              if (startIndex + i ==
+                                  selectedInstructorIndex) ...[
                                 const SizedBox(height: 6),
                                 Text(
                                   visibleInstructors[i].firstName ?? "",
@@ -310,11 +315,11 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
               IconButton(
                 onPressed: endIndex < instructors.length
                     ? () {
-                  setState(() {
-                    currentPage++;
-                    _updateVisibleInstructors();
-                  });
-                }
+                        setState(() {
+                          currentPage++;
+                          _updateVisibleInstructors();
+                        });
+                      }
                     : null,
                 icon: const Icon(Icons.arrow_forward_ios,
                     color: Color(0xFF26C6DA)),
@@ -343,7 +348,7 @@ class InstructorProfileCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-               Text(
+              Text(
                 "Instructor",
                 style: GoogleFonts.inter(
                   color: const Color(0xFFF30F0F),
@@ -353,8 +358,8 @@ class InstructorProfileCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                "${instructor.firstName??''} ${instructor.lastName??""}" ,
-                style:  GoogleFonts.inter(
+                "${instructor.firstName ?? ''} ${instructor.lastName ?? ""}",
+                style: GoogleFonts.inter(
                   color: const Color(0xFF45818B),
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
