@@ -668,6 +668,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     final remainingSeats =
         (session.maxCapacity ?? 0) - (session.currentBookings ?? 0);
     final isFullyBooked = remainingSeats == 0;
+    final hasLimitedSeats = remainingSeats > 0 && remainingSeats <= 3;
     final statusText = isFullyBooked
         ? AppLocalizations.of(context).translate("bookProgram_fully_booked")
         : session.isFree == true
@@ -715,6 +716,29 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (hasLimitedSeats) ...[
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF45145),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate("bookProgram_limited_seats"),
+                        style: GoogleFonts.inter().copyWith(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                ],
                 Row(
                   children: [
                     Expanded(
@@ -760,30 +784,16 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        isFullyBooked
-                            ? AppLocalizations.of(context)
-                                .translate("bookProgram_fully_booked")
-                            : "$remainingSeats ${AppLocalizations.of(context).translate("bookProgram_seats_left")}",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: isFullyBooked
-                              ? Colors.red
-                              : const Color(0xFF45818B),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.watch_later,
-                            color: Color(0xFF4DBDD5), size: 20),
-                        Text(
-                          "${formatTime(session.startTime ?? "")} - ${formatTime(session.endTime ?? "")}",
+                if (hasLimitedSeats || isFullyBooked) ...[
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          isFullyBooked
+                              ? AppLocalizations.of(context)
+                                  .translate("bookProgram_fully_booked")
+                              : "$remainingSeats ${AppLocalizations.of(context).translate("bookProgram_seats_left")}",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -792,10 +802,46 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                 : const Color(0xFF45818B),
                           ),
                         ),
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.watch_later,
+                              color: Color(0xFF4DBDD5), size: 20),
+                          Text(
+                            "${formatTime(session.startTime ?? "")} - ${formatTime(session.endTime ?? "")}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: isFullyBooked
+                                  ? Colors.red
+                                  : const Color(0xFF45818B),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ] else ...[
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.watch_later,
+                            color: Color(0xFF4DBDD5), size: 20),
+                        Text(
+                          "${formatTime(session.startTime ?? "")} - ${formatTime(session.endTime ?? "")}",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF45818B),
+                          ),
+                        ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
                 if (locationText.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Text(

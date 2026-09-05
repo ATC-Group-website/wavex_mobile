@@ -129,6 +129,7 @@
   "bookProgram_location": "Location",
   "bookProgram_fully_booked": "Fully Booked",
   "bookProgram_seats_left": "Seats left",
+  "bookProgram_limited_seats": "Limited seats left",
   "bookProgram_capacity": "Capacity",
   "bookProgram_book_session": "Book Session",
   "bookProgram_fully_booked_message": "Location {index} is fully booked",

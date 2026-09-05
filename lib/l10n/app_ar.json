@@ -128,6 +128,7 @@
   "bookProgram_location": "المكان",
   "bookProgram_fully_booked": "ممتلئ",
   "bookProgram_seats_left": "مقاعد متبقية",
+  "bookProgram_limited_seats": "مقاعد محدودة متبقية",
   "bookProgram_capacity": "السعة",
   "bookProgram_book_session": "احجز الجلسة",
   "bookProgram_fully_booked_message": "المكان {index} ممتلئ بالكامل",
