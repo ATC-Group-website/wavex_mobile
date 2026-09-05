@@ -22,13 +22,14 @@ final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (Constants.publicKey.isEmpty) {
+    throw StateError('STRIPE_PUBLISHABLE_KEY must be supplied at build time.');
+  }
   Stripe.publishableKey = Constants.publicKey;
   await _initializeApp();
   final String? selectedLanguage =
       CacheHelper.getdata(key: 'selectedLanguage') ?? 'en';
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // runApp(
   //   DevicePreview(
   //     enabled: !kReleaseMode,
@@ -74,8 +75,11 @@ Future<void> _initializeCache() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp(
-      {super.key, required this.appRouter, required this.initialLocale});
+  const MyApp({
+    super.key,
+    required this.appRouter,
+    required this.initialLocale,
+  });
 
   final AppRouter appRouter;
   final Locale initialLocale;
@@ -124,14 +128,12 @@ class _MyAppState extends State<MyApp> {
             ),
             navigatorKey: navigatorKey,
             locale: _locale,
-            supportedLocales: const [
-              Locale('ar'),
-              Locale('en'),
-            ],
+            supportedLocales: const [Locale('ar'), Locale('en')],
             localeResolutionCallback: (locale, supportedLocales) {
               return supportedLocales.firstWhere(
-                  (element) => element.languageCode == locale?.languageCode,
-                  orElse: () => supportedLocales.first);
+                (element) => element.languageCode == locale?.languageCode,
+                orElse: () => supportedLocales.first,
+              );
             },
             localizationsDelegates: const [
               AppLocalizations.delegate,
