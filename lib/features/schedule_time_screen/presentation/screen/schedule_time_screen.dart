@@ -395,7 +395,7 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
             ..showSnackBar(
       SnackBar(
         content: Text(
-            'Successfully booked ${_selectedTimes.length} time slot(s) for $_seatCount seat(s)!'),
+            'Successfully booked ${_selectedTimes.length} time slot(s) for $_seatCount spot(s)!'),
         backgroundColor: const Color(0xFF26C6DA),
       ),
     );
