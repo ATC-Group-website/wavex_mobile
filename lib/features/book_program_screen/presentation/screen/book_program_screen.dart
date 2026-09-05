@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -81,24 +84,32 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     );
   }
 
-  Future<void> _processPayment(BuildContext context, int sessionId) async {
+  Future<void> _processPayment(
+    BuildContext context,
+    int sessionId,
+    int paymentId,
+  ) async {
     try {
       await Stripe.instance.presentPaymentSheet();
 
-      // ✅ success
+      // Stripe accepted the card. Booking completion is confirmed by our signed webhook.
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
+        ..showSnackBar(SnackBar(content: Text('Confirming your booking…')));
+
+      if (await _waitForBookingConfirmation(paymentId)) {
+        navigatorKey.currentState!.pushNamed(
+          RouteStrings.transactionSuccessScreen,
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
             content: Text(
-              AppLocalizations.of(context)
-                  .translate("bookProgram_payment_success"),
+              'Your payment was received. We are still confirming the booking.',
             ),
           ),
         );
-
-      navigatorKey.currentState!
-          .pushNamed(RouteStrings.transactionSuccessScreen);
+      }
     } on StripeException catch (e) {
       // ✅ StripeException has error.message
       final errorMessage =
@@ -148,31 +159,57 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
   }
 
   Future<void> makePayment(
-      String? paymentIntentClientSecret, int sessionId) async {
+    String? paymentIntentClientSecret,
+    int sessionId,
+    int? paymentId,
+  ) async {
     try {
-      if (paymentIntentClientSecret == null) return;
+      if (paymentIntentClientSecret == null || paymentId == null) return;
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: paymentIntentClientSecret,
           merchantDisplayName: CacheHelper.getdata(key: "userName") ?? "Guest",
         ),
       );
-      await _processPayment(context, sessionId);
+      await _processPayment(context, sessionId, paymentId);
     } catch (_) {}
+  }
+
+  Future<bool> _waitForBookingConfirmation(int paymentId) async {
+    for (var attempt = 0; attempt < 10; attempt++) {
+      try {
+        final response = await BookProgramCubit.get(
+          context,
+        ).paymentStatus(paymentId: paymentId);
+        if (response?.data is String) {
+          final payload = jsonDecode(response.data) as Map<String, dynamic>;
+          final data = payload['data'] as Map<String, dynamic>?;
+          if (data?['booking_status'] == 'confirmed') return true;
+          if (data?['booking_status'] == 'failed') return false;
+        }
+      } catch (_) {
+        // The webhook may still be in flight; keep the customer on the recoverable pending state.
+      }
+      await Future<void>.delayed(const Duration(seconds: 2));
+    }
+    return false;
   }
 
   int? loadingSessionId;
 
   Future<void> _handleBook(SessionData session) async {
-    final locationRequiresForm = session.location?.requiresFormSubmission ??
+    final locationRequiresForm =
+        session.location?.requiresFormSubmission ??
         session.requiresFormSubmission == true;
     final submissionStatus =
         session.location?.formSubmissionStatus ?? session.formSubmissionStatus;
     if (locationRequiresForm && submissionStatus != 'approved') {
       if (submissionStatus == 'pending') {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Your branch request is still awaiting approval.'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Your branch request is still awaiting approval.'),
+          ),
+        );
         return;
       }
       final submitted = await navigatorKey.currentState!.pushNamed(
@@ -197,7 +234,10 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     if (session.isFree == true) {
       BookProgramCubit.get(context).bookFreeSession(sessionId: session.id ?? 0);
     } else {
-      BookProgramCubit.get(context).payment(sessionId: session.id ?? 0);
+      BookProgramCubit.get(context).payment(
+        sessionId: session.id ?? 0,
+        idempotencyKey: BookProgramCubit.newIdempotencyKey(),
+      );
     }
   }
 
@@ -217,21 +257,24 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                 await makePayment(
                   state.paymentResponse.clientSecret,
                   state.sessionId,
+                  state.paymentResponse.paymentRecord?.id,
                 );
                 _isPaymentInProgress = false;
                 setState(() => isLoading = false);
               }
               if (state is BookFreeSessionSuccessState) {
                 setState(() => loadingSessionId = null);
-                navigatorKey.currentState!
-                    .pushNamed(RouteStrings.sessionsScreen);
+                navigatorKey.currentState!.pushNamed(
+                  RouteStrings.sessionsScreen,
+                );
 
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
-                      content:
-                          Text(state.bookFreeSessionResponse.message ?? ""),
+                      content: Text(
+                        state.bookFreeSessionResponse.message ?? "",
+                      ),
                       backgroundColor: Colors.teal,
                     ),
                   );
@@ -242,18 +285,14 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                 setState(() => isLoading = false);
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(content: Text(state.error)),
-                  );
+                  ..showSnackBar(SnackBar(content: Text(state.error)));
               }
               if (state is BookFreeSessionErrorState) {
                 setState(() => loadingSessionId = null);
                 setState(() => isLoading = false);
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(content: Text(state.error)),
-                  );
+                  ..showSnackBar(SnackBar(content: Text(state.error)));
               }
               if (state is PaymentLoadingState) {
                 setState(() => isLoading = true);
@@ -265,8 +304,10 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
             child: BlocConsumer<BookProgramCubit, BookProgramState>(
               listener: (context, state) {
                 if (state is GetProgramByIdSuccessState) {
-                  setState(() => programData =
-                      state.programByIdResponse.data ?? ProgramData());
+                  setState(
+                    () => programData =
+                        state.programByIdResponse.data ?? ProgramData(),
+                  );
                 }
                 if (state is GetLocationsSuccessState) {
                   setState(() {
@@ -348,8 +389,11 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
           const SizedBox(height: 12),
           Text(
             programData.description ?? "",
-            style:
-                const TextStyle(fontSize: 14, color: Colors.grey, height: 1.4),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+              height: 1.4,
+            ),
           ),
         ],
       ),
@@ -516,8 +560,9 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF45818B)
-                .withValues(alpha: isSelected ? 0.55 : 0.35),
+            color: const Color(
+              0xFF45818B,
+            ).withValues(alpha: isSelected ? 0.55 : 0.35),
             blurRadius: 3,
             offset: const Offset(0, 1),
           ),
@@ -554,9 +599,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
         if (isUpdating && sessions.isEmpty) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 32),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
+            child: Center(child: CircularProgressIndicator()),
           );
         }
 
@@ -581,10 +624,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
 
             return FadeTransition(
               opacity: animation,
-              child: SlideTransition(
-                position: offsetAnimation,
-                child: child,
-              ),
+              child: SlideTransition(position: offsetAnimation, child: child),
             );
           },
           child: _buildSessionsContent(
@@ -596,10 +636,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     );
   }
 
-  Widget _buildSessionsContent({
-    required Key key,
-    required bool isUpdating,
-  }) {
+  Widget _buildSessionsContent({required Key key, required bool isUpdating}) {
     return Stack(
       key: key,
       children: [
@@ -647,9 +684,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset("assets/images/not_found.png"),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 5),
             Text(
               "No sessions found Within this day",
               style: GoogleFonts.inter().copyWith(
@@ -671,13 +706,13 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     final statusText = isFullyBooked
         ? AppLocalizations.of(context).translate("bookProgram_fully_booked")
         : session.isFree == true
-            ? "Available Now"
-            : "Scheduled";
+        ? "Available Now"
+        : "Scheduled";
     final statusColor = isFullyBooked
         ? Colors.red
         : session.isFree == true
-            ? const Color(0xFF44858F)
-            : const Color(0xFFF37E10);
+        ? const Color(0xFF44858F)
+        : const Color(0xFFF37E10);
     final locationText = [
       session.location?.areaName,
       session.location?.venueName,
@@ -694,8 +729,8 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
             color: isFullyBooked
                 ? Colors.red
                 : session.isFree == true
-                    ? const Color(0xFF44858F)
-                    : const Color(0xFF45818B),
+                ? const Color(0xFF44858F)
+                : const Color(0xFF45818B),
             width: 4,
           ),
         ),
@@ -707,8 +742,8 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
             color: isFullyBooked
                 ? Colors.red
                 : session.isFree == true
-                    ? const Color(0xFF44858F)
-                    : const Color(0xFF45818B),
+                ? const Color(0xFF44858F)
+                : const Color(0xFF45818B),
           ),
           const SizedBox(width: 5),
           Expanded(
@@ -748,13 +783,18 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                     ),
                     Row(
                       children: [
-                        const Icon(Icons.person,
-                            color: Color(0xFF4DBDD5), size: 20),
+                        const Icon(
+                          Icons.person,
+                          color: Color(0xFF4DBDD5),
+                          size: 20,
+                        ),
                         const SizedBox(width: 5),
                         Text(
                           '${session.instructor?.firstName ?? ''} ${session.instructor?.lastName ?? ''}',
-                          style:
-                              TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ],
                     ),
@@ -766,8 +806,9 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                     Expanded(
                       child: Text(
                         isFullyBooked
-                            ? AppLocalizations.of(context)
-                                .translate("bookProgram_fully_booked")
+                            ? AppLocalizations.of(
+                                context,
+                              ).translate("bookProgram_fully_booked")
                             : "$remainingSeats ${AppLocalizations.of(context).translate("bookProgram_seats_left")}",
                         style: TextStyle(
                           fontSize: 14,
@@ -780,8 +821,11 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                     ),
                     Row(
                       children: [
-                        const Icon(Icons.watch_later,
-                            color: Color(0xFF4DBDD5), size: 20),
+                        const Icon(
+                          Icons.watch_later,
+                          color: Color(0xFF4DBDD5),
+                          size: 20,
+                        ),
                         Text(
                           "${formatTime(session.startTime ?? "")} - ${formatTime(session.endTime ?? "")}",
                           style: TextStyle(
@@ -823,7 +867,8 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: (session.maxCapacity! -
+                                      color:
+                                          (session.maxCapacity! -
                                                   session.currentBookings!) ==
                                               0
                                           ? Colors.red
@@ -836,16 +881,18 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                     Text(
                                       session.price.toString(),
                                       style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.grey,
-                                          decoration:
-                                              TextDecoration.lineThrough),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
                                     ),
                                     const SizedBox(width: 5),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 5),
+                                        horizontal: 5,
+                                        vertical: 5,
+                                      ),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color: Colors.red,
@@ -881,7 +928,8 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
-                                  color: (session.maxCapacity! -
+                                  color:
+                                      (session.maxCapacity! -
                                               session.currentBookings!) ==
                                           0
                                       ? Colors.red
@@ -898,7 +946,8 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: (session.maxCapacity! -
+                            color:
+                                (session.maxCapacity! -
                                         session.currentBookings!) ==
                                     0
                                 ? Colors.red
@@ -910,39 +959,41 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                     ElevatedButton(
                       onPressed: session.isBooked == null
                           ? (loadingSessionId != null)
-                              ? null
-                              : CacheHelper.getdata(key: "userToken") == null
-                                  ? () => showLoginRequiredDialog(context)
-                                  : (session.maxCapacity! -
-                                              session.currentBookings!) ==
-                                          0
-                                      ? null
-                                      : () => _handleBook(session)
+                                ? null
+                                : CacheHelper.getdata(key: "userToken") == null
+                                ? () => showLoginRequiredDialog(context)
+                                : (session.maxCapacity! -
+                                          session.currentBookings!) ==
+                                      0
+                                ? null
+                                : () => _handleBook(session)
                           : session.isBooked!
-                              ? null
-                              : isLoading
-                                  ? null
-                                  : CacheHelper.getdata(key: "userToken") ==
-                                          null
-                                      ? () => showLoginRequiredDialog(context)
-                                      : (session.maxCapacity! -
-                                                  session.currentBookings!) ==
-                                              0
-                                          ? null
-                                          : () => _handleBook(session),
+                          ? null
+                          : isLoading
+                          ? null
+                          : CacheHelper.getdata(key: "userToken") == null
+                          ? () => showLoginRequiredDialog(context)
+                          : (session.maxCapacity! - session.currentBookings!) ==
+                                0
+                          ? null
+                          : () => _handleBook(session),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: (session.maxCapacity! -
-                                    session.currentBookings!) ==
+                        backgroundColor:
+                            (session.maxCapacity! - session.currentBookings!) ==
                                 0
                             ? const Color(0xff8AB5BC)
                             : session.isFree == true
-                                ? Colors.green // Green button for free sessions
-                                : AppColors.primaryColor,
+                            ? Colors
+                                  .green // Green button for free sessions
+                            : AppColors.primaryColor,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                       ),
                       child: (loadingSessionId == session.id)
                           ? const Center(child: CircularProgressIndicator())
@@ -950,7 +1001,13 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                               // Modified button text for free sessions
                               session.isFree == true
                                   ? "${AppLocalizations.of(context).translate("bookProgram_book_session")} - FREE"
-                                  : "${AppLocalizations.of(context).translate("bookProgram_book_session")} ${CacheHelper.getdata(key: "selectedCurrency") == "GBP" ? "£" : CacheHelper.getdata(key: "selectedCurrency") == "USD" ? "\$" : CacheHelper.getdata(key: "selectedCurrency") == "EGP" ? "ج.م" : "£"}${session.discountedPrice ?? session.price ?? ""}",
+                                  : "${AppLocalizations.of(context).translate("bookProgram_book_session")} ${CacheHelper.getdata(key: "selectedCurrency") == "GBP"
+                                        ? "£"
+                                        : CacheHelper.getdata(key: "selectedCurrency") == "USD"
+                                        ? "\$"
+                                        : CacheHelper.getdata(key: "selectedCurrency") == "EGP"
+                                        ? "ج.م"
+                                        : "£"}${session.discountedPrice ?? session.price ?? ""}",
                               style: GoogleFonts.inter().copyWith(
                                 color: Colors.white,
                                 fontSize: 14,

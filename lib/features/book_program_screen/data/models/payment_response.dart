@@ -4,11 +4,12 @@ class PaymentResponse {
   PaymentIntent? paymentIntent;
   PaymentRecord? paymentRecord;
 
-  PaymentResponse(
-      {this.success,
-        this.clientSecret,
-        this.paymentIntent,
-        this.paymentRecord});
+  PaymentResponse({
+    this.success,
+    this.clientSecret,
+    this.paymentIntent,
+    this.paymentRecord,
+  });
 
   PaymentResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
@@ -42,8 +43,13 @@ class PaymentIntent {
   String? currency;
   String? description;
 
-  PaymentIntent(
-      {this.id, this.status, this.amount, this.currency, this.description});
+  PaymentIntent({
+    this.id,
+    this.status,
+    this.amount,
+    this.currency,
+    this.description,
+  });
 
   PaymentIntent.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -67,18 +73,24 @@ class PaymentIntent {
 class PaymentRecord {
   int? id;
   String? status;
+  int? slots;
+  String? reservationExpiresAt;
 
-  PaymentRecord({this.id, this.status});
+  PaymentRecord({this.id, this.status, this.slots, this.reservationExpiresAt});
 
   PaymentRecord.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
+    slots = json['slots'];
+    reservationExpiresAt = json['reservation_expires_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['status'] = this.status;
+    data['slots'] = this.slots;
+    data['reservation_expires_at'] = this.reservationExpiresAt;
     return data;
   }
 }

@@ -10,11 +10,11 @@ import '../../../../core/components/header_widget.dart';
 import '../../../book_program_screen/logic/book_program_cubit.dart';
 
 class TransactionFailedScreen extends StatelessWidget {
-  const TransactionFailedScreen({Key? key, this.sessionId ,this.label}) : super(key: key);
+  const TransactionFailedScreen({Key? key, this.sessionId, this.label})
+    : super(key: key);
 
   final int? sessionId;
   final String? label;
-
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,7 @@ class TransactionFailedScreen extends StatelessWidget {
           // Main content
           Column(
             children: [
-              HeaderWidget(
-                isWithBack: true,
-              ),
+              HeaderWidget(isWithBack: true),
 
               // Content
               Expanded(
@@ -89,7 +87,7 @@ class TransactionFailedScreen extends StatelessWidget {
 
                             // Failed text
                             Text(
-                              label ??'Failed',
+                              label ?? 'Failed',
                               style: GoogleFonts.leagueSpartan().copyWith(
                                 color: const Color(0xFFD70404),
                                 fontSize: 50,
@@ -122,14 +120,20 @@ class TransactionFailedScreen extends StatelessWidget {
                                 // Handle try again action
                                 if (sessionId != null) {
                                   // استدعي عملية الدفع من Cubit
-                                  BookProgramCubit.get(context).payment(sessionId: sessionId!);
+                                  BookProgramCubit.get(context).payment(
+                                    sessionId: sessionId!,
+                                    idempotencyKey:
+                                        BookProgramCubit.newIdempotencyKey(),
+                                  );
 
                                   // ممكن تعمل pop علشان يرجع تاني لشاشة BookProgramScreen
                                   Navigator.pop(context);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text("No session found to retry payment"),
+                                      content: Text(
+                                        "No session found to retry payment",
+                                      ),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -176,9 +180,9 @@ class TransactionFailedScreen extends StatelessWidget {
                                 // Navigate to home
                                 navigatorKey.currentState!
                                     .pushNamedAndRemoveUntil(
-                                  RouteStrings.homeScreen,
-                                  (route) => false,
-                                );
+                                      RouteStrings.homeScreen,
+                                      (route) => false,
+                                    );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
@@ -212,9 +216,7 @@ class TransactionFailedScreen extends StatelessWidget {
                 size: Size(MediaQuery.of(context).size.width, 0),
                 painter: BottomWavePainter(),
               ),
-              const BottomNavigation(
-                currentIndex: 2,
-              ),
+              const BottomNavigation(currentIndex: 2),
             ],
           ),
         ],

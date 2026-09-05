@@ -58,15 +58,11 @@ class BookProgramsRepository {
       };
 
       if (programId != null && programId != 0) {
-        query.addAll({
-          "program_id": programId,
-        });
+        query.addAll({"program_id": programId});
       }
 
       if (locationId != null && locationId != 0) {
-        query.addAll({
-          "location_id": locationId,
-        });
+        query.addAll({"location_id": locationId});
       }
 
       ApiResponse? response = await ApiManager.sendRequest(
@@ -83,12 +79,15 @@ class BookProgramsRepository {
 
   Future<ApiResponse?> payment({
     required int sessionId,
+    required String idempotencyKey,
   }) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
-        link: 'payment',
+        link: 'v2/payment',
         body: RequestBody({
           "session_id": sessionId,
+          "slots": 1,
+          "idempotency_key": idempotencyKey,
         }),
         method: Method.POST,
       );
@@ -99,15 +98,18 @@ class BookProgramsRepository {
     }
   }
 
-  Future<ApiResponse?> bookFreeSession({
-    required int sessionId,
-  }) async {
+  Future<ApiResponse?> paymentStatus({required int paymentId}) {
+    return ApiManager.sendRequest(
+      link: 'v2/payments/$paymentId/status',
+      method: Method.GET,
+    );
+  }
+
+  Future<ApiResponse?> bookFreeSession({required int sessionId}) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
         link: 'book_free_session',
-        body: RequestBody({
-          "session_id": sessionId,
-        }),
+        body: RequestBody({"session_id": sessionId}),
         method: Method.POST,
       );
       return response;

@@ -37,7 +37,7 @@ class ApiManager {
           responseBody: true,
           requestBody: true,
           error: true,
-          requestHeader: true,
+          requestHeader: false,
           responseHeader: true,
         ),
       );
@@ -52,8 +52,9 @@ class ApiManager {
           if (response.statusCode == 401) {
             CacheHelper.removeData(key: "userToken");
             CacheHelper.removeData(key: "userId");
-            navigatorKey.currentState
-                ?.pushReplacementNamed(RouteStrings.loginScreen);
+            navigatorKey.currentState?.pushReplacementNamed(
+              RouteStrings.loginScreen,
+            );
           }
           return handler.next(response);
         },
@@ -62,8 +63,9 @@ class ApiManager {
           if (e.response?.statusCode == 401) {
             CacheHelper.removeData(key: "userToken");
             CacheHelper.removeData(key: "userId");
-            navigatorKey.currentState
-                ?.pushReplacementNamed(RouteStrings.loginScreen);
+            navigatorKey.currentState?.pushReplacementNamed(
+              RouteStrings.loginScreen,
+            );
           }
           return handler.next(e);
         },
@@ -354,7 +356,8 @@ class ApiManager {
 
     return error.isEmpty ? "Error in server" : error.trim();
   }
-//
+
+  //
   // static String getErrorMsg(dynamic data) {
   //   if (data == null || data == "") {
   //     return "Error in server";

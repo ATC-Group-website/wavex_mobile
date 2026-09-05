@@ -4,6 +4,7 @@
 #
 #   scripts/run_local.sh                  # use this Mac's LAN IP
 #   BASE_URL=http://10.0.2.2:8000/api scripts/run_local.sh -d emulator-5554
+#   STRIPE_PUBLISHABLE_KEY=pk_test_... scripts/run_local.sh
 #
 # Start the backend first:
 #   ../backend/scripts/serve_local.sh
@@ -28,6 +29,12 @@ if [ -z "${BASE_URL:-}" ]; then
 fi
 
 BASE_URL="${BASE_URL%/}"
+STRIPE_PUBLISHABLE_KEY="${STRIPE_PUBLISHABLE_KEY:-}"
+
+if [ -z "$STRIPE_PUBLISHABLE_KEY" ]; then
+  echo "Set STRIPE_PUBLISHABLE_KEY to the backend's matching pk_test_... key." >&2
+  exit 1
+fi
 
 if ! curl -fsS --max-time 5 "$BASE_URL/countries" >/dev/null; then
   echo "No local WaveX backend is answering at $BASE_URL/countries" >&2
@@ -36,9 +43,11 @@ if ! curl -fsS --max-time 5 "$BASE_URL/countries" >/dev/null; then
 fi
 
 echo "BASE_URL = $BASE_URL"
+echo "STRIPE_PUBLISHABLE_KEY is configured"
 FORCE_REGION_SELECTION="${FORCE_REGION_SELECTION:-false}"
 echo "FORCE_REGION_SELECTION = $FORCE_REGION_SELECTION"
 exec flutter run \
   --dart-define=BASE_URL="$BASE_URL/" \
+  --dart-define=STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \
   --dart-define=FORCE_REGION_SELECTION="$FORCE_REGION_SELECTION" \
   "$@"
