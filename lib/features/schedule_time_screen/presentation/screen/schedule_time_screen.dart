@@ -89,13 +89,13 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Seats counter
+                  // Spots counter
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text('Seats',
+                        Text('Spots',
                             style: GoogleFonts.inter().copyWith(
                               color: const Color(0xFF2E535F),
                               fontSize: 17,

@@ -728,7 +728,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                       ),
                       child: Text(
                         AppLocalizations.of(context)
-                            .translate("bookProgram_limited_seats"),
+                            .translate("bookProgram_limited_spots"),
                         style: GoogleFonts.inter().copyWith(
                           color: Colors.white,
                           fontSize: 11,
@@ -793,7 +793,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                           isFullyBooked
                               ? AppLocalizations.of(context)
                                   .translate("bookProgram_fully_booked")
-                              : "$remainingSeats ${AppLocalizations.of(context).translate("bookProgram_seats_left")}",
+                              : "$remainingSeats ${AppLocalizations.of(context).translate(remainingSeats == 1 ? "bookProgram_spot_left" : "bookProgram_spots_left")}",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
