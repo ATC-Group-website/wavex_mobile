@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../constants/constants.dart';
 import 'bottom_wave_painter.dart';
 
 class HeaderWidget extends StatelessWidget {
-  HeaderWidget({super.key, this.onTap, this.isWithBack});
+  const HeaderWidget({super.key, this.onTap, this.isWithBack});
 
-  bool? isWithBack;
-  Function()? onTap;
+  final bool? isWithBack;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -27,30 +26,31 @@ class HeaderWidget extends StatelessWidget {
                 ],
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  isWithBack != null
-                      ? InkWell(
-                          onTap: onTap ??
-                              () {
-                                Navigator.pop(context);
-                              },
-                          child: const Icon(
-                            Icons.arrow_back_ios_new,
-                          ),
-                        )
-                      : SizedBox.shrink(),
-                  Expanded(
+            child: Stack(
+              children: [
+                // Keep the logo centered relative to the full screen. Placing
+                // it in a Row after the back button shifts it to the right.
+                Center(
+                  child: Image.asset("assets/images/wavx_home_logo.png"),
+                ),
+                if (isWithBack != null)
+                  Positioned(
+                    left: 12,
+                    top: 0,
+                    bottom: 0,
                     child: Center(
-                      child: Image.asset("assets/images/wavx_home_logo.png"),
+                      child: InkWell(
+                        onTap: onTap ??
+                            () {
+                              Navigator.pop(context);
+                            },
+                        child: const Icon(
+                          Icons.arrow_back_ios_new,
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
+              ],
             ),
           ),
           Positioned(

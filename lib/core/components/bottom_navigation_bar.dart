@@ -57,18 +57,6 @@ class BottomNavigation extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4))),
             _moreAction(
                 sheetContext,
-                Icons.shopping_bag_outlined,
-                'Shop',
-                () => navigatorKey.currentState!
-                    .pushNamed(RouteStrings.shopScreen)),
-            _moreAction(
-                sheetContext,
-                Icons.shopping_cart_outlined,
-                'Cart',
-                () => navigatorKey.currentState!
-                    .pushNamed(RouteStrings.shoppingCartScreen)),
-            _moreAction(
-                sheetContext,
                 Icons.contact_support_outlined,
                 'Contact us',
                 () => navigatorKey.currentState!
@@ -102,49 +90,61 @@ class BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SafeArea(
         top: false,
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 54,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(32, 8, 32, 0),
+          child: Align(
+            alignment: Alignment.center,
+            widthFactor: 1,
+            heightFactor: 1,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: SizedBox(
+                height: 62,
                 child: LayoutBuilder(
                   builder: (context, constraints) => Stack(
                     clipBehavior: Clip.none,
                     children: [
                       Container(
-                        height: 49,
+                        height: 56,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: const Color(0xFF3598C0)),
+                          borderRadius: BorderRadius.circular(28),
+                          border: Border.all(
+                            color: const Color(0xFF3598C0),
+                          ),
                           boxShadow: const [
                             BoxShadow(
-                              color: Color(0x33006F9D),
-                              offset: Offset(0, 2),
-                              blurRadius: 2,
+                              color: Color(0x26006F9D),
+                              offset: Offset(0, 4),
+                              blurRadius: 12,
                             ),
                           ],
                         ),
-                        child: Row(
-                          children: List.generate(
-                            _items.length,
-                            (index) => Expanded(
-                              child: Semantics(
-                                button: true,
-                                selected: index == currentIndex,
-                                label: _items[index].label,
-                                child: InkWell(
-                                  onTap: () => _onTap(context, index),
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      _items[index].asset,
-                                      width: 20,
-                                      height: 20,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColors.primaryColor,
-                                        BlendMode.srcIn,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(28),
+                          child: Row(
+                            children: List.generate(
+                              _items.length,
+                              (index) => Expanded(
+                                child: Semantics(
+                                  button: true,
+                                  selected: index == currentIndex,
+                                  label: _items[index].label,
+                                  child: InkWell(
+                                    onTap: () => _onTap(context, index),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        _items[index].asset,
+                                        width: _items[index].label == 'more'
+                                            ? 18
+                                            : 20,
+                                        height: _items[index].label == 'more'
+                                            ? 5
+                                            : 20,
+                                        colorFilter: const ColorFilter.mode(
+                                          AppColors.primaryColor,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -173,7 +173,7 @@ class BottomNavigation extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       );
