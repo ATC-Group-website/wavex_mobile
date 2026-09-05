@@ -183,8 +183,8 @@ class _ProgramCard extends StatelessWidget {
         onTap: onToggle,
         borderRadius: BorderRadius.circular(14),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeOutCubic,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOutCubic,
           constraints: BoxConstraints(minHeight: expanded ? 0 : 66),
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
@@ -207,10 +207,10 @@ class _ProgramCard extends StatelessWidget {
             ),
             crossFadeState:
                 expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 220),
-            firstCurve: Curves.easeOutCubic,
-            secondCurve: Curves.easeOutCubic,
-            sizeCurve: Curves.easeOutCubic,
+            duration: const Duration(milliseconds: 500),
+            firstCurve: Curves.easeInOutCubic,
+            secondCurve: Curves.easeInOutCubic,
+            sizeCurve: Curves.easeInOutCubic,
           ),
         ),
       ),
