@@ -1,20 +1,13 @@
 workflows:
-  android-release:
-    name: Wavex Android Release
+  testing:
+    name: Wavex Android and iOS Testing
     max_build_duration: 120
-    instance_type: linux_x2
+    instance_type: mac_mini_m2
 
     environment:
-      # Replace this with the keystore reference you create in Codemagic.
-      android_signing:
-        - wavex_release_keystore
-      groups:
-        # This group must contain the secret variable
-        # GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS.
-        - google_play
       vars:
-        PACKAGE_NAME: com.wavex.app
-        GOOGLE_PLAY_TRACK: internal
+        APP_ENV: testing
+        BASE_URL: https://dev-api.wavexsports.com/api/
       flutter: stable
 
     scripts:
@@ -33,32 +26,25 @@ workflows:
       - name: Run Flutter tests
         script: flutter test
 
-      - name: Build signed Android App Bundle
+      - name: Build Android APK
         script: |
-          latest_build_number="$(google-play get-latest-build-number \
-            --package-name "$PACKAGE_NAME" \
-            --tracks="$GOOGLE_PLAY_TRACK" 2>/dev/null || true)"
+          flutter build apk \
+            --debug \
+            --dart-define=APP_ENV="$APP_ENV" \
+            --dart-define=BASE_URL="$BASE_URL"
 
-          if [[ "$latest_build_number" =~ ^[0-9]+$ ]]; then
-            build_number=$((latest_build_number + 1))
-          else
-            # This is used for the first upload, before the app exists on Play.
-            build_number=1
-          fi
-
-          flutter build appbundle \
+      - name: Build iOS app without code signing
+        script: |
+          flutter build ios \
             --release \
-            --build-name=1.0.0 \
-            --build-number="$build_number"
+            --no-codesign \
+            --dart-define=APP_ENV="$APP_ENV" \
+            --dart-define=BASE_URL="$BASE_URL"
+
+          ditto -c -k --sequesterRsrc --keepParent \
+            build/ios/iphoneos/Runner.app \
+            build/ios/Runner.app.zip
 
     artifacts:
-      - build/**/outputs/**/*.aab
-      - build/**/outputs/**/mapping.txt
-
-    publishing:
-      google_play:
-        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS
-        track: $GOOGLE_PLAY_TRACK
-        # Keep the first automated upload as a draft until Play Console setup
-        # and store listing requirements are complete.
-        submit_as_draft: true
+      - build/app/outputs/flutter-apk/app-debug.apk
+      - build/ios/Runner.app.zip
