@@ -6,9 +6,9 @@ class PaymentResponse {
 
   PaymentResponse(
       {this.success,
-        this.clientSecret,
-        this.paymentIntent,
-        this.paymentRecord});
+      this.clientSecret,
+      this.paymentIntent,
+      this.paymentRecord});
 
   PaymentResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];

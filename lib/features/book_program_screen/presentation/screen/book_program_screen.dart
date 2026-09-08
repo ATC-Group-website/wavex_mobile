@@ -85,7 +85,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     try {
       await Stripe.instance.presentPaymentSheet();
 
-      // ✅ success
+      // Stripe accepted the card; the legacy backend webhook completes the booking.
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(

@@ -37,7 +37,7 @@ class ApiManager {
           responseBody: true,
           requestBody: true,
           error: true,
-          requestHeader: true,
+          requestHeader: false,
           responseHeader: true,
         ),
       );
@@ -49,7 +49,9 @@ class ApiManager {
           return handler.next(options);
         },
         onResponse: (Response response, ResponseInterceptorHandler handler) {
-          if (response.statusCode == 401) {
+          if (response.statusCode == 401 &&
+              response.requestOptions.extra['skipUnauthorizedRedirect'] !=
+                  true) {
             CacheHelper.removeData(key: "userToken");
             CacheHelper.removeData(key: "userId");
             navigatorKey.currentState
@@ -59,7 +61,8 @@ class ApiManager {
         },
         onError: (DioError e, ErrorInterceptorHandler handler) {
           // Check if the error response has a status code 401
-          if (e.response?.statusCode == 401) {
+          if (e.response?.statusCode == 401 &&
+              e.requestOptions.extra['skipUnauthorizedRedirect'] != true) {
             CacheHelper.removeData(key: "userToken");
             CacheHelper.removeData(key: "userId");
             navigatorKey.currentState
@@ -78,6 +81,7 @@ class ApiManager {
     FormData? formData,
     dynamic rawBody,
     Method method = Method.POST,
+    bool skipUnauthorizedRedirect = false,
   }) async {
     Map<String, dynamic> headers = {};
     headers.putIfAbsent("Content-Type", () => "application/json");
@@ -93,39 +97,46 @@ class ApiManager {
     try {
       Response? response;
 
+      final options = Options(
+        headers: headers,
+        extra: {
+          'skipUnauthorizedRedirect': skipUnauthorizedRedirect,
+        },
+      );
+
       if (method == Method.POST) {
         response = await _dio.post(
           link,
           data: formData ?? rawBody ?? body?.getBody(),
           queryParameters: queryParams,
-          options: Options(headers: headers),
+          options: options,
         );
       } else if (method == Method.PUT) {
         response = await _dio.put(
           link,
           data: formData ?? body?.getBody(),
           queryParameters: queryParams,
-          options: Options(headers: headers),
+          options: options,
         );
       } else if (method == Method.GET) {
         response = await _dio.get(
           link,
           queryParameters: queryParams,
-          options: Options(headers: headers),
+          options: options,
         );
       } else if (method == Method.DELETE) {
         response = await _dio.delete(
           link,
           data: body,
           queryParameters: queryParams,
-          options: Options(headers: headers),
+          options: options,
         );
       } else if (method == Method.PATCH) {
         response = await _dio.patch(
           link,
           data: formData ?? body?.getBody(),
           queryParameters: queryParams,
-          options: Options(headers: headers),
+          options: options,
         );
       }
 

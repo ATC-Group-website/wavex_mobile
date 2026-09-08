@@ -28,7 +28,6 @@ if [ -z "${BASE_URL:-}" ]; then
 fi
 
 BASE_URL="${BASE_URL%/}"
-
 if ! curl -fsS --max-time 5 "$BASE_URL/countries" >/dev/null; then
   echo "No local WaveX backend is answering at $BASE_URL/countries" >&2
   echo "Start it with: ../backend/scripts/serve_local.sh" >&2

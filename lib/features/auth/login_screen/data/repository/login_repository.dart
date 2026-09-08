@@ -56,7 +56,7 @@ class LoginRepository {
       link: 'login',
       body: RequestBody(data),
       method: Method.POST,
+      skipUnauthorizedRedirect: true,
     );
   }
-
 }

@@ -10,11 +10,11 @@ import '../../../../core/components/header_widget.dart';
 import '../../../book_program_screen/logic/book_program_cubit.dart';
 
 class TransactionFailedScreen extends StatelessWidget {
-  const TransactionFailedScreen({Key? key, this.sessionId ,this.label}) : super(key: key);
+  const TransactionFailedScreen({Key? key, this.sessionId, this.label})
+      : super(key: key);
 
   final int? sessionId;
   final String? label;
-
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class TransactionFailedScreen extends StatelessWidget {
 
                             // Failed text
                             Text(
-                              label ??'Failed',
+                              label ?? 'Failed',
                               style: GoogleFonts.leagueSpartan().copyWith(
                                 color: const Color(0xFFD70404),
                                 fontSize: 50,
@@ -122,14 +122,16 @@ class TransactionFailedScreen extends StatelessWidget {
                                 // Handle try again action
                                 if (sessionId != null) {
                                   // استدعي عملية الدفع من Cubit
-                                  BookProgramCubit.get(context).payment(sessionId: sessionId!);
+                                  BookProgramCubit.get(context)
+                                      .payment(sessionId: sessionId!);
 
                                   // ممكن تعمل pop علشان يرجع تاني لشاشة BookProgramScreen
                                   Navigator.pop(context);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text("No session found to retry payment"),
+                                      content: Text(
+                                          "No session found to retry payment"),
                                       backgroundColor: Colors.red,
                                     ),
                                   );

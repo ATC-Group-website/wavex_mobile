@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+  String? _loginError;
 
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -100,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen>
                           if (state is LoginSuccessState) {
                             setState(() {
                               _isLoading = false;
+                              _loginError = null;
                             });
 
                             CacheHelper.saveData(
@@ -149,20 +151,10 @@ class _LoginScreenState extends State<LoginScreen>
                             print('Login successful');
                             // Navigate to main app
                           } else if (state is LoginErrorState) {
-                            // setState(() {
-                            _isLoading = false; // بس وقف اللودينج
-                            // });
-
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    state.error ?? "",
-                                  ),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+                            setState(() {
+                              _isLoading = false;
+                              _loginError = state.error;
+                            });
                           }
                         },
                         child: SizedBox.shrink(),
@@ -216,6 +208,17 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                               const SizedBox(height: 8),
                               _buildPasswordField(),
+
+                              if (_loginError != null) ...[
+                                const SizedBox(height: 12),
+                                Text(
+                                  _loginError!,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
 
                               const SizedBox(height: 16),
 
@@ -494,6 +497,7 @@ class _LoginScreenState extends State<LoginScreen>
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
+        _loginError = null;
       });
 
       LoginCubit.get(context).login(
