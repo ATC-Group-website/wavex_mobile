@@ -12,7 +12,7 @@ import '../../../../core/route/route_strings/route_strings.dart';
 import '../../../../core/theme/colors.dart';
 
 class AddAutoAddressScreen extends StatefulWidget {
-  const AddAutoAddressScreen({Key? key}) : super(key: key);
+  const AddAutoAddressScreen({super.key});
 
   @override
   State<AddAutoAddressScreen> createState() => _AddAutoAddressScreenState();
@@ -66,34 +66,38 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
   Future<void> _getCurrentLocation() async {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!mounted) return;
       if (!serviceEnabled) {
         ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-          const SnackBar(content: Text('Location services are disabled')),
-        );
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(content: Text('Location services are disabled')),
+          );
         return;
       }
 
       LocationPermission permission = await Geolocator.checkPermission();
+      if (!mounted) return;
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
+        if (!mounted) return;
       }
 
       if (permission == LocationPermission.deniedForever) {
         ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-          const SnackBar(
-              content: Text(
-                  'Location permissions are permanently denied. Please enable them in settings.')),
-        );
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+                content: Text(
+                    'Location permissions are permanently denied. Please enable them in settings.')),
+          );
         return;
       }
 
       if (permission == LocationPermission.whileInUse ||
           permission == LocationPermission.always) {
         Position position = await Geolocator.getCurrentPosition();
+        if (!mounted) return;
         setState(() {
           _currentLocation = LatLng(position.latitude, position.longitude);
         });
@@ -103,34 +107,35 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
         );
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-        SnackBar(content: Text('Unable to get current location: $e')),
-      );
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text('Unable to get current location: $e')),
+        );
     }
   }
 
   void _saveAddress() {
     if (_addressLabelController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-        const SnackBar(content: Text('Please enter an address label')),
-      );
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(content: Text('Please enter an address label')),
+        );
       return;
     }
 
     ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-      SnackBar(
-        content: Text(
-          'Address "${_addressLabelController.text}" saved successfully!',
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            'Address "${_addressLabelController.text}" saved successfully!',
+          ),
+          backgroundColor: const Color(0xFF26C6DA),
         ),
-        backgroundColor: const Color(0xFF26C6DA),
-      ),
-    );
+      );
 
     // Navigate back or to addresses list
     Navigator.pop(context);
@@ -145,7 +150,7 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
           Column(
             children: [
               // Header
-              HeaderWidget(
+              const HeaderWidget(
                 isWithBack: true,
               ),
 
@@ -181,7 +186,7 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
                                 borderRadius: BorderRadius.circular(16),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
+                                    color: Colors.black.withValues(alpha: 0.1),
                                     blurRadius: 10,
                                     offset: const Offset(0, 5),
                                   ),
@@ -213,7 +218,7 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
                                       child: GestureDetector(
                                         onTap: _getCurrentLocation,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 5),
                                           decoration: BoxDecoration(
                                               color: Colors.white,
@@ -236,7 +241,7 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
                                 ),
                               ),
                             )
-                          : SizedBox.shrink(),
+                          : const SizedBox.shrink(),
                       const SizedBox(height: 10),
 
                       // Or Add It Manually
@@ -250,9 +255,10 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
                             //     content: Text('Manual address entry feature'),
                             //   ),
                             // );
-                            navigatorKey.currentState!.pushNamed(RouteStrings.addManualAddressScreen);
+                            navigatorKey.currentState!
+                                .pushNamed(RouteStrings.addManualAddressScreen);
                           },
-                          child: Text(
+                          child: const Text(
                             'Or Add It Manually',
                             style: TextStyle(
                               color: Color(0xFF26C6DA),
@@ -320,14 +326,12 @@ class _AddAutoAddressScreenState extends State<AddAutoAddressScreen> {
                               borderRadius: BorderRadius.circular(28),
                             ),
                           ),
-                          child:  Text(
-                            'Save',
-                            style: GoogleFonts.inter().copyWith(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            )
-                          ),
+                          child: Text('Save',
+                              style: GoogleFonts.inter().copyWith(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
                         ),
                       ),
                       const SizedBox(height: 20),

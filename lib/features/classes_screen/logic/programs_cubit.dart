@@ -1,11 +1,10 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/classes_screen/data/models/get_programs_response.dart';
 import 'package:wavex/features/classes_screen/data/repository/programs_repository.dart';
-import 'package:wavex/features/shop_screen/data/models/get_products_response.dart';
 
 part 'programs_state.dart';
 
@@ -19,7 +18,7 @@ class ProgramsCubit extends Cubit<ProgramsState> {
     emit(GetProgramsLoadingState());
 
     repository.getPrograms().then(
-          (value) {
+      (value) {
         emit(
           GetProgramsSuccessState(
             programsResponse: GetProgramsResponse.fromJson(
@@ -29,7 +28,7 @@ class ProgramsCubit extends Cubit<ProgramsState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetProgramsErrorState(error: error.toString()));
     });
   }

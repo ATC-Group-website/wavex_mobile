@@ -1,8 +1,8 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';
 
-class OrdersRepository{
-
+class OrdersRepository {
   Future<ApiResponse?> getOrders() async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
@@ -11,7 +11,7 @@ class OrdersRepository{
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }

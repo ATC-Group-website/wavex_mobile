@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:wavex/core/networks/request_body.dart';
 
 import '../../../../../core/networks/api_manager.dart';
@@ -31,12 +30,11 @@ class ResetPasswordRepository {
     );
   }
 
-
   Future<ApiResponse?> changePassword({
     required String password,
     required String confirmPassword,
   }) async {
-    return  await ApiManager.sendRequest(
+    return await ApiManager.sendRequest(
       link: 'reset-password',
       body: RequestBody({
         'password': password,
@@ -45,5 +43,4 @@ class ResetPasswordRepository {
       method: Method.POST,
     );
   }
-
 }

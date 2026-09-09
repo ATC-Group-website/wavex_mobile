@@ -3,11 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wavex/core/route/route_strings/route_strings.dart';
 import 'package:wavex/main.dart';
-import '../../splash_screen/presentation/screen/splash_screen.dart';
 
 class VideoSplashScreen extends StatefulWidget {
+  const VideoSplashScreen({super.key});
+
   @override
-  _VideoSplashScreenState createState() => _VideoSplashScreenState();
+  State<VideoSplashScreen> createState() => _VideoSplashScreenState();
 }
 
 class _VideoSplashScreenState extends State<VideoSplashScreen> {
@@ -49,7 +50,6 @@ class _VideoSplashScreenState extends State<VideoSplashScreen> {
       body: _controller.value.isInitialized
           ? Stack(
               children: [
-
                 SizedBox.expand(
                   child: FittedBox(
                     fit: BoxFit.fill,
@@ -79,7 +79,7 @@ class _VideoSplashScreenState extends State<VideoSplashScreen> {
                 ),
               ],
             )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

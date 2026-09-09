@@ -5,14 +5,14 @@ sealed class OrderDetailsState {}
 
 final class OrderDetailsInitial extends OrderDetailsState {}
 
-
-
 final class GetOrderDetailsLoadingState extends OrderDetailsState {}
 
 final class GetOrderDetailsSuccessState extends OrderDetailsState {
   final OrderDetailsResponse orderDetailsResponse;
 
-  GetOrderDetailsSuccessState({required this.orderDetailsResponse,});
+  GetOrderDetailsSuccessState({
+    required this.orderDetailsResponse,
+  });
 }
 
 final class GetOrderDetailsErrorState extends OrderDetailsState {

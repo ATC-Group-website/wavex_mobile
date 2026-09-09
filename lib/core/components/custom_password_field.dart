@@ -32,7 +32,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       child: TextFormField(
         controller: widget.controller,
         obscureText: _isObscured,
-        style:  GoogleFonts.leagueSpartan().copyWith(
+        style: GoogleFonts.leagueSpartan().copyWith(
           fontSize: 20,
           color: AppColors.primaryColor,
           fontWeight: FontWeight.w500,

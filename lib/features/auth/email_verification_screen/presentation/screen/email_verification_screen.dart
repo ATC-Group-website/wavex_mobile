@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,21 +11,19 @@ import 'dart:async';
 
 import '../../../../../core/app_localization.dart';
 import '../../../../../core/components/bottom_wave_painter.dart';
-import '../../../../../core/constants/constants.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../main.dart';
-import '../../../set_new_password_screen/presentation/screen/set_new_password_screen.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   final String email;
 
   const EmailVerificationScreen({
-    Key? key,
+    super.key,
     required this.email,
-  }) : super(key: key);
+  });
 
   @override
-  _EmailVerificationScreenState createState() =>
+  State<EmailVerificationScreen> createState() =>
       _EmailVerificationScreenState();
 }
 
@@ -41,7 +40,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -67,14 +65,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeOutCubic,
-    ));
-
-    _scaleAnimation = Tween<double>(
-      begin: 0.8,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.elasticOut,
     ));
 
     _animationController.forward();
@@ -116,15 +106,16 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
       body: Column(
         children: [
           // Header with gradient
-          HeaderWidget(
+          const HeaderWidget(
             isWithBack: true,
           ),
 
           BlocListener<ResetPasswordCubit, ResetPasswordState>(
             listener: (context, state) {
               if (state is VerifyOtpSuccessState) {
-
-                CacheHelper.saveData(key: "userToken", value: state.verifyOTPResponse.data?.token??"");
+                CacheHelper.saveData(
+                    key: "userToken",
+                    value: state.verifyOTPResponse.data?.token ?? "");
 
                 setState(() {
                   _isLoading = false;
@@ -132,40 +123,39 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
 
                 // Show success and navigate to set new password
                 ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).translate("codeVerified"),
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        AppLocalizations.of(context).translate("codeVerified"),
+                      ),
+                      backgroundColor: const Color(0xFF4CAF50),
+                      behavior: SnackBarBehavior.floating,
                     ),
-                    backgroundColor: Color(0xFF4CAF50),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+                  );
                 navigatorKey.currentState!.pushNamed(
                   RouteStrings.setNewPasswordScreen,
                 );
               }
-              if(state is VerifyOtpErrorState){
-
+              if (state is VerifyOtpErrorState) {
                 setState(() {
                   _isLoading = false;
                 });
 
                 ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      state.error??"",
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        state.error,
+                      ),
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
                     ),
-                    backgroundColor: Colors.red,
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+                  );
               }
             },
-            child: SizedBox.shrink(),
+            child: const SizedBox.shrink(),
           ),
 
           // Main content
@@ -348,7 +338,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
                     child: Text(
                       // 'Resend',
                       AppLocalizations.of(context).translate("resend"),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Color(0xFF4ECDC4),
                         fontWeight: FontWeight.w600,
@@ -388,7 +378,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
@@ -396,11 +386,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
                       strokeWidth: 2,
                     ),
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Text(
                     // 'Verifying...',
                     AppLocalizations.of(context).translate("verifying"),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -437,7 +427,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
       //     MaterialPageRoute(
       //         builder: (context) => const SetNewPasswordScreen()));
 
-      print('Code verified: ${_codeController.text}');
+      appLog('Code verified: ${_codeController.text}');
       // Navigate to set new password screen
     }
   }
@@ -445,34 +435,34 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
   void _handleResendCode() async {
     // Show loading state
     ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context).translate("sendingNewCode")),
-        backgroundColor: Color(0xFF4ECDC4),
-        behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 2),
-      ),
-    );
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content:
+              Text(AppLocalizations.of(context).translate("sendingNewCode")),
+          backgroundColor: const Color(0xFF4ECDC4),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+        ),
+      );
 
     // Simulate API call
     // await Future.delayed(const Duration(seconds: 1));
-    ResetPasswordCubit.get(context)
-        .forgetPassword(email: widget.email);
+    ResetPasswordCubit.get(context).forgetPassword(email: widget.email);
     // Restart timer
     _startTimer();
 
     ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context).translate("newCodeSent")),
-        backgroundColor: Color(0xFF4CAF50),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context).translate("newCodeSent")),
+          backgroundColor: const Color(0xFF4CAF50),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
 
-    print('Resend code to: ${widget.email}');
+    appLog('Resend code to: ${widget.email}');
   }
 }
 
@@ -573,7 +563,7 @@ class EmailVerificationIllustrationPainter extends CustomPainter {
     );
 
     // Decorative crosses
-    paint.color = const Color(0xFF4ECDC4).withOpacity(0.3);
+    paint.color = const Color(0xFF4ECDC4).withValues(alpha: 0.3);
     paint.strokeWidth = 1;
 
     // Top left cross
@@ -601,7 +591,7 @@ class EmailVerificationIllustrationPainter extends CustomPainter {
     );
 
     // Arrow indicating direction/flow
-    paint.color = const Color(0xFF4ECDC4).withOpacity(0.5);
+    paint.color = const Color(0xFF4ECDC4).withValues(alpha: 0.5);
     paint.strokeWidth = 2;
     canvas.drawLine(
       Offset(size.width * 0.85, size.height * 0.25),

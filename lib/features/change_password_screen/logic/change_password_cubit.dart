@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -21,11 +21,13 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   changePassword({required String confirmPassword, required String password}) {
     emit(ChangePasswordLoadingState());
 
-    repository.changePassword(
+    repository
+        .changePassword(
       password: password,
       confirmPassword: confirmPassword,
-    ).then((value) {
-      print("data: " + value!.data);
+    )
+        .then((value) {
+      appLog('data: ${value!.data}');
       emit(
         ChangePasswordSuccessState(
           changePasswordResponse: ChangePasswordResponse.fromJson(
@@ -34,18 +36,17 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         ),
       );
     }).catchError((error) {
-      print("error: $error");
+      appLog("error: $error");
 
       String errorMessage = "حدث خطأ غير متوقع";
 
       if (error is ApiException) {
-        errorMessage = error.message ?? "خطأ في السيرفر";
-      } else if (error is DioError) {
+        errorMessage = error.message;
+      } else if (error is DioException) {
         errorMessage = ApiManager.getErrorMsg(error.response?.data);
       }
 
       emit(ChangePasswordErrorState(error: errorMessage));
     });
   }
-
 }

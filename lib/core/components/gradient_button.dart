@@ -9,7 +9,10 @@ class GradientButton extends StatelessWidget {
   final bool loading;
 
   const GradientButton(
-      {required this.text, required this.onPressed, this.loading = false});
+      {super.key,
+      required this.text,
+      required this.onPressed,
+      this.loading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +22,7 @@ class GradientButton extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFF37B4C6),
-            AppColors.primaryColor
-          ],
+          colors: [Color(0xFF37B4C6), AppColors.primaryColor],
         ),
         borderRadius: BorderRadius.all(Radius.circular(28)),
         boxShadow: [

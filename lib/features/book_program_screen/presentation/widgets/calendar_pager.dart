@@ -8,7 +8,7 @@ class CalendarPager extends StatefulWidget {
   const CalendarPager({super.key, required this.onTap});
 
   @override
-  _CalendarPagerState createState() => _CalendarPagerState();
+  State<CalendarPager> createState() => _CalendarPagerState();
 }
 
 class _CalendarPagerState extends State<CalendarPager> {
@@ -52,7 +52,7 @@ class _CalendarPagerState extends State<CalendarPager> {
       });
       widget.onTap!(selectedDate);
       int weeksOffset =
-      ((picked.difference(DateTime.now()).inDays) / 7).floor();
+          ((picked.difference(DateTime.now()).inDays) / 7).floor();
       _pageController.jumpToPage(1000 + weeksOffset);
     }
   }
@@ -94,7 +94,7 @@ class _CalendarPagerState extends State<CalendarPager> {
             itemBuilder: (context, pageIndex) {
               int offset = (pageIndex - 1000).clamp(0, 9999);
               DateTime startDate =
-              DateTime.now().add(Duration(days: offset * 7));
+                  DateTime.now().add(Duration(days: offset * 7));
 
               final dates = List.generate(7, (index) {
                 return startDate.add(Duration(days: index));
@@ -114,11 +114,11 @@ class _CalendarPagerState extends State<CalendarPager> {
                     onTap: isPast
                         ? null // 🔹 disable old days
                         : () {
-                      setState(() {
-                        selectedDate = date;
-                      });
-                      widget.onTap!(date);
-                    },
+                            setState(() {
+                              selectedDate = date;
+                            });
+                            widget.onTap!(date);
+                          },
                     child: Opacity(
                       opacity: isPast ? 0.4 : 1, // 🔹 fade old days
                       child: Column(

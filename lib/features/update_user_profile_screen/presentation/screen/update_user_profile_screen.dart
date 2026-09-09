@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wavex/features/update_user_profile_screen/logic/update_user_data_cubit.dart';
 import 'package:wavex/main.dart';
@@ -10,7 +8,6 @@ import '../../../../core/components/bottom_navigation_bar.dart';
 import '../../../../core/components/bottom_wave_painter.dart';
 import '../../../../core/components/custom_text_field.dart';
 import '../../../../core/components/header_widget.dart';
-import '../../../../core/constants/constants.dart';
 import '../../../../core/helper/cache_helper/cache_helper.dart';
 import '../../../../core/route/route_strings/route_strings.dart';
 import '../../../../core/theme/colors.dart';
@@ -52,7 +49,7 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
         initialDate = DateTime.parse(_dobController.text);
       } catch (e) {
         // لو حصل مشكلة في البارس، نخليها 18 سنة فاتت
-        initialDate =DateTime(
+        initialDate = DateTime(
           DateTime.now().year - 16,
           DateTime.now().month,
           DateTime.now().day,
@@ -113,7 +110,7 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
                 isSelected ? const Color(0xFF668E95) : const Color(0xFFE2F2F5),
             borderRadius: BorderRadius.circular(12),
             border: isSelected
-                ? Border.all(color: Color(0xff48A5B9), width: 5)
+                ? Border.all(color: const Color(0xff48A5B9), width: 5)
                 : null),
         child: Center(
           child: Text(
@@ -143,7 +140,7 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
           Column(
             children: [
               // Custom App Bar
-              HeaderWidget(
+              const HeaderWidget(
                 isWithBack: true,
               ),
 
@@ -193,9 +190,9 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
                               _lastNameController.text =
                                   state.userProfileResponse.data?.lastName ??
                                       '';
-                              _emergencyNumber.text =
-                                  state.userProfileResponse.data?.emergencyNumber ??
-                                      '';
+                              _emergencyNumber.text = state.userProfileResponse
+                                      .data?.emergencyNumber ??
+                                  '';
 
                               _emailController.text =
                                   state.userProfileResponse.data?.email ?? "";
@@ -218,13 +215,13 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
                                 SnackBar(
-                                  content: Text(state.error ?? ""),
+                                  content: Text(state.error),
                                   backgroundColor: Colors.red,
                                 ),
                               );
                           }
                         },
-                        child: SizedBox.shrink(),
+                        child: const SizedBox.shrink(),
                       ),
                       _buildProfileCard(),
 
@@ -629,8 +626,6 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
           // ScaffoldMessenger.of(context).showSnackBar(
           //   const SnackBar(content: Text('Profile updated successfully!')),
           // );
-          var result = splitFullName(_fullNameController.text);
-
           UpdateUserDataCubit.get(context).updateUserData(
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,

@@ -14,7 +14,7 @@ import '../../../shop_cart_screen/data/models/get_cart_response.dart';
 import '../../../shop_cart_screen/logic/shop_cart_cubit.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({Key? key}) : super(key: key);
+  const CheckoutScreen({super.key});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -36,7 +36,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     super.initState();
-    ShopCartCubit.get(context).getCart(orderId: CacheHelper.getdata(key: "orderId"));
+    ShopCartCubit.get(context)
+        .getCart(orderId: CacheHelper.getdata(key: "orderId"));
   }
 
   @override
@@ -48,13 +49,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           Column(
             children: [
-              HeaderWidget(isWithBack: true),
+              const HeaderWidget(isWithBack: true),
               BlocListener<ShopCartCubit, ShopCartState>(
                 listener: (context, state) {
                   if (state is GetCartSuccessState) {
                     setState(() {
                       _cartItems = state.cartResponse.data?.orderItems ?? [];
-                      data = state.cartResponse.data??OrderData();
+                      data = state.cartResponse.data ?? OrderData();
                     });
                   }
                 },
@@ -134,22 +135,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                   image: item.product?.image != null
                                       ? DecorationImage(
-                                    image: NetworkImage(item.product!.image!),
-                                    fit: BoxFit.cover,
-                                  )
+                                          image: NetworkImage(
+                                              item.product!.image!),
+                                          fit: BoxFit.cover,
+                                        )
                                       : null,
                                 ),
                                 child: item.product?.image == null
                                     ? const Center(
-                                  child: Text(
-                                    'WAVEX',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
+                                        child: Text(
+                                          'WAVEX',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      )
                                     : null,
                               ),
                               const SizedBox(width: 16),
@@ -180,7 +182,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ],
                           ),
                         );
-                      }).toList(),
+                      }),
 
                       const SizedBox(height: 20),
 
@@ -228,11 +230,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             navigatorKey.currentState!.pushNamed(
-                              RouteStrings.paymentOptionsScreen,
-                              arguments: {
-                                "orderId" : data.id??""
-                              }
-                            );
+                                RouteStrings.paymentOptionsScreen,
+                                arguments: {"orderId": data.id ?? ""});
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,
@@ -256,7 +255,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
               ),
-
               CustomPaint(
                 size: Size(MediaQuery.of(context).size.width, 0),
                 painter: BottomWavePainter(),

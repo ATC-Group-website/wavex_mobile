@@ -6,18 +6,18 @@ class GetCartResponse {
   GetCartResponse({this.data, this.status, this.message});
 
   GetCartResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new OrderData.fromJson(json['data']) : null;
+    data = json['data'] != null ? OrderData.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -46,25 +46,25 @@ class OrderData {
 
   OrderData(
       {this.id,
-        this.userId,
-        this.status,
-        this.cost,
-        this.shippingFees,
-        this.total,
-        this.paymentMethod,
-        this.paymentStatus,
-        this.transactionReference,
-        this.addressId,
-        this.boughtAt,
-        this.shippedAt,
-        this.deliveredAt,
-        this.cancelledAt,
-        this.deletedBy,
-        this.notes,
-        this.deletedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.orderItems});
+      this.userId,
+      this.status,
+      this.cost,
+      this.shippingFees,
+      this.total,
+      this.paymentMethod,
+      this.paymentStatus,
+      this.transactionReference,
+      this.addressId,
+      this.boughtAt,
+      this.shippedAt,
+      this.deliveredAt,
+      this.cancelledAt,
+      this.deletedBy,
+      this.notes,
+      this.deletedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.orderItems});
 
   OrderData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -89,34 +89,34 @@ class OrderData {
     if (json['order_items'] != null) {
       orderItems = <OrderItems>[];
       json['order_items'].forEach((v) {
-        orderItems!.add(new OrderItems.fromJson(v));
+        orderItems!.add(OrderItems.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['status'] = this.status;
-    data['cost'] = this.cost;
-    data['shipping_fees'] = this.shippingFees;
-    data['total'] = this.total;
-    data['payment_method'] = this.paymentMethod;
-    data['payment_status'] = this.paymentStatus;
-    data['transaction_reference'] = this.transactionReference;
-    data['address_id'] = this.addressId;
-    data['bought_at'] = this.boughtAt;
-    data['shipped_at'] = this.shippedAt;
-    data['delivered_at'] = this.deliveredAt;
-    data['cancelled_at'] = this.cancelledAt;
-    data['deleted_by'] = this.deletedBy;
-    data['notes'] = this.notes;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.orderItems != null) {
-      data['order_items'] = this.orderItems!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['status'] = status;
+    data['cost'] = cost;
+    data['shipping_fees'] = shippingFees;
+    data['total'] = total;
+    data['payment_method'] = paymentMethod;
+    data['payment_status'] = paymentStatus;
+    data['transaction_reference'] = transactionReference;
+    data['address_id'] = addressId;
+    data['bought_at'] = boughtAt;
+    data['shipped_at'] = shippedAt;
+    data['delivered_at'] = deliveredAt;
+    data['cancelled_at'] = cancelledAt;
+    data['deleted_by'] = deletedBy;
+    data['notes'] = notes;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (orderItems != null) {
+      data['order_items'] = orderItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -135,14 +135,14 @@ class OrderItems {
 
   OrderItems(
       {this.id,
-        this.orderId,
-        this.productId,
-        this.quantity,
-        this.price,
-        this.total,
-        this.createdAt,
-        this.updatedAt,
-        this.product});
+      this.orderId,
+      this.productId,
+      this.quantity,
+      this.price,
+      this.total,
+      this.createdAt,
+      this.updatedAt,
+      this.product});
 
   OrderItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -154,21 +154,21 @@ class OrderItems {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     product =
-    json['product'] != null ? new Product.fromJson(json['product']) : null;
+        json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['order_id'] = this.orderId;
-    data['product_id'] = this.productId;
-    data['quantity'] = this.quantity;
-    data['price'] = this.price;
-    data['total'] = this.total;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.product != null) {
-      data['product'] = this.product!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['order_id'] = orderId;
+    data['product_id'] = productId;
+    data['quantity'] = quantity;
+    data['price'] = price;
+    data['total'] = total;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (product != null) {
+      data['product'] = product!.toJson();
     }
     return data;
   }
@@ -188,10 +188,10 @@ class Product {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['image'] = image;
     return data;
   }
 }

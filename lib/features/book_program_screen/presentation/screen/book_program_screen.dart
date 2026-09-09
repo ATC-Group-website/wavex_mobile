@@ -84,6 +84,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
   Future<void> _processPayment(BuildContext context, int sessionId) async {
     try {
       await Stripe.instance.presentPaymentSheet();
+      if (!context.mounted) return;
 
       // Stripe accepted the card; the legacy backend webhook completes the booking.
       ScaffoldMessenger.of(context)
@@ -100,6 +101,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
       navigatorKey.currentState!
           .pushNamed(RouteStrings.transactionSuccessScreen);
     } on StripeException catch (e) {
+      if (!context.mounted) return;
       // ✅ StripeException has error.message
       final errorMessage =
           e.error.localizedMessage ?? e.error.message ?? "Payment canceled";
@@ -129,6 +131,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
       //   arguments: {"sessionId": sessionId, "label": "Canceled"},
       // );
     } catch (e) {
+      if (!context.mounted) return;
       // ✅ fallback for unexpected errors
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
@@ -157,6 +160,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
           merchantDisplayName: CacheHelper.getdata(key: "userName") ?? "Guest",
         ),
       );
+      if (!mounted) return;
       await _processPayment(context, sessionId);
     } catch (_) {}
   }
@@ -207,7 +211,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          HeaderWidget(isWithBack: true),
+          const HeaderWidget(isWithBack: true),
           BlocListener<BookProgramCubit, BookProgramState>(
             listener: (context, state) async {
               if (state is PaymentSuccessState) {
@@ -218,9 +222,11 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                   state.paymentResponse.clientSecret,
                   state.sessionId,
                 );
+                if (!context.mounted) return;
                 _isPaymentInProgress = false;
                 setState(() => isLoading = false);
               }
+              if (!context.mounted) return;
               if (state is BookFreeSessionSuccessState) {
                 setState(() => loadingSessionId = null);
                 navigatorKey.currentState!

@@ -23,7 +23,7 @@ class UpdateUserProfileRepository {
         if (gender != null) "gender": gender,
         if (medical != null) "medical_conditions": medical,
         if (phone != null) "phone": phone,
-        if (emergencyNumber != null) "emergency_number": emergencyNumber ,
+        if (emergencyNumber != null) "emergency_number": emergencyNumber,
         if (email != null) "email": email,
       };
 
@@ -38,6 +38,7 @@ class UpdateUserProfileRepository {
       rethrow;
     }
   }
+
   Future<ApiResponse?> getUserProfileData() async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
@@ -50,5 +51,4 @@ class UpdateUserProfileRepository {
       rethrow;
     }
   }
-
 }

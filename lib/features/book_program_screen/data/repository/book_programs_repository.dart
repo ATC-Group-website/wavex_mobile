@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:wavex/core/networks/request_body.dart';
 
 import '../../../../core/networks/api_manager.dart';
@@ -12,7 +13,7 @@ class BookProgramsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
@@ -25,7 +26,7 @@ class BookProgramsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
@@ -38,7 +39,7 @@ class BookProgramsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
@@ -76,7 +77,7 @@ class BookProgramsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }

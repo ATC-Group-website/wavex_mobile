@@ -9,7 +9,7 @@ class GetSessionsResponse {
     if (json['data'] != null) {
       data = <SessionData>[];
       json['data'].forEach((v) {
-        data!.add(new SessionData.fromJson(v));
+        data!.add(SessionData.fromJson(v));
       });
     }
     status = json['status'];
@@ -17,12 +17,12 @@ class GetSessionsResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -98,46 +98,45 @@ class SessionData {
     isFree = json['is_free'];
     requiresFormSubmission = json['requires_form_submission'];
     formSubmissionStatus = json['form_submission_status'];
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
     program =
-        json['program'] != null ? new Program.fromJson(json['program']) : null;
+        json['program'] != null ? Program.fromJson(json['program']) : null;
     instructor = json['instructor'] != null
-        ? new Instructor.fromJson(json['instructor'])
+        ? Instructor.fromJson(json['instructor'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['program_id'] = this.programId;
-    data['location_id'] = this.locationId;
-    data['instructor_id'] = this.instructorId;
-    data['session_date'] = this.sessionDate;
-    data['start_time'] = this.startTime;
-    data['is_free'] = this.isFree;
-    data['requires_form_submission'] = this.requiresFormSubmission;
-    data['form_submission_status'] = this.formSubmissionStatus;
-    data['is_booked'] = this.isBooked;
-    data['end_time'] = this.endTime;
-    data['max_capacity'] = this.maxCapacity;
-    data['current_bookings'] = this.currentBookings;
-    data['status'] = this.status;
-    data['price'] = this.price;
-    data['discounted_price'] = this.discountedPrice;
-    data['discount_amount'] = this.discountAmount;
-    data['discount_percentage'] = this.discountPercentage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['program_id'] = programId;
+    data['location_id'] = locationId;
+    data['instructor_id'] = instructorId;
+    data['session_date'] = sessionDate;
+    data['start_time'] = startTime;
+    data['is_free'] = isFree;
+    data['requires_form_submission'] = requiresFormSubmission;
+    data['form_submission_status'] = formSubmissionStatus;
+    data['is_booked'] = isBooked;
+    data['end_time'] = endTime;
+    data['max_capacity'] = maxCapacity;
+    data['current_bookings'] = currentBookings;
+    data['status'] = status;
+    data['price'] = price;
+    data['discounted_price'] = discountedPrice;
+    data['discount_amount'] = discountAmount;
+    data['discount_percentage'] = discountPercentage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    if (this.program != null) {
-      data['program'] = this.program!.toJson();
+    if (program != null) {
+      data['program'] = program!.toJson();
     }
-    if (this.instructor != null) {
-      data['instructor'] = this.instructor!.toJson();
+    if (instructor != null) {
+      data['instructor'] = instructor!.toJson();
     }
     return data;
   }
@@ -177,16 +176,16 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['area_name'] = this.areaName;
-    data['venue_name'] = this.venueName;
-    data['phone'] = this.phone;
-    data['full_address'] = this.fullAddress;
-    data['updated_at'] = this.updatedAt;
-    data['is_active'] = this.isActive;
-    data['requires_form_submission'] = this.requiresFormSubmission;
-    data['form_submission_status'] = this.formSubmissionStatus;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['area_name'] = areaName;
+    data['venue_name'] = venueName;
+    data['phone'] = phone;
+    data['full_address'] = fullAddress;
+    data['updated_at'] = updatedAt;
+    data['is_active'] = isActive;
+    data['requires_form_submission'] = requiresFormSubmission;
+    data['form_submission_status'] = formSubmissionStatus;
     return data;
   }
 }
@@ -203,9 +202,9 @@ class Program {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -228,10 +227,10 @@ class Instructor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
     return data;
   }
 }

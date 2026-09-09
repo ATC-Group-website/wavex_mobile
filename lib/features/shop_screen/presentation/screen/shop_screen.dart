@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wavex/core/components/header_widget.dart';
 import 'package:wavex/core/di/dependency_injection.dart';
@@ -12,15 +11,11 @@ import '../../../../core/app_localization.dart';
 import '../../../../core/components/bottom_navigation_bar.dart';
 import '../../../../core/components/bottom_wave_painter.dart';
 import '../../../../core/components/login_required_dialog.dart';
-import '../../../../core/constants/constants.dart';
 import '../../../../core/helper/cache_helper/cache_helper.dart';
 import '../../../../core/route/route_strings/route_strings.dart';
 import '../../../../core/theme/colors.dart';
 import '../../data/models/get_categories_response.dart';
 import '../../data/models/get_products_response.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
@@ -30,7 +25,7 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  int _selectedBottomNavIndex = 2;
+  final int _selectedBottomNavIndex = 2;
   int _selectedFilterIndex = 0;
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -100,7 +95,7 @@ class _ShopScreenState extends State<ShopScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          HeaderWidget(),
+          const HeaderWidget(),
           _buildShopSection(localizations),
           _buildSearchBar(localizations),
           Expanded(
@@ -197,7 +192,7 @@ class _ShopScreenState extends State<ShopScreen> {
                       const Icon(Icons.search_outlined, color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: Color(0xff45818B54)),
+                    borderSide: const BorderSide(color: Color(0x45818B54)),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -236,7 +231,7 @@ class _ShopScreenState extends State<ShopScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4))
         ],
@@ -287,7 +282,7 @@ class _ShopScreenState extends State<ShopScreen> {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text(state.error ?? ""),
+                content: Text(state.error),
                 backgroundColor: Colors.red,
               ),
             );
@@ -396,7 +391,7 @@ class _ShopScreenState extends State<ShopScreen> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha: 0.05),
                           blurRadius: 8,
                           offset: const Offset(0, 2))
                     ],
@@ -702,7 +697,7 @@ class _ShopScreenState extends State<ShopScreen> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 10,
                   offset: const Offset(0, 4))
             ],
@@ -764,8 +759,9 @@ class _ShopScreenState extends State<ShopScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               _quantityButton(Icons.remove, () {
-                                if (_selectedQuantity > 1)
+                                if (_selectedQuantity > 1) {
                                   setState(() => _selectedQuantity--);
+                                }
                               }),
                               const SizedBox(width: 10),
                               Text('$_selectedQuantity',
@@ -825,7 +821,8 @@ class _ShopScreenState extends State<ShopScreen> {
                             ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryColor,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25))),

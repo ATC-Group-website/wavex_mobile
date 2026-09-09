@@ -9,7 +9,7 @@ class GetSessionsResponse {
     if (json['data'] != null) {
       data = <SessionData>[];
       json['data'].forEach((v) {
-        data!.add(new SessionData.fromJson(v));
+        data!.add(SessionData.fromJson(v));
       });
     }
     status = json['status'];
@@ -17,12 +17,12 @@ class GetSessionsResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -47,21 +47,21 @@ class SessionData {
 
   SessionData(
       {this.id,
-        this.programId,
-        this.locationId,
-        this.instructorId,
-        this.sessionDate,
-        this.startTime,
-        this.endTime,
-        this.maxCapacity,
-        this.currentBookings,
-        this.status,
-        this.price,
-        this.discountedPrice,
-        this.discountAmount,
-        this.discountPercentage,
-        this.createdAt,
-        this.updatedAt});
+      this.programId,
+      this.locationId,
+      this.instructorId,
+      this.sessionDate,
+      this.startTime,
+      this.endTime,
+      this.maxCapacity,
+      this.currentBookings,
+      this.status,
+      this.price,
+      this.discountedPrice,
+      this.discountAmount,
+      this.discountPercentage,
+      this.createdAt,
+      this.updatedAt});
 
   SessionData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -83,23 +83,23 @@ class SessionData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['program_id'] = this.programId;
-    data['location_id'] = this.locationId;
-    data['instructor_id'] = this.instructorId;
-    data['session_date'] = this.sessionDate;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['max_capacity'] = this.maxCapacity;
-    data['current_bookings'] = this.currentBookings;
-    data['status'] = this.status;
-    data['price'] = this.price;
-    data['discounted_price'] = this.discountedPrice;
-    data['discount_amount'] = this.discountAmount;
-    data['discount_percentage'] = this.discountPercentage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['program_id'] = programId;
+    data['location_id'] = locationId;
+    data['instructor_id'] = instructorId;
+    data['session_date'] = sessionDate;
+    data['start_time'] = startTime;
+    data['end_time'] = endTime;
+    data['max_capacity'] = maxCapacity;
+    data['current_bookings'] = currentBookings;
+    data['status'] = status;
+    data['price'] = price;
+    data['discounted_price'] = discountedPrice;
+    data['discount_amount'] = discountAmount;
+    data['discount_percentage'] = discountPercentage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

@@ -59,7 +59,7 @@ class ApiManager {
           }
           return handler.next(response);
         },
-        onError: (DioError e, ErrorInterceptorHandler handler) {
+        onError: (DioException e, ErrorInterceptorHandler handler) {
           // Check if the error response has a status code 401
           if (e.response?.statusCode == 401 &&
               e.requestOptions.extra['skipUnauthorizedRedirect'] != true) {
@@ -152,11 +152,11 @@ class ApiManager {
       }
 
       // ❌ أي statusCode تاني → Error بالـ message اللي راجع
-      final message = getErrorMsg(response.data) ?? "Unexpected error";
+      final message = getErrorMsg(response.data);
       throw ApiException(false, message);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response != null) {
-        final message = getErrorMsg(e.response?.data) ?? "Request failed";
+        final message = getErrorMsg(e.response!.data);
         throw ApiException(false, message);
       } else {
         throw ApiException(

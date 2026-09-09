@@ -4,7 +4,9 @@ import 'dart:math' as math;
 class BottomWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = const Color(0x846DAEB8) ..style = PaintingStyle.fill;
+    final paint = Paint()
+      ..color = const Color(0x846DAEB8)
+      ..style = PaintingStyle.fill;
     final path = Path()..moveTo(0, size.height);
 
     // Smooth sin-like wave

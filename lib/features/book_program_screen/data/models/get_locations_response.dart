@@ -9,7 +9,7 @@ class GetLocationsResponse {
     if (json['data'] != null) {
       data = <LocationData>[];
       json['data'].forEach((v) {
-        data!.add(new LocationData.fromJson(v));
+        data!.add(LocationData.fromJson(v));
       });
     }
     status = json['status'];
@@ -17,12 +17,12 @@ class GetLocationsResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -40,12 +40,12 @@ class LocationData {
 
   LocationData(
       {this.id,
-        this.areaName,
-        this.venueName,
-        this.phone,
-        this.fullAddress,
-        this.updatedAt,
-        this.isActive});
+      this.areaName,
+      this.venueName,
+      this.phone,
+      this.fullAddress,
+      this.updatedAt,
+      this.isActive});
 
   LocationData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -61,16 +61,16 @@ class LocationData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['area_name'] = this.areaName;
-    data['venue_name'] = this.venueName;
-    data['phone'] = this.phone;
-    data['full_address'] = this.fullAddress;
-    data['updated_at'] = this.updatedAt;
-    data['is_active'] = this.isActive;
-    data['requires_form_submission'] = this.requiresFormSubmission;
-    data['form_submission_status'] = this.formSubmissionStatus;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['area_name'] = areaName;
+    data['venue_name'] = venueName;
+    data['phone'] = phone;
+    data['full_address'] = fullAddress;
+    data['updated_at'] = updatedAt;
+    data['is_active'] = isActive;
+    data['requires_form_submission'] = requiresFormSubmission;
+    data['form_submission_status'] = formSubmissionStatus;
     return data;
   }
 }

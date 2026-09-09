@@ -29,7 +29,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   void _updatePassword() {
     // Handle password update logic
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       if (_newPasswordController.text.trim() !=
           _confirmPasswordController.text.trim()) {
         ScaffoldMessenger.of(context)
@@ -47,7 +47,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         );
       }
     }
-
   }
 
   @override
@@ -60,7 +59,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           // Main content
           Column(
             children: [
-              HeaderWidget(
+              const HeaderWidget(
                 isWithBack: true,
               ),
               BlocListener<ChangePasswordCubit, ChangePasswordState>(
@@ -170,7 +169,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       if (value == null || value.isEmpty) {
                                         return 'Please confirm your password';
                                       }
-                                      if (value != _newPasswordController.text) {
+                                      if (value !=
+                                          _newPasswordController.text) {
                                         return 'Passwords do not match';
                                       }
                                       return null;

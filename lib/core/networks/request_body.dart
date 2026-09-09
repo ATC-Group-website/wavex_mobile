@@ -27,7 +27,7 @@ class RequestBody {
     });
   }
 
-  void addAll(Map<String, dynamic> data){
+  void addAll(Map<String, dynamic> data) {
     _addItems(data);
   }
 }

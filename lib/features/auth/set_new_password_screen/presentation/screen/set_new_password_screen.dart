@@ -6,20 +6,18 @@ import 'package:wavex/features/auth/password_reset_screen/logic/reset_password_c
 
 import '../../../../../core/app_localization.dart';
 import '../../../../../core/components/bottom_wave_painter.dart';
-import '../../../../../core/constants/constants.dart';
-import '../../../../../main.dart';
 import '../../../../../core/theme/colors.dart';
 
 class SetNewPasswordScreen extends StatefulWidget {
   final String email;
 
   const SetNewPasswordScreen({
-    Key? key,
+    super.key,
     this.email = "Demo@gmail.com",
-  }) : super(key: key);
+  });
 
   @override
-  _SetNewPasswordScreenState createState() => _SetNewPasswordScreenState();
+  State<SetNewPasswordScreen> createState() => _SetNewPasswordScreenState();
 }
 
 class _SetNewPasswordScreenState extends State<SetNewPasswordScreen>
@@ -38,8 +36,6 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen>
 
   // Password validation states
   bool _hasMinLength = false;
-  bool _hasUppercase = false;
-  bool _hasSpecialChar = false;
   bool _passwordsMatch = false;
 
   @override
@@ -81,8 +77,6 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen>
   void _validatePassword(String password) {
     setState(() {
       _hasMinLength = password.length >= 8;
-      _hasUppercase = password.contains(RegExp(r'[A-Z]'));
-      _hasSpecialChar = password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
       _passwordsMatch = password.isNotEmpty &&
           _confirmPasswordController.text.isNotEmpty &&
           password == _confirmPasswordController.text;
@@ -112,7 +106,7 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen>
       body: Column(
         children: [
           // Header with gradient
-          HeaderWidget(
+          const HeaderWidget(
             isWithBack: true,
           ),
 
@@ -126,22 +120,23 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen>
 
                 // Show success message
                 ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).translate("password_success"),
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        AppLocalizations.of(context)
+                            .translate("password_success"),
+                      ),
+                      backgroundColor: const Color(0xFF4CAF50),
+                      behavior: SnackBarBehavior.floating,
                     ),
-                    backgroundColor: const Color(0xFF4CAF50),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+                  );
 
                 // Navigate to login screen or main app
                 Navigator.of(context).popUntil((route) => route.isFirst);
               }
             },
-            child: SizedBox.shrink(),
+            child: const SizedBox.shrink(),
           ),
 
           // Main content
@@ -287,71 +282,6 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen>
     );
   }
 
-  Widget _buildPasswordRequirements() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8FFFE),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFE0F2F1),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            // 'Password Requirements:',
-            AppLocalizations.of(context).translate("password_requirements"),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF2C5F5F),
-            ),
-          ),
-          const SizedBox(height: 8),
-          _buildRequirementItem(
-              AppLocalizations.of(context).translate("at_least_8_chars"),
-              _hasMinLength),
-          _buildRequirementItem(
-              AppLocalizations.of(context).translate("contains_uppercase"),
-              _hasUppercase),
-          _buildRequirementItem(
-              AppLocalizations.of(context).translate("contains_special_char"),
-              _hasSpecialChar),
-          _buildRequirementItem(
-              AppLocalizations.of(context).translate("passwords_match"),
-              _passwordsMatch),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRequirementItem(String text, bool isValid) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        children: [
-          Icon(
-            isValid ? Icons.check_circle : Icons.radio_button_unchecked,
-            size: 16,
-            color: isValid ? const Color(0xFF4CAF50) : const Color(0xFFBDBDBD),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 13,
-              color:
-                  isValid ? const Color(0xFF4CAF50) : const Color(0xFF666666),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildPasswordField({
     required TextEditingController controller,
     required bool isVisible,
@@ -433,8 +363,7 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen>
   }
 
   Widget _buildSetPasswordButton() {
-    bool isFormValid =
-        _hasMinLength && _passwordsMatch;
+    bool isFormValid = _hasMinLength && _passwordsMatch;
 
     return Center(
       child: ElevatedButton(

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:wavex/core/networks/request_body.dart';
 import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';

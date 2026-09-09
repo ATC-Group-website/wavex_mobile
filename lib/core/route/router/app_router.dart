@@ -95,11 +95,11 @@ class AppRouter {
     switch (settings.name) {
       case RouteStrings.introVideoScreen:
         return MaterialPageRoute(
-          builder: (context) => VideoSplashScreen(),
+          builder: (context) => const VideoSplashScreen(),
         );
       case RouteStrings.splashScreen:
         return MaterialPageRoute(
-          builder: (context) => SplashScreen(),
+          builder: (context) => const SplashScreen(),
         );
       case RouteStrings.regionSelectionScreen:
         final returnToBranches = settings.arguments == true;
@@ -130,7 +130,7 @@ class AppRouter {
         );
       case RouteStrings.authScreen:
         return MaterialPageRoute(
-          builder: (context) => AuthScreen(),
+          builder: (context) => const AuthScreen(),
         );
       case RouteStrings.emailVerificationScreen:
         final data = settings.arguments as Map<String, dynamic>;
@@ -357,7 +357,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
             value: getIt<LoginCubit>(),
-            child: LoginScreen(),
+            child: const LoginScreen(),
           ),
         );
       // case RouteStrings.notificationScreen:

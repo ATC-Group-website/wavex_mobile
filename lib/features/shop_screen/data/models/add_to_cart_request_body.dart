@@ -2,25 +2,25 @@ class AddToCartRequestBody {
   String? orderId;
   List<OrderItem>? orderItems;
 
-  AddToCartRequestBody({this.orderItems,this.orderId});
+  AddToCartRequestBody({this.orderItems, this.orderId});
 
   AddToCartRequestBody.fromJson(Map<String, dynamic> json) {
     orderId = json["order_id"];
     if (json['order_items'] != null) {
       orderItems = <OrderItem>[];
       json['order_items'].forEach((v) {
-        orderItems!.add(new OrderItem.fromJson(v));
+        orderItems!.add(OrderItem.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if(this.orderId !=null){
-      data['order_id'] = this.orderId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (orderId != null) {
+      data['order_id'] = orderId;
     }
-    if (this.orderItems != null) {
-      data['order_items'] = this.orderItems!.map((v) => v.toJson()).toList();
+    if (orderItems != null) {
+      data['order_items'] = orderItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -38,9 +38,9 @@ class OrderItem {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['quantity'] = this.quantity;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    data['quantity'] = quantity;
     return data;
   }
 }

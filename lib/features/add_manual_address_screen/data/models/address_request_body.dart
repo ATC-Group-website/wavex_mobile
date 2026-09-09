@@ -10,13 +10,13 @@ class AddressRequestBody {
 
   AddressRequestBody(
       {this.name,
-        this.phone,
-        this.address,
-        this.postalCode,
-        this.email,
-        this.isDefault,
-        this.notes,
-        this.district});
+      this.phone,
+      this.address,
+      this.postalCode,
+      this.email,
+      this.isDefault,
+      this.notes,
+      this.district});
 
   AddressRequestBody.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -30,15 +30,15 @@ class AddressRequestBody {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['phone'] = this.phone;
-    data['address'] = this.address;
-    data['postal_code'] = this.postalCode;
-    data['email'] = this.email;
-    data['is_default'] = this.isDefault;
-    data['notes'] = this.notes;
-    data['district'] = this.district;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['phone'] = phone;
+    data['address'] = address;
+    data['postal_code'] = postalCode;
+    data['email'] = email;
+    data['is_default'] = isDefault;
+    data['notes'] = notes;
+    data['district'] = district;
     return data;
   }
 }

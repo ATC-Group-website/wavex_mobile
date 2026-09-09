@@ -52,7 +52,6 @@
 //   bool shouldReload(LocalizationsDelegate<AppLocalizations> old) => false;
 // }
 
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -71,7 +70,8 @@ class AppLocalizations {
 
   Future<bool> load() async {
     // Load the JSON file
-    String jsonString = await rootBundle.loadString('lib/l10n/app_${locale.languageCode}.json');
+    String jsonString =
+        await rootBundle.loadString('lib/l10n/app_${locale.languageCode}.json');
     _localizedStrings = json.decode(jsonString); // Keep the JSON as dynamic Map
     return true;
   }
@@ -90,10 +90,12 @@ class AppLocalizations {
     return value;
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -101,22 +103,24 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
     return ['en', 'ar'].contains(locale.languageCode);
   }
 
-   Future<Locale> getLocale() async {
+  Future<Locale> getLocale() async {
     final prefs = await SharedPreferences.getInstance();
     final String? localeCode = prefs.getString("selectedLanguage");
-    if(localeCode == null){
-      return  Locale("en");
-    }else{
+    if (localeCode == null) {
+      return const Locale("en");
+    } else {
       return Locale(localeCode);
     }
   }
+
   @override
   Future<AppLocalizations> load(Locale locale) async {
     final prefs = await SharedPreferences.getInstance();
-     const String _languageKey = "selectedLanguage";
-    final savedLanguageCode = prefs.getString(_languageKey) ?? 'en';
-    AppLocalizations localizations = AppLocalizations(Locale(savedLanguageCode));
-  //  AppLocalizations localizations = AppLocalizations(locale);
+    const String languageKey = "selectedLanguage";
+    final savedLanguageCode = prefs.getString(languageKey) ?? 'en';
+    AppLocalizations localizations =
+        AppLocalizations(Locale(savedLanguageCode));
+    //  AppLocalizations localizations = AppLocalizations(locale);
     await localizations.load();
     return localizations;
   }

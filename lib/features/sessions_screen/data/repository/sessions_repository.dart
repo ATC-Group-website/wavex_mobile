@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:wavex/core/networks/request_body.dart';
 
 import '../../../../core/networks/api_manager.dart';
@@ -19,7 +20,7 @@ class SessionsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }
@@ -32,7 +33,7 @@ class SessionsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }
@@ -49,10 +50,11 @@ class SessionsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }
+
   Future<ApiResponse?> cancelSession({
     required int sessionId,
     required String reason,
@@ -60,12 +62,14 @@ class SessionsRepository {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
         link: 'bookings/$sessionId/cancel',
-        body: RequestBody({"cancellation_reason": reason,}),
+        body: RequestBody({
+          "cancellation_reason": reason,
+        }),
         method: Method.POST,
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }

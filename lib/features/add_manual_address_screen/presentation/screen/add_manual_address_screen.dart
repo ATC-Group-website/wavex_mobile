@@ -1,7 +1,7 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wavex/core/route/route_strings/route_strings.dart';
 import 'package:wavex/features/add_manual_address_screen/data/models/address_request_body.dart';
 import 'package:wavex/features/add_manual_address_screen/logic/address_cubit.dart';
 import 'package:wavex/main.dart';
@@ -10,10 +10,10 @@ import '../../../../core/components/bottom_navigation_bar.dart';
 import '../../../../core/components/bottom_wave_painter.dart';
 import '../../../../core/components/header_widget.dart';
 import '../../../../core/theme/colors.dart';
-import '../../data/models/get_address_byId_response.dart';
+import '../../data/models/get_address_by_id_response.dart';
 
 class AddManualAddressScreen extends StatefulWidget {
-  const AddManualAddressScreen({Key? key, this.addressId}) : super(key: key);
+  const AddManualAddressScreen({super.key, this.addressId});
 
   final int? addressId;
 
@@ -22,14 +22,14 @@ class AddManualAddressScreen extends StatefulWidget {
 }
 
 class _AddManualAddressScreenState extends State<AddManualAddressScreen> {
-  TextEditingController _addressLabelController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _addressLabelController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   // TextEditingController _districtController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _postalCodeController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _notesController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _postalCodeController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
   bool _isDefaultAddress = false;
 
   void _saveAddress() {
@@ -122,11 +122,11 @@ class _AddManualAddressScreenState extends State<AddManualAddressScreen> {
         // TODO: implement listener
         if (state is GetAddressByIdSuccessState) {
           userAddress = state.addressByIdResponse.data ?? AddressData();
-          print(userAddress.isDefault);
+          appLog(userAddress.isDefault);
           _addressLabelController.text = userAddress.name ?? "";
           _emailController.text = userAddress.email ?? "";
           _phoneController.text = userAddress.phone ?? "";
-          _postalCodeController.text = userAddress.postalCode.toString() ?? "";
+          _postalCodeController.text = userAddress.postalCode.toString();
           _addressController.text = userAddress.address ?? "";
           _isDefaultAddress = userAddress.isDefault == 0 ? false : true;
           // _notesController.text = userAddress.address??"";
@@ -172,7 +172,7 @@ class _AddManualAddressScreenState extends State<AddManualAddressScreen> {
             ..showSnackBar(
               SnackBar(
                 content: Text(
-                  state.error ?? "",
+                  state.error,
                 ),
                 backgroundColor: Colors.red,
               ),
@@ -184,7 +184,7 @@ class _AddManualAddressScreenState extends State<AddManualAddressScreen> {
             ..showSnackBar(
               SnackBar(
                 content: Text(
-                  state.error ?? "",
+                  state.error,
                 ),
                 backgroundColor: Colors.red,
               ),
@@ -198,7 +198,7 @@ class _AddManualAddressScreenState extends State<AddManualAddressScreen> {
               Column(
                 children: [
                   // Header
-                  HeaderWidget(
+                  const HeaderWidget(
                     isWithBack: true,
                   ),
                   Expanded(

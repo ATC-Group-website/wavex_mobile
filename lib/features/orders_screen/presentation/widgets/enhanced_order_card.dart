@@ -9,11 +9,11 @@ class EnhancedOrderCard extends StatelessWidget {
   final VoidCallback? onOrderAgain;
 
   const EnhancedOrderCard({
-    Key? key,
+    super.key,
     required this.order,
     this.onViewDetails,
     this.onOrderAgain,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class EnhancedOrderCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -47,10 +47,10 @@ class EnhancedOrderCard extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               decoration: BoxDecoration(
-                color: _getStatusColor(order.status).withOpacity(0.1),
+                color: _getStatusColor(order.status).withValues(alpha: 0.1),
                 border: Border(
                   bottom: BorderSide(
-                    color: _getStatusColor(order.status).withOpacity(0.2),
+                    color: _getStatusColor(order.status).withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
@@ -169,8 +169,8 @@ class EnhancedOrderCard extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: order.paymentStatus == 'paid'
-                                ? Colors.green.withOpacity(0.1)
-                                : Colors.orange.withOpacity(0.1),
+                                ? Colors.green.withValues(alpha: 0.1)
+                                : Colors.orange.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: order.paymentStatus == 'paid'
@@ -202,15 +202,16 @@ class EnhancedOrderCard extends StatelessWidget {
                       // View Details Button
                       Expanded(
                         child: OutlinedButton.icon(
-                          onPressed: onViewDetails ?? () {
-                            // Default navigation logic
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('View Details tapped'),
-                                duration: Duration(seconds: 1),
-                              ),
-                            );
-                          },
+                          onPressed: onViewDetails ??
+                              () {
+                                // Default navigation logic
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('View Details tapped'),
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
+                              },
                           icon: const Icon(Icons.visibility_outlined, size: 16),
                           label: const Text('View Details'),
                           style: OutlinedButton.styleFrom(

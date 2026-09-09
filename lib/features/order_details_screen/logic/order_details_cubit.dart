@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/order_details_screen/data/models/order_details_response.dart';
@@ -11,26 +10,22 @@ import '../../../core/networks/api_exception.dart';
 part 'order_details_state.dart';
 
 class OrderDetailsCubit extends Cubit<OrderDetailsState> {
-
   OrdersDetailsRepository repository;
   OrderDetailsCubit(this.repository) : super(OrderDetailsInitial());
 
   static OrderDetailsCubit get(context) => BlocProvider.of(context);
 
-
-  getOrders({
-    required String orderId
-  }){
+  getOrders({required String orderId}) {
     emit(GetOrderDetailsLoadingState());
 
     repository.getOrders(orderId: orderId).then(
-          (value) {
+      (value) {
         if (value!.statusCode == 200 || value.statusCode == 201) {
           emit(
             GetOrderDetailsSuccessState(
-                orderDetailsResponse: OrderDetailsResponse.fromJson(
-                  jsonDecode(value.data),
-                ),
+              orderDetailsResponse: OrderDetailsResponse.fromJson(
+                jsonDecode(value.data),
+              ),
             ),
           );
         } else {
@@ -46,5 +41,4 @@ class OrderDetailsCubit extends Cubit<OrderDetailsState> {
       ));
     });
   }
-
 }

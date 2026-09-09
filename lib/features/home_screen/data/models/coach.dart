@@ -48,24 +48,28 @@ class Coach {
 
 // Sample data
 final sampleCoaches = [
-  Coach(
+  const Coach(
     id: '1',
     name: 'Menna Mohamed',
-    imageUrl: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
+    imageUrl:
+        'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
     specialization: 'Water Fitness',
     classes: ['WaveX Flow', 'Aqua Cardio', 'Water Yoga'],
     rating: 4.9,
     experience: 5,
-    bio: 'Certified water fitness instructor with 5 years of experience in aquatic training.',
+    bio:
+        'Certified water fitness instructor with 5 years of experience in aquatic training.',
   ),
-  Coach(
+  const Coach(
     id: '2',
     name: 'Sarah Johnson',
-    imageUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
+    imageUrl:
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
     specialization: 'Swimming',
     classes: ['Swim Technique', 'Water Aerobics'],
     rating: 4.8,
     experience: 7,
-    bio: 'Former competitive swimmer turned fitness coach specializing in water-based workouts.',
+    bio:
+        'Former competitive swimmer turned fitness coach specializing in water-based workouts.',
   ),
 ];

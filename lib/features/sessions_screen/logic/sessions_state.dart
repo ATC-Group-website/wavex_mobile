@@ -4,23 +4,29 @@ part of 'sessions_cubit.dart';
 sealed class SessionsState {}
 
 final class SessionsInitial extends SessionsState {}
+
 final class GetSessionsLoadingState extends SessionsState {}
+
 final class GetSessionsSuccessState extends SessionsState {
- final MySessionsResponse sessionsResponse;
+  final MySessionsResponse sessionsResponse;
 
   GetSessionsSuccessState({required this.sessionsResponse});
 }
+
 final class GetSessionsErrorState extends SessionsState {
   final String error;
 
   GetSessionsErrorState({required this.error});
 }
-final class GetRefundReasonsLoadingState extends SessionsState {}
-final class GetRefundReasonsSuccessState extends SessionsState {
- final RefundReasonsResponse reasonsResponse;
 
- GetRefundReasonsSuccessState({required this.reasonsResponse});
+final class GetRefundReasonsLoadingState extends SessionsState {}
+
+final class GetRefundReasonsSuccessState extends SessionsState {
+  final RefundReasonsResponse reasonsResponse;
+
+  GetRefundReasonsSuccessState({required this.reasonsResponse});
 }
+
 final class GetRefundReasonsErrorState extends SessionsState {
   final String error;
 
@@ -28,11 +34,13 @@ final class GetRefundReasonsErrorState extends SessionsState {
 }
 
 final class MakeRefundLoadingState extends SessionsState {}
-final class MakeRefundSuccessState extends SessionsState {
- final RefundResponse refundResponse;
 
- MakeRefundSuccessState({required this.refundResponse});
+final class MakeRefundSuccessState extends SessionsState {
+  final RefundResponse refundResponse;
+
+  MakeRefundSuccessState({required this.refundResponse});
 }
+
 final class MakeRefundErrorState extends SessionsState {
   final String error;
 
@@ -40,11 +48,13 @@ final class MakeRefundErrorState extends SessionsState {
 }
 
 final class CancelSessionLoadingState extends SessionsState {}
-final class CancelSessionSuccessState extends SessionsState {
- final RefundResponse refundResponse;
 
- CancelSessionSuccessState({required this.refundResponse});
+final class CancelSessionSuccessState extends SessionsState {
+  final RefundResponse refundResponse;
+
+  CancelSessionSuccessState({required this.refundResponse});
 }
+
 final class CancelSessionErrorState extends SessionsState {
   final String error;
 

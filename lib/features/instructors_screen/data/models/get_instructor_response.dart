@@ -6,18 +6,18 @@ class GetInstructorResponse {
   GetInstructorResponse({this.data, this.status, this.message});
 
   GetInstructorResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -37,16 +37,16 @@ class Data {
 
   Data(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.phone,
-        this.bio,
-        this.image,
-        this.specializations,
-        this.isActive,
-        this.createdAt,
-        this.links});
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.phone,
+      this.bio,
+      this.image,
+      this.specializations,
+      this.isActive,
+      this.createdAt,
+      this.links});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -68,19 +68,19 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['bio'] = this.bio;
-    data['image'] = this.image;
-    data['specializations'] = this.specializations;
-    data['is_active'] = this.isActive;
-    data['created_at'] = this.createdAt;
-    if (this.links != null) {
-      data['links'] = this.links!.map((v) => v).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['bio'] = bio;
+    data['image'] = image;
+    data['specializations'] = specializations;
+    data['is_active'] = isActive;
+    data['created_at'] = createdAt;
+    if (links != null) {
+      data['links'] = links!.map((v) => v).toList();
     }
     return data;
   }

@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/home_screen/data/models/get_instructors_response.dart';
@@ -33,7 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetInstructorsErrorState(error: error.toString()));
     });
   }
@@ -52,7 +52,7 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetProgramsErrorState(error: error.toString()));
     });
   }
@@ -67,7 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(MarkNotificationAsReadErrorState(error: error.toString()));
     });
   }

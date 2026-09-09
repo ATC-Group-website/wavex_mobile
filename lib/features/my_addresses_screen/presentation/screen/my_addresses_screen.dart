@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wavex/core/components/header_widget.dart';
 import 'package:wavex/features/my_addresses_screen/data/models/get_my_addresses.dart';
@@ -14,13 +13,13 @@ import '../../../../core/route/route_strings/route_strings.dart';
 import '../../../../core/theme/colors.dart';
 
 class MyAddressesScreen extends StatefulWidget {
-  const MyAddressesScreen({Key? key}) : super(key: key);
+  const MyAddressesScreen({super.key});
 
   @override
   State<MyAddressesScreen> createState() => _MyAddressesScreenState();
 }
 
-class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
+class _MyAddressesScreenState extends State<MyAddressesScreen> with RouteAware {
   List<Address> addresses = Address.getSampleAddresses();
 
   List<AddressData> myAddresses = [];
@@ -31,6 +30,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
     MyAddressCubit.get(context).getMyAddress();
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -48,6 +48,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
     // أول ما ترجع من AddManualAddressScreen
     MyAddressCubit.get(context).getMyAddress();
   }
+
   void _deleteAddress(int addressId) {
     // setState(() {
     //   addresses.removeWhere((address) => address.id == addressId);
@@ -62,20 +63,10 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
     MyAddressCubit.get(context).deleteAddress(addressId: addressId);
   }
 
-  void _editAddress(Address address) {
-    ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-      SnackBar(
-        content: Text('Edit ${address.type} address'),
-        backgroundColor: AppColors.primaryColor,
-      ),
-    );
-  }
-
   void _addNewAddress() {
-    navigatorKey.currentState!.pushNamed(RouteStrings.addManualAddressScreen,arguments: {
-      "addressId" : null,
+    navigatorKey.currentState!
+        .pushNamed(RouteStrings.addManualAddressScreen, arguments: {
+      "addressId": null,
     });
     // ScaffoldMessenger.of(context).showSnackBar(
     //   const SnackBar(
@@ -124,7 +115,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                     backgroundColor: Colors.white,
                     child: ClipOval(
                       child: Image.network(
-                        CacheHelper.getdata(key: "userImage") ?? "https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?s=612x612&w=0&k=20&c=CK49ShLJwDxE4kiroCR42kimTuuhvuo2FH5y_6aSgEo=",
+                        CacheHelper.getdata(key: "userImage") ??
+                            "https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?s=612x612&w=0&k=20&c=CK49ShLJwDxE4kiroCR42kimTuuhvuo2FH5y_6aSgEo=",
                         width: 90,
                         height: 90,
                         fit: BoxFit.cover,
@@ -202,7 +194,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
           Column(
             children: [
               // Header
-              HeaderWidget(
+              const HeaderWidget(
                 isWithBack: true,
               ),
 
@@ -294,7 +286,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                           Expanded(
                                             flex: 2,
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   address.name ?? "",
@@ -313,11 +306,14 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                                       child: Text(
                                                         address.email ?? "",
                                                         maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         style: const TextStyle(
                                                           fontSize: 14,
-                                                          color: Color(0xCC23707C),
-                                                          fontWeight: FontWeight.w500,
+                                                          color:
+                                                              Color(0xCC23707C),
+                                                          fontWeight:
+                                                              FontWeight.w500,
                                                         ),
                                                       ),
                                                     ),
@@ -337,7 +333,6 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                               ],
                                             ),
                                           ),
-
                                           Expanded(
                                             flex: 1,
                                             child: Column(
@@ -355,7 +350,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                                               address.id ?? 0,
                                                         });
                                                   },
-                                                  style: ElevatedButton.styleFrom(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
                                                     backgroundColor:
                                                         const Color(0xff89BEC7),
                                                     padding: const EdgeInsets
@@ -365,7 +361,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                                     ),
                                                     minimumSize:
                                                         const Size(100, 30),
-                                                    shape: RoundedRectangleBorder(
+                                                    shape:
+                                                        RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               15),
@@ -376,19 +373,22 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                                     style: GoogleFonts
                                                             .leagueSpartan()
                                                         .copyWith(
-                                                      color:
-                                                          const Color(0xFF2E535F),
+                                                      color: const Color(
+                                                          0xFF2E535F),
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 8),
                                                 ElevatedButton(
-                                                  onPressed: () => _deleteAddress(
-                                                      address.id ?? 0),
+                                                  onPressed: () =>
+                                                      _deleteAddress(
+                                                          address.id ?? 0),
                                                   // onPressed: () {},
-                                                  style: ElevatedButton.styleFrom(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
                                                     backgroundColor:
                                                         AppColors.primaryColor,
                                                     padding: const EdgeInsets
@@ -398,7 +398,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                                     ),
                                                     minimumSize:
                                                         const Size(100, 30),
-                                                    shape: RoundedRectangleBorder(
+                                                    shape:
+                                                        RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               15),
@@ -411,7 +412,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                                                         .copyWith(
                                                       color: Colors.white,
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
@@ -452,23 +454,24 @@ class _MyAddressesScreenState extends State<MyAddressesScreen>  with RouteAware{
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    state.deleteAddressResponse.message ?? ""),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
+                                SnackBar(
+                                  content: Text(
+                                      state.deleteAddressResponse.message ??
+                                          ""),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
                             MyAddressCubit.get(context).getMyAddress();
                           }
                           if (state is DeleteAddressErrorState) {
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
-                              SnackBar(
-                                content: Text(state.error ?? ""),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                                SnackBar(
+                                  content: Text(state.error),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                           }
                         },
                       )

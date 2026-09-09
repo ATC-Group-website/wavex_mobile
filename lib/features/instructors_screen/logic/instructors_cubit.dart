@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/instructors_screen/data/repository/instructors_repository.dart';
@@ -31,7 +31,7 @@ class InstructorsCubit extends Cubit<InstructorsState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetInstructorsErrorState(error: error.toString()));
     });
   }
@@ -50,7 +50,7 @@ class InstructorsCubit extends Cubit<InstructorsState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetInstructorErrorState(error: error.toString()));
     });
   }

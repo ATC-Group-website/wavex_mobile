@@ -8,12 +8,10 @@ import 'package:wavex/main.dart';
 import '../../../../core/components/bottom_navigation_bar.dart';
 import '../../../../core/components/bottom_wave_painter.dart';
 import '../../../../core/components/header_widget.dart';
-import '../../../book_program_screen/logic/book_program_cubit.dart';
 
 class PayOrderTransactionFailedScreen extends StatelessWidget {
   const PayOrderTransactionFailedScreen(
-      {Key? key, this.addressId, this.orderId})
-      : super(key: key);
+      {super.key, this.addressId, this.orderId});
 
   final dynamic addressId;
   final String? orderId;
@@ -26,7 +24,7 @@ class PayOrderTransactionFailedScreen extends StatelessWidget {
           // Main content
           Column(
             children: [
-              HeaderWidget(
+              const HeaderWidget(
                 isWithBack: true,
               ),
 
@@ -63,7 +61,7 @@ class PayOrderTransactionFailedScreen extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
+                              color: Colors.grey.withValues(alpha: 0.1),
                               spreadRadius: 2,
                               blurRadius: 10,
                               offset: const Offset(0, 2),
@@ -77,7 +75,7 @@ class PayOrderTransactionFailedScreen extends StatelessWidget {
                               width: 80,
                               height: 80,
                               decoration: const BoxDecoration(
-                                color: const Color(0xFFD70404),
+                                color: Color(0xFFD70404),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(

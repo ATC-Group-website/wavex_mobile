@@ -4,12 +4,15 @@ part of 'my_address_cubit.dart';
 sealed class MyAddressState {}
 
 final class MyAddressInitial extends MyAddressState {}
+
 final class GetMyAddressesLoadingState extends MyAddressState {}
+
 final class GetMyAddressesSuccessState extends MyAddressState {
   final GetMyAddressesResponse myAddressesResponse;
 
   GetMyAddressesSuccessState({required this.myAddressesResponse});
 }
+
 final class GetMyAddressesErrorState extends MyAddressState {
   final String error;
 
@@ -17,11 +20,13 @@ final class GetMyAddressesErrorState extends MyAddressState {
 }
 
 final class DeleteAddressLoadingState extends MyAddressState {}
+
 final class DeleteAddressSuccessState extends MyAddressState {
   final DeleteAddressResponse deleteAddressResponse;
 
   DeleteAddressSuccessState({required this.deleteAddressResponse});
 }
+
 final class DeleteAddressErrorState extends MyAddressState {
   final String error;
 

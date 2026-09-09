@@ -8,7 +8,7 @@ final class LoginInitial extends LoginState {}
 final class LoginLoadingState extends LoginState {}
 
 final class LoginSuccessState extends LoginState {
- final LoginResponse loginResponse;
+  final LoginResponse loginResponse;
 
   LoginSuccessState({required this.loginResponse});
 }

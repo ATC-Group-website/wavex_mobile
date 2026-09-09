@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:wavex/features/sessions_screen/data/models/get_sessions_response.dart';
 import 'package:wavex/features/sessions_screen/data/repository/sessions_repository.dart';
 
 import '../../../core/networks/api_exception.dart';
@@ -80,7 +78,6 @@ class SessionsCubit extends Cubit<SessionsState> {
           final errorMsg = jsonDecode(value.data)["message"] ?? "";
           emit(MakeRefundErrorState(error: errorMsg));
         }
-
       },
     ).catchError((error) {
       emit(MakeRefundErrorState(
@@ -88,6 +85,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       ));
     });
   }
+
   cancelSession({
     required int sessionId,
     required String reason,
@@ -109,7 +107,6 @@ class SessionsCubit extends Cubit<SessionsState> {
           final errorMsg = jsonDecode(value.data)["message"] ?? "";
           emit(CancelSessionErrorState(error: errorMsg));
         }
-
       },
     ).catchError((error) {
       emit(CancelSessionErrorState(

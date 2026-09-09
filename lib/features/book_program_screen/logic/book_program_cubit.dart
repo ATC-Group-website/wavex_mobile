@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/book_program_screen/data/models/get_locations_response.dart';
@@ -43,7 +43,7 @@ class BookProgramCubit extends Cubit<BookProgramState> {
         }
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetProgramByIdErrorState(error: error.toString()));
     });
   }
@@ -62,7 +62,7 @@ class BookProgramCubit extends Cubit<BookProgramState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetLocationsErrorState(error: error.toString()));
     });
   }
@@ -85,7 +85,7 @@ class BookProgramCubit extends Cubit<BookProgramState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetProgramsErrorState(error: error.toString()));
     });
   }
@@ -170,7 +170,7 @@ class BookProgramCubit extends Cubit<BookProgramState> {
         }
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetSessionsErrorState(error: error.toString()));
     });
   }

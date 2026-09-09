@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -85,7 +85,7 @@ class ShopCubit extends Cubit<ShopState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetCategoriesErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));
@@ -99,7 +99,7 @@ class ShopCubit extends Cubit<ShopState> {
         if (value!.statusCode == 200 || value.statusCode == 201) {
           emit(AddToCartSuccessState(
             addToCartResponse:
-                AddToCartResponse.fromJson(jsonDecode(value!.data)),
+                AddToCartResponse.fromJson(jsonDecode(value.data)),
           ));
         } else {
           // هنا السيرفر راجع error زي 422
@@ -108,7 +108,7 @@ class ShopCubit extends Cubit<ShopState> {
         }
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(AddToCartErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));

@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/add_manual_address_screen/data/repository/address_repository.dart';
@@ -8,7 +8,7 @@ import 'package:wavex/features/add_manual_address_screen/data/repository/address
 import '../../../core/networks/api_exception.dart';
 import '../data/models/address_request_body.dart';
 import '../data/models/address_response.dart';
-import '../data/models/get_address_byId_response.dart';
+import '../data/models/get_address_by_id_response.dart';
 
 part 'address_state.dart';
 
@@ -26,7 +26,7 @@ class AddressCubit extends Cubit<AddressState> {
       address: address,
     )
         .then((value) {
-      print("data: " + value!.data);
+      appLog('data: ${value!.data}');
 
       if (value.statusCode == 200 || value.statusCode == 201) {
         emit(
@@ -43,7 +43,7 @@ class AddressCubit extends Cubit<AddressState> {
         emit(AddAddressErrorState(error: errorMsg));
       }
     }).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(AddAddressErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));
@@ -58,8 +58,8 @@ class AddressCubit extends Cubit<AddressState> {
       address: address,
     )
         .then((value) {
-      print("data: " + value!.data);
-      if (value!.statusCode == 200 || value.statusCode == 201) {
+      appLog('data: ${value!.data}');
+      if (value.statusCode == 200 || value.statusCode == 201) {
         emit(
           UpdateAddressSuccessState(
             addressResponse: AddressResponse.fromJson(
@@ -73,7 +73,7 @@ class AddressCubit extends Cubit<AddressState> {
         emit(UpdateAddressErrorState(error: errorMsg));
       }
     }).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(UpdateAddressErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));
@@ -87,8 +87,8 @@ class AddressCubit extends Cubit<AddressState> {
       addressId: addressId,
     )
         .then((value) {
-      print("data: " + value!.data);
-      if (value!.statusCode == 200 || value.statusCode == 201) {
+      appLog('data: ${value!.data}');
+      if (value.statusCode == 200 || value.statusCode == 201) {
         emit(
           GetAddressByIdSuccessState(
             addressByIdResponse: GetAddressByIdResponse.fromJson(
@@ -103,7 +103,7 @@ class AddressCubit extends Cubit<AddressState> {
       }
     }).catchError(
       (error) {
-        print(error.toString());
+        appLog(error.toString());
         emit(GetAddressByIdErrorState(
           error: error is ApiException ? error.message : error.toString(),
         ));

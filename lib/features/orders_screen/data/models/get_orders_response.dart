@@ -9,19 +9,20 @@ class GetOrdersResponse {
     if (json['data'] != null) {
       data = <OrderData>[];
       json['data'].forEach((v) {
-        data!.add(new OrderData.fromJson(v));
+        data!.add(OrderData.fromJson(v));
       });
-    }    status = json['status'];
+    }
+    status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -61,7 +62,7 @@ class Data {
     if (json['data'] != null) {
       data = <OrderData>[];
       json['data'].forEach((v) {
-        data!.add(new OrderData.fromJson(v));
+        data!.add(OrderData.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -71,7 +72,7 @@ class Data {
     if (json['links'] != null) {
       links = <Links>[];
       json['links'].forEach((v) {
-        links!.add(new Links.fromJson(v));
+        links!.add(Links.fromJson(v));
       });
     }
     nextPageUrl = json['next_page_url'];
@@ -83,24 +84,24 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_page'] = this.currentPage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['current_page'] = currentPage;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['first_page_url'] = this.firstPageUrl;
-    data['from'] = this.from;
-    data['last_page'] = this.lastPage;
-    data['last_page_url'] = this.lastPageUrl;
-    if (this.links != null) {
-      data['links'] = this.links!.map((v) => v.toJson()).toList();
+    data['first_page_url'] = firstPageUrl;
+    data['from'] = from;
+    data['last_page'] = lastPage;
+    data['last_page_url'] = lastPageUrl;
+    if (links != null) {
+      data['links'] = links!.map((v) => v.toJson()).toList();
     }
-    data['next_page_url'] = this.nextPageUrl;
-    data['path'] = this.path;
-    data['per_page'] = this.perPage;
-    data['prev_page_url'] = this.prevPageUrl;
-    data['to'] = this.to;
-    data['total'] = this.total;
+    data['next_page_url'] = nextPageUrl;
+    data['path'] = path;
+    data['per_page'] = perPage;
+    data['prev_page_url'] = prevPageUrl;
+    data['to'] = to;
+    data['total'] = total;
     return data;
   }
 }
@@ -172,34 +173,34 @@ class OrderData {
     if (json['order_items'] != null) {
       orderItems = <OrderItems>[];
       json['order_items'].forEach((v) {
-        orderItems!.add(new OrderItems.fromJson(v));
+        orderItems!.add(OrderItems.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['status'] = this.status;
-    data['cost'] = this.cost;
-    data['shipping_fees'] = this.shippingFees;
-    data['total'] = this.total;
-    data['payment_method'] = this.paymentMethod;
-    data['payment_status'] = this.paymentStatus;
-    data['transaction_reference'] = this.transactionReference;
-    data['address_id'] = this.addressId;
-    data['bought_at'] = this.boughtAt;
-    data['shipped_at'] = this.shippedAt;
-    data['delivered_at'] = this.deliveredAt;
-    data['cancelled_at'] = this.cancelledAt;
-    data['deleted_by'] = this.deletedBy;
-    data['notes'] = this.notes;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.orderItems != null) {
-      data['order_items'] = this.orderItems!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['status'] = status;
+    data['cost'] = cost;
+    data['shipping_fees'] = shippingFees;
+    data['total'] = total;
+    data['payment_method'] = paymentMethod;
+    data['payment_status'] = paymentStatus;
+    data['transaction_reference'] = transactionReference;
+    data['address_id'] = addressId;
+    data['bought_at'] = boughtAt;
+    data['shipped_at'] = shippedAt;
+    data['delivered_at'] = deliveredAt;
+    data['cancelled_at'] = cancelledAt;
+    data['deleted_by'] = deletedBy;
+    data['notes'] = notes;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (orderItems != null) {
+      data['order_items'] = orderItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -237,15 +238,15 @@ class OrderItems {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['order_id'] = this.orderId;
-    data['product_id'] = this.productId;
-    data['quantity'] = this.quantity;
-    data['price'] = this.price;
-    data['total'] = this.total;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['order_id'] = orderId;
+    data['product_id'] = productId;
+    data['quantity'] = quantity;
+    data['price'] = price;
+    data['total'] = total;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -264,10 +265,10 @@ class Links {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['label'] = this.label;
-    data['active'] = this.active;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    data['label'] = label;
+    data['active'] = active;
     return data;
   }
 }

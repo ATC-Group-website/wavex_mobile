@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:wavex/core/components/header_widget.dart';
 import 'package:wavex/core/di/dependency_injection.dart';
-import 'package:wavex/core/route/route_strings/route_strings.dart';
 import 'package:wavex/core/theme/colors.dart';
-import 'package:wavex/core/utils/convert_to_arabic_date.dart';
-import 'package:wavex/features/sessions_screen/data/models/get_sessions_response.dart';
 import 'package:wavex/features/sessions_screen/data/models/my_sessions_response.dart';
 import 'package:wavex/features/sessions_screen/logic/sessions_cubit.dart';
-import 'package:wavex/main.dart';
 
 import '../../../../core/components/bottom_navigation_bar.dart';
 import '../../../../core/components/bottom_wave_painter.dart';
@@ -19,7 +14,7 @@ import '../../../../core/helper/cache_helper/cache_helper.dart';
 import '../../../../core/utils/format_data_to_string.dart';
 
 class SessionsScreen extends StatefulWidget {
-  const SessionsScreen({Key? key}) : super(key: key);
+  const SessionsScreen({super.key});
 
   @override
   State<SessionsScreen> createState() => _SessionsScreenState();
@@ -827,12 +822,12 @@ class _SessionsScreenState extends State<SessionsScreen> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -866,8 +861,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            const Color(0xFF26C6DA).withOpacity(0.1),
-                            const Color(0xFF26C6DA).withOpacity(0.05),
+                            const Color(0xFF26C6DA).withValues(alpha: 0.1),
+                            const Color(0xFF26C6DA).withValues(alpha: 0.05),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(16),
@@ -911,11 +906,12 @@ class _SessionsScreenState extends State<SessionsScreen> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(session.status).withOpacity(0.1),
+                        color: _getStatusColor(session.status)
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color:
-                              _getStatusColor(session.status).withOpacity(0.3),
+                          color: _getStatusColor(session.status)
+                              .withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),
@@ -955,7 +951,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF4DBDD5).withOpacity(0.1),
+                              color: const Color(0xFF4DBDD5)
+                                  .withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
@@ -1019,7 +1016,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.orange.withOpacity(0.1),
+                              color: Colors.orange.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
@@ -1065,13 +1062,13 @@ class _SessionsScreenState extends State<SessionsScreen> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        const Color(0xFF4DBDD5).withOpacity(0.05),
-                        const Color(0xFF4DBDD5).withOpacity(0.02),
+                        const Color(0xFF4DBDD5).withValues(alpha: 0.05),
+                        const Color(0xFF4DBDD5).withValues(alpha: 0.02),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: const Color(0xFF4DBDD5).withOpacity(0.2),
+                      color: const Color(0xFF4DBDD5).withValues(alpha: 0.2),
                       width: 1,
                     ),
                   ),
@@ -1080,7 +1077,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF4DBDD5).withOpacity(0.1),
+                          color: const Color(0xFF4DBDD5).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(
@@ -1120,7 +1117,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
 
                 if (session.isRefundable == true) ...[
                   const SizedBox(height: 16),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () {
@@ -1134,7 +1131,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                       ),
                       label: Text(
                         session.isFree ? "Request Cancel" : 'Request Refund',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -1179,13 +1176,6 @@ class _SessionsScreenState extends State<SessionsScreen> {
     );
   }
 
-  void _processRefund(Sessions session, String reason) {
-    // TODO: Add your refund processing logic here with reason
-    // This could include API calls, state updates, etc.
-    print(
-        'Processing refund for sessionProcessing refund for session: ${session.id} with reason: $reason');
-  }
-
   // void _handleRefund(Sessions session) {
   //   // Show confirmation dialog
   //   showDialog(
@@ -1221,7 +1211,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
   // void _processRefund(Sessions session) {
   //   // TODO: Add your refund processing logic here
   //   // This could include API calls, state updates, etc.
-  //   print('Processing refund for session: ${session.id}');
+  //   appLog('Processing refund for session: ${session.id}');
   // }
 
 // Helper method to get status color
@@ -1242,14 +1232,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // navigatorKey.currentState!.pushNamed(
-        //   RouteStrings.profileScreen,
-        // );
-        navigatorKey.currentState!.pop();
-        return false; // عشان ما يرجعش للصفحة القديمة
-      },
+    return PopScope(
+      canPop: true,
       child: Scaffold(
         body: Stack(
           children: [
@@ -1257,7 +1241,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
             // Main content
             Column(
               children: [
-                HeaderWidget(
+                const HeaderWidget(
                   isWithBack: true,
                 ),
                 Expanded(
@@ -1289,7 +1273,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
-                          if(state is GetSessionsSuccessState && sessionsData.isEmpty){
+                          if (state is GetSessionsSuccessState &&
+                              sessionsData.isEmpty) {
                             return const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Center(child: Text("No Sessions Found")),
@@ -1364,7 +1349,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
                                 SnackBar(
-                                  content: Text(state.error ?? ""),
+                                  content: Text(state.error),
                                   // <-- show Stripe error
                                   backgroundColor: Colors.red,
                                 ),
@@ -1389,7 +1374,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
                                 SnackBar(
-                                  content: Text(state.error ?? ""),
+                                  content: Text(state.error),
                                   // <-- show Stripe error
                                   backgroundColor: Colors.red,
                                 ),
@@ -1502,11 +1487,10 @@ class RefundDialog extends StatefulWidget {
   final Sessions session;
   final bool isFree;
 
-  const RefundDialog({Key? key, required this.isFree, required this.session})
-      : super(key: key);
+  const RefundDialog({super.key, required this.isFree, required this.session});
 
   @override
-  _RefundDialogState createState() => _RefundDialogState();
+  State<RefundDialog> createState() => _RefundDialogState();
 }
 
 class _RefundDialogState extends State<RefundDialog> {

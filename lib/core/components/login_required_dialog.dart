@@ -6,11 +6,11 @@ import '../app_localization.dart';
 import '../theme/colors.dart';
 
 class LoginRequiredDialog extends StatelessWidget {
-  const LoginRequiredDialog({Key? key}) : super(key: key);
+  const LoginRequiredDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -21,7 +21,10 @@ class LoginRequiredDialog extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 10)),
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 10)),
           ],
         ),
         child: Column(
@@ -35,13 +38,19 @@ class LoginRequiredDialog extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(color: Colors.amber.shade100, borderRadius: BorderRadius.circular(8)),
-                      child: Icon(Icons.lock, color: Colors.amber.shade700, size: 20),
+                      decoration: BoxDecoration(
+                          color: Colors.amber.shade100,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Icon(Icons.lock,
+                          color: Colors.amber.shade700, size: 20),
                     ),
                     const SizedBox(width: 12),
                     Text(
                       localizations.translate("login_required"),
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black87),
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87),
                     ),
                   ],
                 ),
@@ -58,7 +67,9 @@ class LoginRequiredDialog extends StatelessWidget {
             // Icon
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(50)),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(50)),
               child: Stack(
                 children: [
                   Icon(Icons.person, size: 48, color: Colors.grey.shade600),
@@ -67,8 +78,11 @@ class LoginRequiredDialog extends StatelessWidget {
                     right: -2,
                     child: Container(
                       padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(color: Colors.grey.shade700, borderRadius: BorderRadius.circular(12)),
-                      child: const Icon(Icons.lock, size: 16, color: Colors.white),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade700,
+                          borderRadius: BorderRadius.circular(12)),
+                      child:
+                          const Icon(Icons.lock, size: 16, color: Colors.white),
                     ),
                   ),
                 ],
@@ -79,7 +93,10 @@ class LoginRequiredDialog extends StatelessWidget {
             // Main text
             Text(
               localizations.translate("login_required_message"),
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black87),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
@@ -87,7 +104,8 @@ class LoginRequiredDialog extends StatelessWidget {
             // Subtitle text
             Text(
               localizations.translate("login_required_subtitle"),
-              style: const TextStyle(fontSize: 14, color: Colors.grey, height: 1.4),
+              style: const TextStyle(
+                  fontSize: 14, color: Colors.grey, height: 1.4),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
@@ -103,10 +121,13 @@ class LoginRequiredDialog extends StatelessWidget {
                       backgroundColor: Colors.grey.shade500,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                       elevation: 0,
                     ),
-                    child: Text(localizations.translate("cancel"), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                    child: Text(localizations.translate("cancel"),
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500)),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -114,15 +135,19 @@ class LoginRequiredDialog extends StatelessWidget {
                 // Login button
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => navigatorKey.currentState!.pushNamed(RouteStrings.loginScreen),
+                    onPressed: () => navigatorKey.currentState!
+                        .pushNamed(RouteStrings.loginScreen),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryColor,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                       elevation: 0,
                     ),
-                    child: Text(localizations.translate("login"), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                    child: Text(localizations.translate("login"),
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500)),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -130,14 +155,20 @@ class LoginRequiredDialog extends StatelessWidget {
                 // Sign Up button
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () => navigatorKey.currentState!.pushNamed(RouteStrings.registerStepOneScreen),
+                    onPressed: () => navigatorKey.currentState!
+                        .pushNamed(RouteStrings.registerStepOneScreen),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.teal,
-                      side: BorderSide(color: AppColors.primaryColor),
+                      side: const BorderSide(color: AppColors.primaryColor),
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                     ),
-                    child: Text(localizations.translate("sign_up"), style: const TextStyle(color: AppColors.primaryColor, fontSize: 15, fontWeight: FontWeight.w500)),
+                    child: Text(localizations.translate("sign_up"),
+                        style: const TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500)),
                   ),
                 ),
               ],
@@ -148,4 +179,3 @@ class LoginRequiredDialog extends StatelessWidget {
     );
   }
 }
-

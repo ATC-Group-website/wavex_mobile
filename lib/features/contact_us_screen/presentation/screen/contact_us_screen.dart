@@ -8,7 +8,6 @@ import 'package:wavex/features/contact_us_screen/logic/contact_us_cubit.dart';
 
 import '../../../../core/components/bottom_navigation_bar.dart';
 import '../../../../core/components/bottom_wave_painter.dart';
-import '../../../../core/constants/constants.dart';
 
 class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({super.key});
@@ -68,7 +67,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          HeaderWidget(
+          const HeaderWidget(
             isWithBack: true,
           ),
           BlocListener<ContactUsCubit, ContactUsState>(
@@ -103,7 +102,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
-                      content: Text(state.error ?? ""),
+                      content: Text(state.error),
                       backgroundColor: const Color(0xFF45818B),
                       duration: const Duration(seconds: 2),
                     ),
@@ -124,51 +123,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             currentIndex: _selectedBottomNavIndex,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      height: 100,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF4DB6AC),
-            Color(0xFF45818B),
-          ],
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  // Handle back navigation
-                },
-              ),
-              const Expanded(
-                child: Center(
-                  child: Text(
-                    'WAVEX',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 48), // Balance the back button
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -310,7 +264,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonFormField<String>(
-            value: selectedTopic,
+            initialValue: selectedTopic,
             items: topics
                 .map((topic) => DropdownMenuItem(
                       value: topic,

@@ -20,7 +20,7 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
-  int _selectedBottomNavIndex = 2; // Shopping bag icon is selected
+  final int _selectedBottomNavIndex = 2; // Shopping bag icon is selected
 
   List<OrderItems> _cartItems = [];
 
@@ -38,12 +38,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
       body: Column(
         children: [
-          HeaderWidget(isWithBack: true),
+          const HeaderWidget(isWithBack: true),
           BlocListener<ShopCartCubit, ShopCartState>(
             listener: (context, state) {
               if (state is GetCartSuccessState) {
@@ -62,7 +62,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 }
               }
             },
-            child: SizedBox.shrink(),
+            child: const SizedBox.shrink(),
           ),
           Expanded(child: _buildCartScreen(localizations)),
           const SizedBox(height: 30),
@@ -97,22 +97,29 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ),
         ),
         Expanded(
-          child: _cartItems.isNotEmpty?  Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: _cartItems.length,
-              itemBuilder: (context, index) {
-                final item = _cartItems[index];
-                return _buildCartItem(item, index, localizations);
-              },
-            ),
-          ) : Center(child: Text("Cart is Empty",),),
+          child: _cartItems.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.75,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                    ),
+                    itemCount: _cartItems.length,
+                    itemBuilder: (context, index) {
+                      final item = _cartItems[index];
+                      return _buildCartItem(item, index, localizations);
+                    },
+                  ),
+                )
+              : const Center(
+                  child: Text(
+                    "Cart is Empty",
+                  ),
+                ),
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -120,10 +127,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: _cartItems.isNotEmpty? () {
-                navigatorKey.currentState!
-                    .pushNamed(RouteStrings.checkoutScreen);
-              }: null,
+              onPressed: _cartItems.isNotEmpty
+                  ? () {
+                      navigatorKey.currentState!
+                          .pushNamed(RouteStrings.checkoutScreen);
+                    }
+                  : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF45818B),
                 foregroundColor: Colors.white,
@@ -155,7 +164,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

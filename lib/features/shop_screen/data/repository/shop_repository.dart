@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';
 import '../../../../core/networks/request_body.dart';
@@ -31,8 +32,8 @@ class ShopRepository {
         method: Method.GET,
       );
       return response;
-    }catch (e) {
-      print("error error: $e");
+    } catch (e) {
+      appLog("error error: $e");
       rethrow;
     }
   }
@@ -45,7 +46,7 @@ class ShopRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }
@@ -59,8 +60,8 @@ class ShopRepository {
         method: Method.POST,
       );
       return response;
-    }catch (e) {
-      print("error error: $e");
+    } catch (e) {
+      appLog("error error: $e");
       rethrow;
     }
   }

@@ -31,10 +31,11 @@ final class GetProgramsErrorState extends HomeState {
   final String error;
 
   GetProgramsErrorState({required this.error});
-}final class MarkNotificationAsReadLoadingState extends HomeState {}
-
-final class MarkNotificationAsReadSuccessState extends HomeState {
 }
+
+final class MarkNotificationAsReadLoadingState extends HomeState {}
+
+final class MarkNotificationAsReadSuccessState extends HomeState {}
 
 final class MarkNotificationAsReadErrorState extends HomeState {
   final String error;
@@ -48,7 +49,8 @@ final class GetNotificationSuccessState extends HomeState {
   final List<NotificationData> notificationsResponse;
   final bool hasMore;
 
-  GetNotificationSuccessState({required this.notificationsResponse,required this.hasMore});
+  GetNotificationSuccessState(
+      {required this.notificationsResponse, required this.hasMore});
 }
 
 final class GetNotificationErrorState extends HomeState {

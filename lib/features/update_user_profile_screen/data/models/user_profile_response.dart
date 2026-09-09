@@ -6,18 +6,18 @@ class UserProfileResponse {
   UserProfileResponse({this.data, this.status, this.message});
 
   UserProfileResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -38,22 +38,22 @@ class Data {
   // List<dynamic>? orders;
   // List<Sessions>? sessions;
 
-  Data(
-      {this.id,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.gender,
-        this.phone,
-        this.image,
-        this.dateOfBirth,
-        this.emergencyNumber,
-        this.deviceToken,
-        this.medicalConditions,
-        this.createdAt,
-        // this.orders,
-        // this.sessions
-      });
+  Data({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.gender,
+    this.phone,
+    this.image,
+    this.dateOfBirth,
+    this.emergencyNumber,
+    this.deviceToken,
+    this.medicalConditions,
+    this.createdAt,
+    // this.orders,
+    // this.sessions
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -83,19 +83,19 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['gender'] = this.gender;
-    data['phone'] = this.phone;
-    data['image'] = this.image;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['device_token'] = this.deviceToken;
-    data['emergency_number'] = this.emergencyNumber;
-    data['medical_conditions'] = this.medicalConditions;
-    data['created_at'] = this.createdAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['gender'] = gender;
+    data['phone'] = phone;
+    data['image'] = image;
+    data['date_of_birth'] = dateOfBirth;
+    data['device_token'] = deviceToken;
+    data['emergency_number'] = emergencyNumber;
+    data['medical_conditions'] = medicalConditions;
+    data['created_at'] = createdAt;
     // if (this.orders != null) {
     //   data['orders'] = this.orders!.map((v) => v).toList();
     // }
@@ -130,25 +130,25 @@ class Sessions {
 
   Sessions(
       {this.id,
-        this.programId,
-        this.instructorId,
-        this.locationId,
-        this.sessionDate,
-        this.startTime,
-        this.endTime,
-        this.maxCapacity,
-        this.currentBookings,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.price,
-        this.discountedPrice,
-        this.discountAmount,
-        this.discountPercentage,
-        this.pivot,
-        this.program,
-        this.location,
-        this.instructor});
+      this.programId,
+      this.instructorId,
+      this.locationId,
+      this.sessionDate,
+      this.startTime,
+      this.endTime,
+      this.maxCapacity,
+      this.currentBookings,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.price,
+      this.discountedPrice,
+      this.discountAmount,
+      this.discountPercentage,
+      this.pivot,
+      this.program,
+      this.location,
+      this.instructor});
 
   Sessions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -167,46 +167,45 @@ class Sessions {
     discountedPrice = json['discounted_price'];
     discountAmount = json['discount_amount'];
     discountPercentage = json['discount_percentage'];
-    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+    pivot = json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null;
     program =
-    json['program'] != null ? new Program.fromJson(json['program']) : null;
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
+        json['program'] != null ? Program.fromJson(json['program']) : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
     instructor = json['instructor'] != null
-        ? new Instructor.fromJson(json['instructor'])
+        ? Instructor.fromJson(json['instructor'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['program_id'] = this.programId;
-    data['instructor_id'] = this.instructorId;
-    data['location_id'] = this.locationId;
-    data['session_date'] = this.sessionDate;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['max_capacity'] = this.maxCapacity;
-    data['current_bookings'] = this.currentBookings;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['price'] = this.price;
-    data['discounted_price'] = this.discountedPrice;
-    data['discount_amount'] = this.discountAmount;
-    data['discount_percentage'] = this.discountPercentage;
-    if (this.pivot != null) {
-      data['pivot'] = this.pivot!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['program_id'] = programId;
+    data['instructor_id'] = instructorId;
+    data['location_id'] = locationId;
+    data['session_date'] = sessionDate;
+    data['start_time'] = startTime;
+    data['end_time'] = endTime;
+    data['max_capacity'] = maxCapacity;
+    data['current_bookings'] = currentBookings;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['price'] = price;
+    data['discounted_price'] = discountedPrice;
+    data['discount_amount'] = discountAmount;
+    data['discount_percentage'] = discountPercentage;
+    if (pivot != null) {
+      data['pivot'] = pivot!.toJson();
     }
-    if (this.program != null) {
-      data['program'] = this.program!.toJson();
+    if (program != null) {
+      data['program'] = program!.toJson();
     }
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    if (this.instructor != null) {
-      data['instructor'] = this.instructor!.toJson();
+    if (instructor != null) {
+      data['instructor'] = instructor!.toJson();
     }
     return data;
   }
@@ -224,9 +223,9 @@ class Pivot {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['session_id'] = this.sessionId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['session_id'] = sessionId;
     return data;
   }
 }
@@ -243,9 +242,9 @@ class Program {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -266,11 +265,11 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['area_name'] = this.areaName;
-    data['venue_name'] = this.venueName;
-    data['full_address'] = this.fullAddress;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['area_name'] = areaName;
+    data['venue_name'] = venueName;
+    data['full_address'] = fullAddress;
     return data;
   }
 }
@@ -289,10 +288,10 @@ class Instructor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
     return data;
   }
 }

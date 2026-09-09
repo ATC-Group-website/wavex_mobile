@@ -6,18 +6,18 @@ class MySessionsResponse {
   MySessionsResponse({this.data, this.status, this.message});
 
   MySessionsResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -29,19 +29,19 @@ class Data {
   Data({this.user, this.pagination});
 
   Data.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     return data;
   }
@@ -58,12 +58,12 @@ class User {
 
   User(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.phone,
-        this.email,
-        this.image,
-        this.sessions});
+      this.firstName,
+      this.lastName,
+      this.phone,
+      this.email,
+      this.image,
+      this.sessions});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -75,21 +75,21 @@ class User {
     if (json['sessions'] != null) {
       sessions = <Sessions>[];
       json['sessions'].forEach((v) {
-        sessions!.add(new Sessions.fromJson(v));
+        sessions!.add(Sessions.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['phone'] = this.phone;
-    data['email'] = this.email;
-    data['image'] = this.image;
-    if (this.sessions != null) {
-      data['sessions'] = this.sessions!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['phone'] = phone;
+    data['email'] = email;
+    data['image'] = image;
+    if (sessions != null) {
+      data['sessions'] = sessions!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -114,19 +114,19 @@ class Sessions {
 
   Sessions(
       {this.id,
-        this.programId,
-        this.bookingDate,
-        this.instructorId,
-        this.locationId,
-        this.sessionDate,
-        this.startTime,
-        this.isRefundable,
-        this.endTime,
-        this.price,
-        this.status,
-        this.program,
-        this.location,
-        this.instructor});
+      this.programId,
+      this.bookingDate,
+      this.instructorId,
+      this.locationId,
+      this.sessionDate,
+      this.startTime,
+      this.isRefundable,
+      this.endTime,
+      this.price,
+      this.status,
+      this.program,
+      this.location,
+      this.instructor});
 
   Sessions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -142,37 +142,36 @@ class Sessions {
     price = json['price'];
     status = json['status'];
     program =
-    json['program'] != null ? new Program.fromJson(json['program']) : null;
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
+        json['program'] != null ? Program.fromJson(json['program']) : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
     instructor = json['instructor'] != null
-        ? new Instructor.fromJson(json['instructor'])
+        ? Instructor.fromJson(json['instructor'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['program_id'] = this.programId;
-    data['instructor_id'] = this.instructorId;
-    data['is_free'] = this.isFree;
-    data['location_id'] = this.locationId;
-    data['session_date'] = this.sessionDate;
-    data['booking_date'] = this.bookingDate;
-    data['is_refundable'] = this.isRefundable;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['price'] = this.price;
-    data['status'] = this.status;
-    if (this.program != null) {
-      data['program'] = this.program!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['program_id'] = programId;
+    data['instructor_id'] = instructorId;
+    data['is_free'] = isFree;
+    data['location_id'] = locationId;
+    data['session_date'] = sessionDate;
+    data['booking_date'] = bookingDate;
+    data['is_refundable'] = isRefundable;
+    data['start_time'] = startTime;
+    data['end_time'] = endTime;
+    data['price'] = price;
+    data['status'] = status;
+    if (program != null) {
+      data['program'] = program!.toJson();
     }
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    if (this.instructor != null) {
-      data['instructor'] = this.instructor!.toJson();
+    if (instructor != null) {
+      data['instructor'] = instructor!.toJson();
     }
     return data;
   }
@@ -190,9 +189,9 @@ class Program {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -209,9 +208,9 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['area_name'] = this.areaName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['area_name'] = areaName;
     return data;
   }
 }
@@ -232,11 +231,11 @@ class Instructor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['image'] = image;
     return data;
   }
 }
@@ -254,14 +253,14 @@ class Pagination {
 
   Pagination(
       {this.currentPage,
-        this.lastPage,
-        this.perPage,
-        this.total,
-        this.from,
-        this.to,
-        this.hasMorePages,
-        this.nextPageUrl,
-        this.prevPageUrl});
+      this.lastPage,
+      this.perPage,
+      this.total,
+      this.from,
+      this.to,
+      this.hasMorePages,
+      this.nextPageUrl,
+      this.prevPageUrl});
 
   Pagination.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -276,16 +275,16 @@ class Pagination {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_page'] = this.currentPage;
-    data['last_page'] = this.lastPage;
-    data['per_page'] = this.perPage;
-    data['total'] = this.total;
-    data['from'] = this.from;
-    data['to'] = this.to;
-    data['has_more_pages'] = this.hasMorePages;
-    data['next_page_url'] = this.nextPageUrl;
-    data['prev_page_url'] = this.prevPageUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['current_page'] = currentPage;
+    data['last_page'] = lastPage;
+    data['per_page'] = perPage;
+    data['total'] = total;
+    data['from'] = from;
+    data['to'] = to;
+    data['has_more_pages'] = hasMorePages;
+    data['next_page_url'] = nextPageUrl;
+    data['prev_page_url'] = prevPageUrl;
     return data;
   }
 }

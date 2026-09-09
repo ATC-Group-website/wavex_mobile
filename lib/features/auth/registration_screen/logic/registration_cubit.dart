@@ -1,7 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/auth/registration_screen/data/models/register_response.dart';
@@ -47,7 +46,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       phone: phone,
     )
         .then((value) {
-      print("data: " + value!.data);
+      appLog('data: ${value!.data}');
 
       if (value.statusCode == 200 || value.statusCode == 201) {
         emit(
@@ -59,11 +58,12 @@ class RegistrationCubit extends Cubit<RegistrationState> {
         );
       } else {
         // هنا السيرفر راجع error زي 422
-        final errorMsg = jsonDecode(value.data)["message"] ?? "Registration failed";
+        final errorMsg =
+            jsonDecode(value.data)["message"] ?? "Registration failed";
         emit(RegistrationErrorState(error: errorMsg));
       }
     }).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(RegistrationErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));

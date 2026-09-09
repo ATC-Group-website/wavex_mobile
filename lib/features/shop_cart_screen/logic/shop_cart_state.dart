@@ -19,8 +19,6 @@ final class GetCartErrorState extends ShopCartState {
   GetCartErrorState({required this.error});
 }
 
-
-
 final class AddToCartLoadingState extends ShopCartState {}
 
 final class AddToCartSuccessState extends ShopCartState {
@@ -38,7 +36,6 @@ final class AddToCartErrorState extends ShopCartState {
 final class DecreaseItemLoadingState extends ShopCartState {}
 
 final class DecreaseItemSuccessState extends ShopCartState {
-
   final bool isFromDecrease;
 
   DecreaseItemSuccessState({required this.isFromDecrease});

@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:wavex/features/add_manual_address_screen/data/models/address_request_body.dart';
 
 import '../../../../core/networks/api_manager.dart';
@@ -14,12 +15,11 @@ class AddressRepository {
         body: RequestBody(
           address.toJson(),
         ),
-
         method: Method.POST,
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }
@@ -38,7 +38,7 @@ class AddressRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }
@@ -53,7 +53,7 @@ class AddressRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       rethrow;
     }
   }

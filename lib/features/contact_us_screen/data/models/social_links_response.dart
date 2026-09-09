@@ -6,18 +6,18 @@ class SocialLinksResponse {
   SocialLinksResponse({this.data, this.status, this.message});
 
   SocialLinksResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -32,11 +32,11 @@ class Data {
 
   Data(
       {this.email,
-        this.facebook,
-        this.x,
-        this.instagram,
-        this.tiktok,
-        this.linkedin});
+      this.facebook,
+      this.x,
+      this.instagram,
+      this.tiktok,
+      this.linkedin});
 
   Data.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -48,13 +48,13 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['facebook'] = this.facebook;
-    data['x'] = this.x;
-    data['instagram'] = this.instagram;
-    data['tiktok'] = this.tiktok;
-    data['linkedin'] = this.linkedin;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['email'] = email;
+    data['facebook'] = facebook;
+    data['x'] = x;
+    data['instagram'] = instagram;
+    data['tiktok'] = tiktok;
+    data['linkedin'] = linkedin;
     return data;
   }
 }

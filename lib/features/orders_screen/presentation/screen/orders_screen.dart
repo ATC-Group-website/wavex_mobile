@@ -12,10 +12,9 @@ import '../../../../core/helper/cache_helper/cache_helper.dart';
 import '../../../../core/route/route_strings/route_strings.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/utils/format_data_to_string.dart';
-import '../widgets/enhanced_order_card.dart';
 
 class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({Key? key}) : super(key: key);
+  const OrdersScreen({super.key});
 
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();
@@ -26,7 +25,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   int currentPage = 1;
   bool isLoadingMore = false;
   bool hasMore = true;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -57,7 +56,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           Column(
             children: [
               // Header
-              HeaderWidget(
+              const HeaderWidget(
                 isWithBack: true,
               ),
 
@@ -126,13 +125,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   // );
                                   return _buildOrderCard(order);
                                 }
-                                if(ordersData.isEmpty){
+                                if (ordersData.isEmpty) {
                                   return const Padding(
                                     padding: EdgeInsets.all(8.0),
-                                    child: Center(child: Text("No Orders Found")),
+                                    child:
+                                        Center(child: Text("No Orders Found")),
                                   );
-                                }
-                                else {
+                                } else {
                                   return const Padding(
                                     padding: EdgeInsets.all(16),
                                     child: Center(
@@ -592,6 +591,6 @@ class Order {
     final amPm = hour >= 12 ? 'PM' : 'AM';
     final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
 
-    return '${dateTime.day} $weekday - $month - ${displayHour} $amPm';
+    return '${dateTime.day} $weekday - $month - $displayHour $amPm';
   }
 }

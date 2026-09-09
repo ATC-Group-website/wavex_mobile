@@ -10,8 +10,7 @@ import '../../../core/components/header_widget.dart';
 import '../../home_screen/data/models/get_instructors_response.dart';
 
 class InstructorsScreen extends StatefulWidget {
-  const InstructorsScreen({Key? key, required this.instructorId})
-      : super(key: key);
+  const InstructorsScreen({super.key, required this.instructorId});
 
   final int instructorId;
 
@@ -57,7 +56,7 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
     return Scaffold(
       body: Column(
         children: [
-          HeaderWidget(isWithBack: true),
+          const HeaderWidget(isWithBack: true),
           BlocConsumer<InstructorsCubit, InstructorsState>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -196,7 +195,7 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
         //     ),
         //   ],
         // ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Center(
           child: Text(
             'Find Your Favorite instructor now and know more about them',
@@ -332,8 +331,7 @@ class _InstructorsScreenState extends State<InstructorsScreen> {
 class InstructorProfileCard extends StatelessWidget {
   final InstructorData instructor;
 
-  const InstructorProfileCard({Key? key, required this.instructor})
-      : super(key: key);
+  const InstructorProfileCard({super.key, required this.instructor});
 
   @override
   Widget build(BuildContext context) {
@@ -396,14 +394,13 @@ class InstructorProfileCard extends StatelessWidget {
 class QualificationsSection extends StatelessWidget {
   final List<String> qualifications;
 
-  const QualificationsSection({Key? key, required this.qualifications})
-      : super(key: key);
+  const QualificationsSection({super.key, required this.qualifications});
 
   @override
   Widget build(BuildContext context) {
     if (qualifications.isEmpty) return const SizedBox.shrink();
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColors.primaryColor)),
@@ -460,8 +457,7 @@ class QualificationsSection extends StatelessWidget {
 class ExperienceSection extends StatelessWidget {
   final List<String> experiences;
 
-  const ExperienceSection({Key? key, required this.experiences})
-      : super(key: key);
+  const ExperienceSection({super.key, required this.experiences});
 
   @override
   Widget build(BuildContext context) {

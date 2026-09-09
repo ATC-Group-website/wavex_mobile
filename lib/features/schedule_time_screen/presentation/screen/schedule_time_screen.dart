@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wavex/core/components/header_widget.dart';
-import 'package:wavex/core/route/route_strings/route_strings.dart';
 import '../../../../core/components/bottom_navigation_bar.dart';
 import '../../../../core/components/bottom_wave_painter.dart';
 import '../../../../core/theme/colors.dart';
-import '../../../../main.dart';
 
 class ScheduleTimeScreen extends StatefulWidget {
   const ScheduleTimeScreen({super.key});
@@ -16,9 +13,9 @@ class ScheduleTimeScreen extends StatefulWidget {
 }
 
 class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
-  int _currentNavIndex = 1; // Dumbbell icon selected
+  final int _currentNavIndex = 1; // Dumbbell icon selected
   int _seatCount = 1;
-  Set<String> _selectedTimes = {'12:30 PM', '4:30 PM', '6:30 PM'};
+  final Set<String> _selectedTimes = {'12:30 PM', '4:30 PM', '6:30 PM'};
   bool _isBooking = false;
 
   final List<TimeSlot> _timeSlots = [
@@ -36,7 +33,9 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          HeaderWidget(isWithBack: true,),
+          const HeaderWidget(
+            isWithBack: true,
+          ),
 
           // Main content
           Expanded(
@@ -181,7 +180,7 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
                           ),
                           const SizedBox(height: 16),
                           Container(
-                            width: MediaQuery.of(context).size.width *.8,
+                            width: MediaQuery.of(context).size.width * .8,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 10,
@@ -219,14 +218,12 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
                                 valueColor:
                                     AlwaysStoppedAnimation<Color>(Colors.white),
                               )
-                            :  Text(
-                                'Book Now',
+                            : Text('Book Now',
                                 style: GoogleFonts.inter().copyWith(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                )
-                              ),
+                                )),
                       ),
                     ),
                   ),
@@ -286,7 +283,7 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -303,41 +300,6 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
           ),
         );
       }).toList(),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, int index, {bool isSelected = false}) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentNavIndex = index;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? const Color(0xFF26C6DA)
-                  : const Color(0xFF999999),
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Container(
-              width: 4,
-              height: 4,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:
-                    isSelected ? const Color(0xFF26C6DA) : Colors.transparent,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -368,13 +330,13 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
   Future<void> _handleBooking() async {
     if (_selectedTimes.isEmpty) {
       ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-        const SnackBar(
-          content: Text('Please select at least one time slot'),
-          backgroundColor: Colors.red,
-        ),
-      );
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text('Please select at least one time slot'),
+            backgroundColor: Colors.red,
+          ),
+        );
       return;
     }
 
@@ -384,6 +346,7 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
 
     // Simulate booking process
     await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
 
     setState(() {
       _isBooking = false;
@@ -391,14 +354,14 @@ class _ScheduleTimeScreenState extends State<ScheduleTimeScreen> {
     // navigatorKey.currentState!.pushNamed(RouteStrings.contactUsScreen);
     // Show success message
     ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-      SnackBar(
-        content: Text(
-            'Successfully booked ${_selectedTimes.length} time slot(s) for $_seatCount spot(s)!'),
-        backgroundColor: const Color(0xFF26C6DA),
-      ),
-    );
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+              'Successfully booked ${_selectedTimes.length} time slot(s) for $_seatCount spot(s)!'),
+          backgroundColor: const Color(0xFF26C6DA),
+        ),
+      );
   }
 }
 

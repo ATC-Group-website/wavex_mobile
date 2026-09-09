@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math' as math;
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,6 @@ import '../../../../../core/app_localization.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/components/bottom_wave_painter.dart';
 import '../../../../../core/components/gradient_button.dart';
-import '../../../../../core/constants/constants.dart';
 import '../../../../../main.dart';
 import '../../logic/registration_cubit.dart';
 
@@ -63,7 +62,7 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
 
     List<int> imageBytes = await pickedFile.readAsBytes();
     String base64String = base64Encode(imageBytes);
-    print("Base64 String: $base64String");
+    appLog("Base64 String: $base64String");
 
     return base64String;
   }
@@ -97,12 +96,11 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    final top = MediaQuery.of(context).padding.top;
 
     return Scaffold(
       body: Column(
         children: [
-          HeaderWidget(
+          const HeaderWidget(
             isWithBack: true,
           ),
           Expanded(
@@ -139,7 +137,7 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
                             );
                         }
                       },
-                      child: SizedBox.shrink(),
+                      child: const SizedBox.shrink(),
                     ),
 
                     _label(loc.translate("password"), requiredMark: true),
@@ -520,18 +518,6 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
     );
   }
 
-  Widget _circleIconButton(
-      {required IconData icon, required VoidCallback onTap}) {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration:
-          const BoxDecoration(color: Color(0xFF26C6DA), shape: BoxShape.circle),
-      child:
-          IconButton(icon: Icon(icon, color: Colors.white), onPressed: onTap),
-    );
-  }
-
   Future<void> _pickImage() async {
     try {
       final img = await _picker.pickImage(
@@ -540,10 +526,12 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
         maxWidth: 1024,
         imageQuality: 85,
       );
+      if (!mounted) return;
       if (img != null) {
         setState(() => _pickedImage = File(img.path));
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
@@ -585,6 +573,7 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
     // String fullName = widget.fullName;
     // var result = splitFullName(fullName);
     String? base64Image = await convertImageToBase64(_pickedImage);
+    if (!mounted) return;
     RegistrationCubit.get(context).register(
       firstName: widget.firstName,
       lastName: widget.lastName,
@@ -592,7 +581,7 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
       gender: widget.gender,
       password: _password.text.trim(),
       dateOfBirth: widget.dop,
-      phone: widget.phone ?? "",
+      phone: widget.phone,
       emergencyNumber: _emergencyNumber.text,
       medicalConditions: _medicalConditions.text,
       deviceToken: CacheHelper.getdata(key: "fcmToken"),
@@ -604,16 +593,5 @@ class _RegisterStepTwoScreenState extends State<RegisterStepTwoScreen> {
     //       content: Text(loc.translate("account_created_success")),
     //       backgroundColor: const Color(0xFF26C6DA)),
     // );
-  }
-
-  void _social(String provider) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-            content: Text(
-                '$provider ${AppLocalizations.of(context).translate("sign_up_tapped")}'),
-            backgroundColor: const Color(0xFF26C6DA)),
-      );
   }
 }

@@ -6,18 +6,18 @@ class BookFreeSessionResponse {
   BookFreeSessionResponse({this.data, this.status, this.message});
 
   BookFreeSessionResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -36,15 +36,15 @@ class Data {
 
   Data(
       {this.userId,
-        this.sessionId,
-        this.bookingReference,
-        this.bookingDate,
-        this.bookingStatus,
-        this.updatedAt,
-        this.createdAt,
-        this.id,
-        this.user,
-        this.session});
+      this.sessionId,
+      this.bookingReference,
+      this.bookingDate,
+      this.bookingStatus,
+      this.updatedAt,
+      this.createdAt,
+      this.id,
+      this.user,
+      this.session});
 
   Data.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -55,26 +55,26 @@ class Data {
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
     id = json['id'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     session =
-    json['session'] != null ? new Session.fromJson(json['session']) : null;
+        json['session'] != null ? Session.fromJson(json['session']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['session_id'] = this.sessionId;
-    data['booking_reference'] = this.bookingReference;
-    data['booking_date'] = this.bookingDate;
-    data['booking_status'] = this.bookingStatus;
-    data['updated_at'] = this.updatedAt;
-    data['created_at'] = this.createdAt;
-    data['id'] = this.id;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['session_id'] = sessionId;
+    data['booking_reference'] = bookingReference;
+    data['booking_date'] = bookingDate;
+    data['booking_status'] = bookingStatus;
+    data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.session != null) {
-      data['session'] = this.session!.toJson();
+    if (session != null) {
+      data['session'] = session!.toJson();
     }
     return data;
   }
@@ -100,21 +100,21 @@ class User {
 
   User(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.phone,
-        this.dateOfBirth,
-        this.gender,
-        this.medicalConditions,
-        this.emailVerifiedAt,
-        this.image,
-        this.isActive,
-        this.deviceToken,
-        this.timezone,
-        this.createdAt,
-        this.updatedAt,
-        this.emergencyNumber});
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.phone,
+      this.dateOfBirth,
+      this.gender,
+      this.medicalConditions,
+      this.emailVerifiedAt,
+      this.image,
+      this.isActive,
+      this.deviceToken,
+      this.timezone,
+      this.createdAt,
+      this.updatedAt,
+      this.emergencyNumber});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -136,23 +136,23 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['gender'] = this.gender;
-    data['medical_conditions'] = this.medicalConditions;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['image'] = this.image;
-    data['is_active'] = this.isActive;
-    data['device_token'] = this.deviceToken;
-    data['timezone'] = this.timezone;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['emergency_number'] = this.emergencyNumber;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['date_of_birth'] = dateOfBirth;
+    data['gender'] = gender;
+    data['medical_conditions'] = medicalConditions;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['image'] = image;
+    data['is_active'] = isActive;
+    data['device_token'] = deviceToken;
+    data['timezone'] = timezone;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['emergency_number'] = emergencyNumber;
     return data;
   }
 }
@@ -179,23 +179,23 @@ class Session {
 
   Session(
       {this.id,
-        this.programId,
-        this.instructorId,
-        this.locationId,
-        this.sessionDate,
-        this.startTime,
-        this.endTime,
-        this.maxCapacity,
-        this.currentBookings,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.price,
-        this.discountedPrice,
-        this.discountAmount,
-        this.discountPercentage,
-        this.isFree,
-        this.instructor});
+      this.programId,
+      this.instructorId,
+      this.locationId,
+      this.sessionDate,
+      this.startTime,
+      this.endTime,
+      this.maxCapacity,
+      this.currentBookings,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.price,
+      this.discountedPrice,
+      this.discountAmount,
+      this.discountPercentage,
+      this.isFree,
+      this.instructor});
 
   Session.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -219,25 +219,25 @@ class Session {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['program_id'] = this.programId;
-    data['instructor_id'] = this.instructorId;
-    data['location_id'] = this.locationId;
-    data['session_date'] = this.sessionDate;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['max_capacity'] = this.maxCapacity;
-    data['current_bookings'] = this.currentBookings;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['price'] = this.price;
-    data['discounted_price'] = this.discountedPrice;
-    data['discount_amount'] = this.discountAmount;
-    data['discount_percentage'] = this.discountPercentage;
-    data['is_free'] = this.isFree;
-    data['instructor'] = this.instructor;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['program_id'] = programId;
+    data['instructor_id'] = instructorId;
+    data['location_id'] = locationId;
+    data['session_date'] = sessionDate;
+    data['start_time'] = startTime;
+    data['end_time'] = endTime;
+    data['max_capacity'] = maxCapacity;
+    data['current_bookings'] = currentBookings;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['price'] = price;
+    data['discounted_price'] = discountedPrice;
+    data['discount_amount'] = discountAmount;
+    data['discount_percentage'] = discountPercentage;
+    data['is_free'] = isFree;
+    data['instructor'] = instructor;
     return data;
   }
 }

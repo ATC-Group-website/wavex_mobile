@@ -14,22 +14,22 @@ class PaymentResponse {
     success = json['success'];
     clientSecret = json['client_secret'];
     paymentIntent = json['payment_intent'] != null
-        ? new PaymentIntent.fromJson(json['payment_intent'])
+        ? PaymentIntent.fromJson(json['payment_intent'])
         : null;
     paymentRecord = json['payment_record'] != null
-        ? new PaymentRecord.fromJson(json['payment_record'])
+        ? PaymentRecord.fromJson(json['payment_record'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['client_secret'] = this.clientSecret;
-    if (this.paymentIntent != null) {
-      data['payment_intent'] = this.paymentIntent!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['client_secret'] = clientSecret;
+    if (paymentIntent != null) {
+      data['payment_intent'] = paymentIntent!.toJson();
     }
-    if (this.paymentRecord != null) {
-      data['payment_record'] = this.paymentRecord!.toJson();
+    if (paymentRecord != null) {
+      data['payment_record'] = paymentRecord!.toJson();
     }
     return data;
   }
@@ -54,12 +54,12 @@ class PaymentIntent {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['status'] = this.status;
-    data['amount'] = this.amount;
-    data['currency'] = this.currency;
-    data['description'] = this.description;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['status'] = status;
+    data['amount'] = amount;
+    data['currency'] = currency;
+    data['description'] = description;
     return data;
   }
 }
@@ -76,9 +76,9 @@ class PaymentRecord {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['status'] = status;
     return data;
   }
 }

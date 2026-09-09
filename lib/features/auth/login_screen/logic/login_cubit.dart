@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 
 import '../data/models/login_response.dart';
 import '../data/repository/login_repository.dart';

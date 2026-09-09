@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,14 +12,15 @@ import '../../../../../config/fcm.dart';
 import '../../../../../core/app_localization.dart';
 import '../../../../../core/components/bottom_wave_painter.dart';
 import '../../../../../core/components/gradient_button.dart';
-import '../../../../../core/constants/constants.dart';
 import '../../../password_reset_screen/logic/reset_password_cubit.dart';
 import '../../../password_reset_screen/presentation/screen/password_reset_screen.dart';
 import '../../../../../core/theme/colors.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen>
@@ -148,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen>
                               (route) => false,
                             );
                             // Handle successful login
-                            print('Login successful');
+                            appLog('Login successful');
                             // Navigate to main app
                           } else if (state is LoginErrorState) {
                             setState(() {
@@ -157,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen>
                             });
                           }
                         },
-                        child: SizedBox.shrink(),
+                        child: const SizedBox.shrink(),
                       ),
 
                       // Logo Section
@@ -234,11 +236,11 @@ class _LoginScreenState extends State<LoginScreen>
                                         builder: (context) =>
                                             BlocProvider.value(
                                           value: getIt<ResetPasswordCubit>(),
-                                          child: PasswordResetScreen(),
+                                          child: const PasswordResetScreen(),
                                         ),
                                       ),
                                     );
-                                    print('Forgot Password tapped');
+                                    appLog('Forgot Password tapped');
                                   },
                                   child: Text(
                                     AppLocalizations.of(context)
@@ -279,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     // Navigate to sign up
                                     navigatorKey.currentState!.pushNamed(
                                         RouteStrings.registerStepOneScreen);
-                                    print('Navigate to Sign Up');
+                                    appLog('Navigate to Sign Up');
                                   },
                                   child: RichText(
                                     text: TextSpan(
@@ -421,74 +423,6 @@ class _LoginScreenState extends State<LoginScreen>
           }
           return null;
         },
-      ),
-    );
-  }
-
-  Widget _buildSocialLoginSection() {
-    return Column(
-      children: [
-        Text(
-          AppLocalizations.of(context).translate("or_sign_up_with"),
-          style: GoogleFonts.leagueSpartan().copyWith(
-            color: const Color(0xFF252525),
-            fontSize: 12,
-            fontWeight: FontWeight.w300,
-          ),
-          // style: TextStyle(
-          //   fontSize: 14,
-          //   color: Color(0xFF666666),
-          // ),
-        ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildSocialButton(
-              icon: Icons.g_mobiledata,
-              onTap: () => print('Google login'),
-            ),
-            const SizedBox(width: 16),
-            _buildSocialButton(
-              icon: Icons.facebook,
-              onTap: () => print('Facebook login'),
-            ),
-            const SizedBox(width: 16),
-            _buildSocialButton(
-              icon: Icons.fingerprint,
-              onTap: () => print('Biometric login'),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialButton({
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: const BoxDecoration(
-          color: Color(0xFF4E9BAA),
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Icon(
-          icon,
-          color: Colors.white,
-          size: 24,
-        ),
       ),
     );
   }

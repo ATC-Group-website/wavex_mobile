@@ -6,18 +6,18 @@ class AddressResponse {
   AddressResponse({this.data, this.status, this.message});
 
   AddressResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -35,14 +35,14 @@ class Data {
 
   Data(
       {this.name,
-        this.email,
-        this.phone,
-        this.address,
-        this.postalCode,
-        this.userId,
-        this.updatedAt,
-        this.createdAt,
-        this.id});
+      this.email,
+      this.phone,
+      this.address,
+      this.postalCode,
+      this.userId,
+      this.updatedAt,
+      this.createdAt,
+      this.id});
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -57,16 +57,16 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['address'] = this.address;
-    data['postal_code'] = this.postalCode;
-    data['user_id'] = this.userId;
-    data['updated_at'] = this.updatedAt;
-    data['created_at'] = this.createdAt;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['address'] = address;
+    data['postal_code'] = postalCode;
+    data['user_id'] = userId;
+    data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
     return data;
   }
 }

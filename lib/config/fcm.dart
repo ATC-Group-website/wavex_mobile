@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,34 +28,33 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void _handleMessage(RemoteMessage message) {
   Map data = message.data;
 
-  print("from handleMessage");
+  appLog("from handleMessage");
 
-  print(data['navigate_to']);
+  appLog(data['navigate_to']);
   // navigatorKey.currentState?.pushNamed(data['navigate_to'].toString());
-  if(CacheHelper.getdata(key: "userToken") != null){
+  if (CacheHelper.getdata(key: "userToken") != null) {
     if (data.containsKey('navigate_to')) {
-      if(navigatorKey.currentState !=null){
+      if (navigatorKey.currentState != null) {
         navigatorKey.currentState?.pushNamed(
           data['navigate_to'],
           arguments: {
             "url":
-            "https://schools.alkhwarizmi.xyz/${CacheHelper.getdata(key: "projectId")}/AgentChatMobile/${CacheHelper.getdata(key: "userId")}?clientRequestId=${data['clientRequestId']}",
+                "https://schools.alkhwarizmi.xyz/${CacheHelper.getdata(key: "projectId")}/AgentChatMobile/${CacheHelper.getdata(key: "userId")}?clientRequestId=${data['clientRequestId']}",
             "notificationId": data['clientRequestId']
           },
         );
-      }else{
-        print("its null");
+      } else {
+        appLog("its null");
       }
     }
   }
-
 }
 
 Future<void> _initializeCache() async {
   try {
     await CacheHelper.init();
   } catch (error) {
-    print("Error initializing cache: $error");
+    appLog("Error initializing cache: $error");
   }
 }
 

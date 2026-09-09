@@ -1,8 +1,8 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';
 
-class HomeRepository{
-
+class HomeRepository {
   Future<ApiResponse?> getInstructors() async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
@@ -11,7 +11,7 @@ class HomeRepository{
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
@@ -24,21 +24,16 @@ class HomeRepository{
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
 
-
-  Future<ApiResponse?> getNotification({
-    required int pageNumber
-}) async {
+  Future<ApiResponse?> getNotification({required int pageNumber}) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
         link: 'notifications',
-        queryParams: {
-          "page" : pageNumber
-        },
+        queryParams: {"page": pageNumber},
         method: Method.GET,
       );
       return response;
@@ -47,9 +42,9 @@ class HomeRepository{
       rethrow;
     }
   }
-  Future<ApiResponse?> markNotificationAsRead({
-    required int notificationId
-}) async {
+
+  Future<ApiResponse?> markNotificationAsRead(
+      {required int notificationId}) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
         link: 'notifications/$notificationId/read',
@@ -61,5 +56,4 @@ class HomeRepository{
       rethrow;
     }
   }
-
 }

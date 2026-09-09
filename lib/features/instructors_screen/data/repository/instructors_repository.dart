@@ -1,7 +1,8 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';
 
-class InstructorsRepository{
+class InstructorsRepository {
   Future<ApiResponse?> getInstructors() async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
@@ -10,7 +11,7 @@ class InstructorsRepository{
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
@@ -23,9 +24,8 @@ class InstructorsRepository{
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
-
 }

@@ -23,7 +23,8 @@ class RouteStrings {
   static const addManualAddressScreen = "/AddManualAddressScreen";
   static const transactionSuccessScreen = "/TransactionSuccessScreen";
   static const transactionFailedScreen = "/TransactionFailedScreen";
-  static const payOrderTransactionFailedScreen = "/PayOrderTransactionFailedScreen";
+  static const payOrderTransactionFailedScreen =
+      "/PayOrderTransactionFailedScreen";
   static const instructorsScreen = "/InstructorsScreen";
   static const myAddressesScreen = "/MyAddressesScreen";
   static const orderDetailsScreen = "/OrderDetailsScreen";
@@ -50,7 +51,8 @@ class RouteStrings {
   static const complaintScreen = "/ComplaintScreen";
   static const requestContactsNumberScreen = "/RequestContactsNumberScreen";
   static const getAppointmentsScreen = "/GetAppointmentsScreen";
-  static const issueChildExitCardRequestScreen = "/IssueChildExitCardRequestScreen";
+  static const issueChildExitCardRequestScreen =
+      "/IssueChildExitCardRequestScreen";
   static const getRequestExtractsScreen = "/GetRequestExtractsScreen";
   static const schoolScreen = "/SchoolScreen";
 }

@@ -1,14 +1,16 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:wavex/core/helper/cache_helper/cache_helper.dart';
 import 'package:wavex/core/route/route_strings/route_strings.dart';
 import 'package:wavex/main.dart';
 
 import '../../../../../core/app_localization.dart';
-import '../../../login_screen/presentation/screen/login_screen.dart';
 
 class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
+
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen>
@@ -94,7 +96,7 @@ class _AuthScreenState extends State<AuthScreen>
                                 AppLocalizations.of(context)
                                     .translate("ride_the_wave"),
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w300,
                                   color: Colors.white,
@@ -121,7 +123,7 @@ class _AuthScreenState extends State<AuthScreen>
                             AppLocalizations.of(context)
                                 .translate("start_journey"),
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 21,
                                 color: Color(0xFF124F59),
                                 fontWeight: FontWeight.w600,
@@ -149,7 +151,7 @@ class _AuthScreenState extends State<AuthScreen>
                                     // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                                     navigatorKey.currentState!
                                         .pushNamed(RouteStrings.loginScreen);
-                                    print('Navigate to Login');
+                                    appLog('Navigate to Login');
                                   },
                                 ),
 
@@ -165,7 +167,7 @@ class _AuthScreenState extends State<AuthScreen>
                                     // Navigate to sign up screen
                                     navigatorKey.currentState!.pushNamed(
                                         RouteStrings.registerStepOneScreen);
-                                    print('Navigate to Sign Up');
+                                    appLog('Navigate to Sign Up');
                                   },
                                 ),
 
@@ -180,12 +182,12 @@ class _AuthScreenState extends State<AuthScreen>
                                       RouteStrings.homeScreen,
                                       (route) => false,
                                     );
-                                    print('Continue as Guest');
+                                    appLog('Continue as Guest');
                                   },
                                   child: Text(
                                     AppLocalizations.of(context)
                                         .translate("guest"),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w300,
@@ -223,7 +225,7 @@ class _AuthScreenState extends State<AuthScreen>
     required Color textColor,
     required VoidCallback onPressed,
   }) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 56,
       child: ElevatedButton(
@@ -321,7 +323,7 @@ class BottomWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0x846DAEB8).withOpacity(0.3)
+      ..color = const Color(0x846DAEB8).withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
 
     final path = Path();

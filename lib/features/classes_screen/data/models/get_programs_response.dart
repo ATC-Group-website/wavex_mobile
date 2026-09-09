@@ -9,7 +9,7 @@ class GetProgramsResponse {
     if (json['data'] != null) {
       data = <ProgramData>[];
       json['data'].forEach((v) {
-        data!.add(new ProgramData.fromJson(v));
+        data!.add(ProgramData.fromJson(v));
       });
     }
     status = json['status'];
@@ -17,12 +17,12 @@ class GetProgramsResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -39,13 +39,13 @@ class ProgramData {
 
   ProgramData(
       {this.id,
-        this.name,
-        this.subtitle,
-        this.description,
-        this.mainImage,
-        this.coverImage,
-        this.benefits,
-        this.isActive});
+      this.name,
+      this.subtitle,
+      this.description,
+      this.mainImage,
+      this.coverImage,
+      this.benefits,
+      this.isActive});
 
   ProgramData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -59,15 +59,15 @@ class ProgramData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['subtitle'] = this.subtitle;
-    data['description'] = this.description;
-    data['main_image'] = this.mainImage;
-    data['cover_image'] = this.coverImage;
-    data['benefits'] = this.benefits;
-    data['is_active'] = this.isActive;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['subtitle'] = subtitle;
+    data['description'] = description;
+    data['main_image'] = mainImage;
+    data['cover_image'] = coverImage;
+    data['benefits'] = benefits;
+    data['is_active'] = isActive;
     return data;
   }
 }

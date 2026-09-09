@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:wavex/core/networks/request_body.dart';
 import 'package:wavex/core/constants/cache_keys.dart';
 import 'package:wavex/core/helper/cache_helper/cache_helper.dart';
@@ -51,7 +52,7 @@ class RegistrationRepository {
 
       return response;
     } catch (e) {
-      print("Register error: $e");
+      appLog("Register error: $e");
       rethrow;
     }
   }

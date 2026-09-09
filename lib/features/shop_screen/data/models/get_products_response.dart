@@ -6,18 +6,18 @@ class GetProductsResponse {
   GetProductsResponse({this.data, this.status, this.message});
 
   GetProductsResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -39,25 +39,25 @@ class Data {
 
   Data(
       {this.currentPage,
-        this.data,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.lastPageUrl,
-        this.links,
-        this.nextPageUrl,
-        this.path,
-        this.perPage,
-        this.prevPageUrl,
-        this.to,
-        this.total});
+      this.data,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.links,
+      this.nextPageUrl,
+      this.path,
+      this.perPage,
+      this.prevPageUrl,
+      this.to,
+      this.total});
 
   Data.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
       data = <ProductData>[];
       json['data'].forEach((v) {
-        data!.add(new ProductData.fromJson(v));
+        data!.add(ProductData.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -67,7 +67,7 @@ class Data {
     if (json['links'] != null) {
       links = <Links>[];
       json['links'].forEach((v) {
-        links!.add(new Links.fromJson(v));
+        links!.add(Links.fromJson(v));
       });
     }
     nextPageUrl = json['next_page_url'];
@@ -79,24 +79,24 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_page'] = this.currentPage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['current_page'] = currentPage;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['first_page_url'] = this.firstPageUrl;
-    data['from'] = this.from;
-    data['last_page'] = this.lastPage;
-    data['last_page_url'] = this.lastPageUrl;
-    if (this.links != null) {
-      data['links'] = this.links!.map((v) => v.toJson()).toList();
+    data['first_page_url'] = firstPageUrl;
+    data['from'] = from;
+    data['last_page'] = lastPage;
+    data['last_page_url'] = lastPageUrl;
+    if (links != null) {
+      data['links'] = links!.map((v) => v.toJson()).toList();
     }
-    data['next_page_url'] = this.nextPageUrl;
-    data['path'] = this.path;
-    data['per_page'] = this.perPage;
-    data['prev_page_url'] = this.prevPageUrl;
-    data['to'] = this.to;
-    data['total'] = this.total;
+    data['next_page_url'] = nextPageUrl;
+    data['path'] = path;
+    data['per_page'] = perPage;
+    data['prev_page_url'] = prevPageUrl;
+    data['to'] = to;
+    data['total'] = total;
     return data;
   }
 }
@@ -117,17 +117,17 @@ class ProductData {
 
   ProductData(
       {this.id,
-        this.name,
-        this.slug,
-        this.description,
-        this.price,
-        this.stockQuantity,
-        this.isActive,
-        this.dimensions,
-        this.image,
-        this.categoryId,
-        this.deletedBy,
-        this.deletedAt});
+      this.name,
+      this.slug,
+      this.description,
+      this.price,
+      this.stockQuantity,
+      this.isActive,
+      this.dimensions,
+      this.image,
+      this.categoryId,
+      this.deletedBy,
+      this.deletedAt});
 
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -138,7 +138,7 @@ class ProductData {
     stockQuantity = json['stock_quantity'];
     isActive = json['is_active'];
     dimensions = json['dimensions'] != null
-        ? new Dimensions.fromJson(json['dimensions'])
+        ? Dimensions.fromJson(json['dimensions'])
         : null;
     image = json['image'];
     categoryId = json['category_id'];
@@ -147,21 +147,21 @@ class ProductData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['slug'] = this.slug;
-    data['description'] = this.description;
-    data['price'] = this.price;
-    data['stock_quantity'] = this.stockQuantity;
-    data['is_active'] = this.isActive;
-    if (this.dimensions != null) {
-      data['dimensions'] = this.dimensions!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['slug'] = slug;
+    data['description'] = description;
+    data['price'] = price;
+    data['stock_quantity'] = stockQuantity;
+    data['is_active'] = isActive;
+    if (dimensions != null) {
+      data['dimensions'] = dimensions!.toJson();
     }
-    data['image'] = this.image;
-    data['category_id'] = this.categoryId;
-    data['deleted_by'] = this.deletedBy;
-    data['deleted_at'] = this.deletedAt;
+    data['image'] = image;
+    data['category_id'] = categoryId;
+    data['deleted_by'] = deletedBy;
+    data['deleted_at'] = deletedAt;
     return data;
   }
 }
@@ -180,10 +180,10 @@ class Dimensions {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['depth'] = this.depth;
-    data['width'] = this.width;
-    data['height'] = this.height;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['depth'] = depth;
+    data['width'] = width;
+    data['height'] = height;
     return data;
   }
 }
@@ -202,10 +202,10 @@ class Links {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['label'] = this.label;
-    data['active'] = this.active;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    data['label'] = label;
+    data['active'] = active;
     return data;
   }
 }

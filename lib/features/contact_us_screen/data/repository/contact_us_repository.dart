@@ -1,15 +1,15 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:wavex/core/networks/request_body.dart';
 
 import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';
 
 class ContactUsRepository {
-
   Future<ApiResponse?> contactUs({
     required String name,
     required String email,
     required String phone,
-     String? topic,
+    String? topic,
     required String body,
     required bool isSubscribedToEmails,
   }) async {
@@ -28,10 +28,11 @@ class ContactUsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
+
   Future<ApiResponse?> socialLinks() async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
@@ -40,7 +41,7 @@ class ContactUsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
@@ -53,7 +54,7 @@ class ContactUsRepository {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }

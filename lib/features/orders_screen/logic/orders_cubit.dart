@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/orders_screen/data/models/get_orders_response.dart';
@@ -29,7 +29,7 @@ class OrdersCubit extends Cubit<OrdersState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetOrdersErrorState(error: error.toString()));
     });
   }

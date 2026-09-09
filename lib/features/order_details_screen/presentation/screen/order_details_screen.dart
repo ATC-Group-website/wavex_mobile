@@ -343,7 +343,7 @@ import '../../../../core/theme/colors.dart';
 import '../../data/models/order_details_response.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
-  const OrderDetailsScreen({Key? key, required this.orderId}) : super(key: key);
+  const OrderDetailsScreen({super.key, required this.orderId});
   final String orderId;
 
   @override
@@ -367,7 +367,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           Column(
             children: [
               // Header
-              HeaderWidget(
+              const HeaderWidget(
                 isWithBack: true,
               ),
 
@@ -380,7 +380,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     });
                   }
                 },
-                child: SizedBox.shrink(),
+                child: const SizedBox.shrink(),
               ),
 
               // Content
@@ -687,7 +687,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           // Divider
           Container(
             height: 1,
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withValues(alpha: 0.3),
             margin: const EdgeInsets.only(bottom: 16),
           ),
 

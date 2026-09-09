@@ -6,18 +6,18 @@ class UpdateUserDataResponse {
   UpdateUserDataResponse({this.data, this.status, this.message});
 
   UpdateUserDataResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -40,19 +40,19 @@ class Data {
 
   Data(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.phone,
-        this.dateOfBirth,
-        this.gender,
-        this.medicalConditions,
-        this.emailVerifiedAt,
-        this.image,
-        this.isActive,
-        this.deviceToken,
-        this.createdAt,
-        this.updatedAt});
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.phone,
+      this.dateOfBirth,
+      this.gender,
+      this.medicalConditions,
+      this.emailVerifiedAt,
+      this.image,
+      this.isActive,
+      this.deviceToken,
+      this.createdAt,
+      this.updatedAt});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,21 +72,21 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['gender'] = this.gender;
-    data['medical_conditions'] = this.medicalConditions;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['image'] = this.image;
-    data['is_active'] = this.isActive;
-    data['device_token'] = this.deviceToken;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['date_of_birth'] = dateOfBirth;
+    data['gender'] = gender;
+    data['medical_conditions'] = medicalConditions;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['image'] = image;
+    data['is_active'] = isActive;
+    data['device_token'] = deviceToken;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

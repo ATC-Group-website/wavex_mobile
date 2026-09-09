@@ -50,101 +50,110 @@ Future<void> setupGetIt() async {
   // Dio & ApiService
 
   // login
-  getIt.registerLazySingleton<LoginCubit>(() => LoginCubit(getIt<LoginRepository>()));
-  getIt.registerLazySingleton<LoginRepository>(
-      () => LoginRepository());
+  getIt.registerLazySingleton<LoginCubit>(
+      () => LoginCubit(getIt<LoginRepository>()));
+  getIt.registerLazySingleton<LoginRepository>(() => LoginRepository());
 
   // Shop
-  getIt.registerLazySingleton<ShopCubit>(() => ShopCubit(getIt<ShopRepository>()));
-  getIt.registerLazySingleton<ShopRepository>(
-      () => ShopRepository());
+  getIt.registerLazySingleton<ShopCubit>(
+      () => ShopCubit(getIt<ShopRepository>()));
+  getIt.registerLazySingleton<ShopRepository>(() => ShopRepository());
 
   // Sessions
-  getIt.registerLazySingleton<SessionsCubit>(() => SessionsCubit(getIt<SessionsRepository>()));
-  getIt.registerLazySingleton<SessionsRepository>(
-      () => SessionsRepository());
+  getIt.registerLazySingleton<SessionsCubit>(
+      () => SessionsCubit(getIt<SessionsRepository>()));
+  getIt.registerLazySingleton<SessionsRepository>(() => SessionsRepository());
 
   // Orders
-  getIt.registerLazySingleton<OrdersCubit>(() => OrdersCubit(getIt<OrdersRepository>()));
-  getIt.registerLazySingleton<OrdersRepository>(
-      () => OrdersRepository());
+  getIt.registerLazySingleton<OrdersCubit>(
+      () => OrdersCubit(getIt<OrdersRepository>()));
+  getIt.registerLazySingleton<OrdersRepository>(() => OrdersRepository());
 
   // MyAddress
-  getIt.registerLazySingleton<MyAddressCubit>(() => MyAddressCubit(getIt<MyAddressRepository>()));
-  getIt.registerLazySingleton<MyAddressRepository>(
-      () => MyAddressRepository());
+  getIt.registerLazySingleton<MyAddressCubit>(
+      () => MyAddressCubit(getIt<MyAddressRepository>()));
+  getIt.registerLazySingleton<MyAddressRepository>(() => MyAddressRepository());
 
   // Home
-  getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt<HomeRepository>()));
-  getIt.registerLazySingleton<HomeRepository>(
-      () => HomeRepository());
+  getIt.registerLazySingleton<HomeCubit>(
+      () => HomeCubit(getIt<HomeRepository>()));
+  getIt.registerLazySingleton<HomeRepository>(() => HomeRepository());
 
   // Programs
-  getIt.registerLazySingleton<ProgramsCubit>(() => ProgramsCubit(getIt<ProgramsRepository>()));
-  getIt.registerLazySingleton<ProgramsRepository>(
-      () => ProgramsRepository());
+  getIt.registerLazySingleton<ProgramsCubit>(
+      () => ProgramsCubit(getIt<ProgramsRepository>()));
+  getIt.registerLazySingleton<ProgramsRepository>(() => ProgramsRepository());
 
   // Region selection
-  getIt.registerLazySingleton<RegionCubit>(() => RegionCubit(getIt<RegionRepository>()));
+  getIt.registerLazySingleton<RegionCubit>(
+      () => RegionCubit(getIt<RegionRepository>()));
   getIt.registerLazySingleton<RegionRepository>(() => RegionRepository());
 
   // Branch selection
-  getIt.registerLazySingleton<BranchCubit>(() => BranchCubit(getIt<BranchRepository>()));
-  getIt.registerLazySingleton<BranchRepository>(
-      () => BranchRepository());
+  getIt.registerLazySingleton<BranchCubit>(
+      () => BranchCubit(getIt<BranchRepository>()));
+  getIt.registerLazySingleton<BranchRepository>(() => BranchRepository());
 
   // BookProgram
-  getIt.registerLazySingleton<BookProgramCubit>(() => BookProgramCubit(getIt<BookProgramsRepository>()));
+  getIt.registerLazySingleton<BookProgramCubit>(
+      () => BookProgramCubit(getIt<BookProgramsRepository>()));
   getIt.registerLazySingleton<BookProgramsRepository>(
       () => BookProgramsRepository());
 
   // ChangePassword
-  getIt.registerLazySingleton<ChangePasswordCubit>(() => ChangePasswordCubit(getIt<ChangePasswordRepository>()));
+  getIt.registerLazySingleton<ChangePasswordCubit>(
+      () => ChangePasswordCubit(getIt<ChangePasswordRepository>()));
   getIt.registerLazySingleton<ChangePasswordRepository>(
       () => ChangePasswordRepository());
 
   // Registration
-  getIt.registerLazySingleton<RegistrationCubit>(() => RegistrationCubit(getIt<RegistrationRepository>()));
+  getIt.registerLazySingleton<RegistrationCubit>(
+      () => RegistrationCubit(getIt<RegistrationRepository>()));
   getIt.registerLazySingleton<RegistrationRepository>(
       () => RegistrationRepository());
 
   // Address
-  getIt.registerLazySingleton<AddressCubit>(() => AddressCubit(getIt<AddressRepository>()));
-  getIt.registerLazySingleton<AddressRepository>(
-      () => AddressRepository());
+  getIt.registerLazySingleton<AddressCubit>(
+      () => AddressCubit(getIt<AddressRepository>()));
+  getIt.registerLazySingleton<AddressRepository>(() => AddressRepository());
 
   // UpdateUserData
-  getIt.registerLazySingleton<UpdateUserDataCubit>(() => UpdateUserDataCubit(getIt<UpdateUserProfileRepository>()));
+  getIt.registerLazySingleton<UpdateUserDataCubit>(
+      () => UpdateUserDataCubit(getIt<UpdateUserProfileRepository>()));
   getIt.registerLazySingleton<UpdateUserProfileRepository>(
       () => UpdateUserProfileRepository());
 
   // ResetPassword
-  getIt.registerLazySingleton<ResetPasswordCubit>(() => ResetPasswordCubit(getIt<ResetPasswordRepository>()));
+  getIt.registerLazySingleton<ResetPasswordCubit>(
+      () => ResetPasswordCubit(getIt<ResetPasswordRepository>()));
   getIt.registerLazySingleton<ResetPasswordRepository>(
       () => ResetPasswordRepository());
 
   // ContactUs
-  getIt.registerLazySingleton<ContactUsCubit>(() => ContactUsCubit(getIt<ContactUsRepository>()));
-  getIt.registerLazySingleton<ContactUsRepository>(
-      () => ContactUsRepository());
+  getIt.registerLazySingleton<ContactUsCubit>(
+      () => ContactUsCubit(getIt<ContactUsRepository>()));
+  getIt.registerLazySingleton<ContactUsRepository>(() => ContactUsRepository());
 
   // ShopCart
-  getIt.registerLazySingleton<ShopCartCubit>(() => ShopCartCubit(getIt<ShopCartRepository>()));
-  getIt.registerLazySingleton<ShopCartRepository>(
-      () => ShopCartRepository());
+  getIt.registerLazySingleton<ShopCartCubit>(
+      () => ShopCartCubit(getIt<ShopCartRepository>()));
+  getIt.registerLazySingleton<ShopCartRepository>(() => ShopCartRepository());
 
   // PaymentOptions
-  getIt.registerLazySingleton<PaymentOptionsCubit>(() => PaymentOptionsCubit(getIt<PaymentOptionsRepository>()));
+  getIt.registerLazySingleton<PaymentOptionsCubit>(
+      () => PaymentOptionsCubit(getIt<PaymentOptionsRepository>()));
   getIt.registerLazySingleton<PaymentOptionsRepository>(
       () => PaymentOptionsRepository());
 
   // OrderDetails
-  getIt.registerLazySingleton<OrderDetailsCubit>(() => OrderDetailsCubit(getIt<OrdersDetailsRepository>()));
+  getIt.registerLazySingleton<OrderDetailsCubit>(
+      () => OrderDetailsCubit(getIt<OrdersDetailsRepository>()));
   getIt.registerLazySingleton<OrdersDetailsRepository>(
       () => OrdersDetailsRepository());
 
   // OrderDetails
-  getIt.registerLazySingleton<InstructorsCubit>(() => InstructorsCubit(getIt<InstructorsRepository>()));
+  getIt.registerLazySingleton<InstructorsCubit>(
+      () => InstructorsCubit(getIt<InstructorsRepository>()));
   getIt.registerLazySingleton<InstructorsRepository>(
       () => InstructorsRepository());
 
@@ -155,5 +164,4 @@ Future<void> setupGetIt() async {
       () => LocationFormRepository());
   getIt.registerLazySingleton<LocationFormCubit>(
       () => LocationFormCubit(getIt<LocationFormRepository>()));
-
 }

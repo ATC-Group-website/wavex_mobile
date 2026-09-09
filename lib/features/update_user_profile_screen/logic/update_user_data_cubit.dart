@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/update_user_profile_screen/data/models/user_profile_response.dart';
@@ -24,8 +23,8 @@ class UpdateUserDataCubit extends Cubit<UpdateUserDataState> {
     String? lastName,
     String? email,
     String? dateOfBirth,
-    String? medical,    String? emergencyNumber,
-
+    String? medical,
+    String? emergencyNumber,
     String? gender,
   }) {
     emit(UpdateUserDataLoadingState());
@@ -34,10 +33,12 @@ class UpdateUserDataCubit extends Cubit<UpdateUserDataState> {
         .updateUserData(
             phone: phone,
             email: email,
-            lastName: lastName,emergencyNumber: emergencyNumber,
+            lastName: lastName,
+            emergencyNumber: emergencyNumber,
             firstName: firstName,
-      gender: gender,dateOfBirth: dateOfBirth,medical: medical
-    )
+            gender: gender,
+            dateOfBirth: dateOfBirth,
+            medical: medical)
         .then(
       (value) {
         emit(
@@ -58,9 +59,7 @@ class UpdateUserDataCubit extends Cubit<UpdateUserDataState> {
   getUserProfileData() {
     emit(UserProfileDataLoadingState());
 
-    repository
-        .getUserProfileData()
-        .then(
+    repository.getUserProfileData().then(
       (value) {
         emit(
           UserProfileDataSuccessState(

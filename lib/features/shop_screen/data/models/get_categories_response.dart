@@ -9,7 +9,7 @@ class GetCategoriesResponse {
     if (json['data'] != null) {
       data = <CategoriesData>[];
       json['data'].forEach((v) {
-        data!.add(new CategoriesData.fromJson(v));
+        data!.add(CategoriesData.fromJson(v));
       });
     }
     status = json['status'];
@@ -17,12 +17,12 @@ class GetCategoriesResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -34,7 +34,8 @@ class CategoriesData {
   String? description;
   int? sortOrder;
 
-  CategoriesData({this.id, this.name, this.slug, this.description, this.sortOrder});
+  CategoriesData(
+      {this.id, this.name, this.slug, this.description, this.sortOrder});
 
   CategoriesData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -45,12 +46,12 @@ class CategoriesData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['slug'] = this.slug;
-    data['description'] = this.description;
-    data['sort_order'] = this.sortOrder;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['slug'] = slug;
+    data['description'] = description;
+    data['sort_order'] = sortOrder;
     return data;
   }
 }

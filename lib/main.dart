@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ Future<void> _initializeCache() async {
   try {
     await CacheHelper.init();
   } catch (error) {
-    print("Error initializing cache: $error");
+    appLog("Error initializing cache: $error");
   }
 }
 

@@ -9,7 +9,7 @@ class GetMyAddressesResponse {
     if (json['data'] != null) {
       data = <AddressData>[];
       json['data'].forEach((v) {
-        data!.add(new AddressData.fromJson(v));
+        data!.add(AddressData.fromJson(v));
       });
     }
     status = json['status'];
@@ -17,12 +17,12 @@ class GetMyAddressesResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -44,18 +44,18 @@ class AddressData {
 
   AddressData(
       {this.id,
-        this.userId,
-        this.name,
-        this.email,
-        this.phone,
-        this.address,
-        this.governorate,
-        this.isDefault,
-        this.city,
-        this.apartment,
-        this.postalCode,
-        this.createdAt,
-        this.updatedAt});
+      this.userId,
+      this.name,
+      this.email,
+      this.phone,
+      this.address,
+      this.governorate,
+      this.isDefault,
+      this.city,
+      this.apartment,
+      this.postalCode,
+      this.createdAt,
+      this.updatedAt});
 
   AddressData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -74,20 +74,20 @@ class AddressData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['is_default'] = this.isDefault;
-    data['address'] = this.address;
-    data['governorate'] = this.governorate;
-    data['city'] = this.city;
-    data['apartment'] = this.apartment;
-    data['postal_code'] = this.postalCode;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['name'] = name;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['is_default'] = isDefault;
+    data['address'] = address;
+    data['governorate'] = governorate;
+    data['city'] = city;
+    data['apartment'] = apartment;
+    data['postal_code'] = postalCode;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

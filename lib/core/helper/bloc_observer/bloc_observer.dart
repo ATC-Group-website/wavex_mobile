@@ -1,27 +1,28 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
     super.onCreate(bloc);
-    print('onCreate -- ${bloc.runtimeType}');
+    appLog('onCreate -- ${bloc.runtimeType}');
   }
 
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    print('onChange -- ${bloc.runtimeType}, $change');
+    appLog('onChange -- ${bloc.runtimeType}, $change');
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    print('onError -- ${bloc.runtimeType}, $error');
+    appLog('onError -- ${bloc.runtimeType}, $error');
     super.onError(bloc, error, stackTrace);
   }
 
   @override
   void onClose(BlocBase bloc) {
     super.onClose(bloc);
-    print('onClose -- ${bloc.runtimeType}');
+    appLog('onClose -- ${bloc.runtimeType}');
   }
 }

@@ -1,21 +1,21 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wavex/core/components/header_widget.dart';
 import 'package:wavex/core/route/route_strings/route_strings.dart';
 import 'package:wavex/features/auth/password_reset_screen/logic/reset_password_cubit.dart';
-import 'package:wavex/features/change_password_screen/logic/change_password_cubit.dart';
 
 import '../../../../../core/app_localization.dart';
 import '../../../../../core/components/bottom_wave_painter.dart';
-import '../../../../../core/constants/constants.dart';
 import '../../../../../main.dart';
-import '../../../email_verification_screen/presentation/screen/email_verification_screen.dart';
 import '../../../../../core/theme/colors.dart';
 
 class PasswordResetScreen extends StatefulWidget {
+  const PasswordResetScreen({super.key});
+
   @override
-  _PasswordResetScreenState createState() => _PasswordResetScreenState();
+  State<PasswordResetScreen> createState() => _PasswordResetScreenState();
 }
 
 class _PasswordResetScreenState extends State<PasswordResetScreen>
@@ -29,7 +29,6 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -55,14 +54,6 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
       curve: Curves.easeOutCubic,
     ));
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.8,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.elasticOut,
-    ));
-
     _animationController.forward();
   }
 
@@ -79,7 +70,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          HeaderWidget(
+          const HeaderWidget(
             isWithBack: true,
           ),
 
@@ -91,15 +82,15 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
                   _isEmailSent = true;
                 });
                 ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        '${AppLocalizations.of(context).translate("verification_sent_snackbar")} ${_emailController.text}'),
-                    backgroundColor: const Color(0xFF4CAF50),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          '${AppLocalizations.of(context).translate("verification_sent_snackbar")} ${_emailController.text}'),
+                      backgroundColor: const Color(0xFF4CAF50),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
 
                 // Navigator.push(
                 //     context,
@@ -113,22 +104,22 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
                   },
                 );
               }
-              if(state is ForgetPasswordErrorState){
+              if (state is ForgetPasswordErrorState) {
                 setState(() {
                   _isLoading = false;
                 });
                 ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                  SnackBar(
-                    content: Text(state.error??""),
-                    backgroundColor: Colors.red,
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(state.error),
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
               }
             },
-            child: SizedBox.shrink(),
+            child: const SizedBox.shrink(),
           ),
 
           // Main content
@@ -244,7 +235,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
         keyboardType: TextInputType.emailAddress,
         style: const TextStyle(
           fontSize: 16,
-          color: const Color(0xFF47A5B8),
+          color: Color(0xFF47A5B8),
         ),
         decoration: InputDecoration(
           hintText:
@@ -340,12 +331,12 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
       ),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.check_circle,
             color: Color(0xFF4CAF50),
             size: 24,
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,17 +344,17 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
                 Text(
                   // 'Email Sent Successfully!',
                   AppLocalizations.of(context).translate("email_sent_success"),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF2E7D32),
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   // 'Check your inbox for reset instructions.',
                   AppLocalizations.of(context).translate("check_inbox"),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Color(0xFF388E3C),
                   ),
@@ -389,7 +380,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen>
           .forgetPassword(email: _emailController.text.trim());
       // Show success snackbar
 
-      print('Verification code sent to: ${_emailController.text}');
+      appLog('Verification code sent to: ${_emailController.text}');
     }
   }
 }

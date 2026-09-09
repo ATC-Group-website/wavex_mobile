@@ -1,13 +1,12 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/shop_cart_screen/data/models/get_cart_response.dart';
 import 'package:wavex/features/shop_cart_screen/data/repository/shop_cart_repository.dart';
 
 import '../../../core/networks/api_exception.dart';
-import '../../orders_screen/data/models/get_orders_response.dart';
 import '../../shop_screen/data/models/add_to_cart_request_body.dart';
 import '../../shop_screen/data/models/add_to_cart_response.dart';
 
@@ -34,7 +33,7 @@ class ShopCartCubit extends Cubit<ShopCartState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetCartErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));
@@ -48,7 +47,7 @@ class ShopCartCubit extends Cubit<ShopCartState> {
         if (value!.statusCode == 200 || value.statusCode == 201) {
           emit(AddToCartSuccessState(
             addToCartResponse:
-                AddToCartResponse.fromJson(jsonDecode(value!.data)),
+                AddToCartResponse.fromJson(jsonDecode(value.data)),
           ));
         } else {
           // هنا السيرفر راجع error زي 422
@@ -57,14 +56,14 @@ class ShopCartCubit extends Cubit<ShopCartState> {
         }
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(AddToCartErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));
     });
   }
 
-  decreaseQuantity({required int orderItemId,required bool isFromDecrease}) {
+  decreaseQuantity({required int orderItemId, required bool isFromDecrease}) {
     emit(DecreaseItemLoadingState());
     repository.decreaseQuantity(orderItemId: orderItemId).then(
       (value) {
@@ -77,7 +76,7 @@ class ShopCartCubit extends Cubit<ShopCartState> {
         }
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(DecreaseItemErrorState(
         error: error is ApiException ? error.message : error.toString(),
       ));

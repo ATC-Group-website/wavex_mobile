@@ -1,6 +1,4 @@
-
 part of 'shop_cubit.dart';
-
 
 @immutable
 sealed class ShopState extends Equatable {

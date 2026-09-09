@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/contact_us_screen/data/models/contact_us_response.dart';
@@ -23,7 +23,7 @@ class ContactUsCubit extends Cubit<ContactUsState> {
     required String email,
     required String phone,
     required String body,
-     String? topic,
+    String? topic,
     required bool isSubscribedToEmails,
   }) {
     emit(ContactUsLoadingState());
@@ -48,7 +48,7 @@ class ContactUsCubit extends Cubit<ContactUsState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(ContactUsErrorState(error: error.toString()));
     });
   }
@@ -67,10 +67,11 @@ class ContactUsCubit extends Cubit<ContactUsState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetSocialLinksErrorState(error: error.toString()));
     });
   }
+
   getTopics() {
     emit(GetTopicsLoadingState());
 
@@ -85,7 +86,7 @@ class ContactUsCubit extends Cubit<ContactUsState> {
         );
       },
     ).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(GetTopicsErrorState(error: error.toString()));
     });
   }

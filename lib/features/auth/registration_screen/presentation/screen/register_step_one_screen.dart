@@ -4,12 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wavex/core/components/header_widget.dart';
-import 'dart:math' as math;
 
 import '../../../../../core/app_localization.dart';
 import '../../../../../core/components/bottom_wave_painter.dart';
 import '../../../../../core/components/gradient_button.dart';
-import '../../../../../core/constants/constants.dart';
 import '../../../../../core/route/route_strings/route_strings.dart';
 import '../../../../../main.dart';
 import '../../../../../core/theme/colors.dart';
@@ -64,7 +62,7 @@ class _RegisterStepOneScreenState extends State<RegisterStepOneScreen> {
 
   String _selectedGender = 'female';
   bool _agreeToTerms = false;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {
@@ -88,7 +86,7 @@ class _RegisterStepOneScreenState extends State<RegisterStepOneScreen> {
       body: Column(
         children: [
           // Header with gradient and status bar
-          HeaderWidget(
+          const HeaderWidget(
             isWithBack: true,
           ),
 
@@ -293,7 +291,7 @@ class _RegisterStepOneScreenState extends State<RegisterStepOneScreen> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(top: 12),
+                            padding: const EdgeInsets.only(top: 12),
                             child: RichText(
                               text: TextSpan(
                                 children: [
@@ -595,7 +593,7 @@ class _RegisterStepOneScreenState extends State<RegisterStepOneScreen> {
                 isSelected ? const Color(0xFF668E95) : const Color(0xFFE2F2F5),
             borderRadius: BorderRadius.circular(12),
             border: isSelected
-                ? Border.all(color: Color(0xff48A5B9), width: 5)
+                ? Border.all(color: const Color(0xff48A5B9), width: 5)
                 : null),
         child: Center(
           child: Text(
@@ -611,28 +609,6 @@ class _RegisterStepOneScreenState extends State<RegisterStepOneScreen> {
             //   color: isSelected ? Colors.white : const Color(0xFF666666),
             // ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialButton({
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: const BoxDecoration(
-        color: Color(0xFF4E9BAA),
-        shape: BoxShape.circle,
-      ),
-      child: IconButton(
-        onPressed: onPressed,
-        icon: Icon(
-          icon,
-          color: Colors.white,
-          size: 24,
         ),
       ),
     );
@@ -726,17 +702,6 @@ class _RegisterStepOneScreenState extends State<RegisterStepOneScreen> {
     //     backgroundColor: Color(0xFF26C6DA),
     //   ),
     // );
-  }
-
-  void _handleSocialLogin(String provider) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text('$provider registration pressed'),
-          backgroundColor: const Color(0xFF26C6DA),
-        ),
-      );
   }
 
   @override

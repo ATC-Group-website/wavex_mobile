@@ -1,6 +1,6 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wavex/features/my_addresses_screen/data/models/get_my_addresses.dart';
@@ -21,7 +21,7 @@ class MyAddressCubit extends Cubit<MyAddressState> {
   getMyAddress() {
     emit(GetMyAddressesLoadingState());
     repository.getMyAddress().then((value) {
-      print("data: " + value!.data);
+      appLog('data: ${value!.data}');
       emit(
         GetMyAddressesSuccessState(
           myAddressesResponse: GetMyAddressesResponse.fromJson(
@@ -30,7 +30,7 @@ class MyAddressCubit extends Cubit<MyAddressState> {
         ),
       );
     }).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(
         GetMyAddressesErrorState(
           error: error.toString(),
@@ -42,7 +42,7 @@ class MyAddressCubit extends Cubit<MyAddressState> {
   deleteAddress({required int addressId}) {
     emit(DeleteAddressLoadingState());
     repository.deleteAddress(addressId: addressId).then((value) {
-      print("data: " + value!.data);
+      appLog('data: ${value!.data}');
       emit(
         DeleteAddressSuccessState(
           deleteAddressResponse: DeleteAddressResponse.fromJson(
@@ -51,7 +51,7 @@ class MyAddressCubit extends Cubit<MyAddressState> {
         ),
       );
     }).catchError((error) {
-      print(error.toString());
+      appLog(error.toString());
       emit(
         DeleteAddressErrorState(
           error: error is ApiException ? error.message : error.toString(),

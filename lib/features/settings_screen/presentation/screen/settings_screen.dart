@@ -1,9 +1,9 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wavex/core/app_cubit/app_cubit.dart';
 import 'package:wavex/core/components/header_widget.dart';
 import 'package:wavex/core/helper/cache_helper/cache_helper.dart';
 import 'package:wavex/features/settings_screen/logic/settings_cubit.dart';
@@ -14,10 +14,9 @@ import '../../../../core/components/bottom_wave_painter.dart';
 import '../../../../core/route/route_strings/route_strings.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../main.dart';
-import '../../../change_password_screen/presentation/screen/change_password_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -282,7 +281,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _toggleNotification(bool value) async {
-    print(value);
+    appLog(value);
     final prefs = await SharedPreferences.getInstance();
 
     if (value) {
@@ -292,7 +291,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     await prefs.setBool('notifications_enabled', value);
-    print(prefs.getBool('notifications_enabled'));
+    appLog(prefs.getBool('notifications_enabled'));
+    if (!mounted) return;
 
     setState(() {
       _notificationsEnabled = value;
@@ -328,7 +328,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Switch(
                     value: _notificationsEnabled,
                     onChanged: _toggleNotification,
-                    activeColor: AppColors.whiteColor,
+                    activeThumbColor: AppColors.whiteColor,
                     activeTrackColor: AppColors.primaryColor,
                   ),
                 ],
@@ -347,7 +347,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           Column(
             children: [
-              HeaderWidget(isWithBack: true),
+              const HeaderWidget(isWithBack: true),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(20),

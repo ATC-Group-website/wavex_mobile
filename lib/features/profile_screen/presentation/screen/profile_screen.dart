@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -27,13 +28,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _currentIndex = 2; // Highlight the profile icon in bottom nav
-  bool _showLogoutDialog = false;
-
+  final int _currentIndex = 2; // Highlight the profile icon in bottom nav
   void _hideLogoutDialog() {
-    setState(() {
-      _showLogoutDialog = false;
-    });
     Navigator.pop(context);
   }
 
@@ -49,6 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       CacheHelper.removeData(key: "userId");
       CacheHelper.removeData(key: "orderId").then(
         (value) {
+          if (!mounted) return;
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -87,8 +84,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // );
   }
 
-
-
   Widget _buildLogoutModal() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -104,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Text(
             AppLocalizations.of(context).translate("logout_confirmation"),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
@@ -128,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: Text(
                     AppLocalizations.of(context).translate("cancel"),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primaryColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -150,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: Text(
                     AppLocalizations.of(context).translate("yes_logout"),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -167,38 +162,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showLogoutConfirmation() {
-    setState(() {
-      _showLogoutDialog = true;
-    });
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => _buildLogoutModal(),
     );
   }
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
-  if (_selectedImageBytes != null) {
-    backgroundImage = MemoryImage(_selectedImageBytes!);
-  } else if (_uploadedImageUrl != null && _uploadedImageUrl!.isNotEmpty) {
-    backgroundImage = NetworkImage(_uploadedImageUrl!);
-  } else {
-    backgroundImage = NetworkImage(CacheHelper.getdata(key: "userImage") ??
-        "https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?s=612x612&w=0&k=20&c=CK49ShLJwDxE4kiroCR42kimTuuhvuo2FH5y_6aSgEo=");
-  }
+    if (_selectedImageBytes != null) {
+      backgroundImage = MemoryImage(_selectedImageBytes!);
+    } else if (_uploadedImageUrl != null && _uploadedImageUrl!.isNotEmpty) {
+      backgroundImage = NetworkImage(_uploadedImageUrl!);
+    } else {
+      backgroundImage = NetworkImage(CacheHelper.getdata(key: "userImage") ??
+          "https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?s=612x612&w=0&k=20&c=CK49ShLJwDxE4kiroCR42kimTuuhvuo2FH5y_6aSgEo=");
+    }
     super.initState();
   }
+
   ImageProvider? backgroundImage;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          HeaderWidget(),
+          const HeaderWidget(),
           // _buildHeader(),
           Expanded(
             child: SingleChildScrollView(
@@ -220,75 +213,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      height: 100,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF4FC3F7),
-            Color(0xFF29B6F6),
-            Color(0xFF0288D1),
-          ],
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop(); // Example: go back
-              },
-              child: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            const Text(
-              'WAVEX',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-            ),
-            Row(
-              children: [
-                // Signal bars
-                ...List.generate(
-                    4,
-                    (index) => Container(
-                          margin: const EdgeInsets.only(right: 2),
-                          width: 3,
-                          height: 8 + (index * 2),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(1),
-                          ),
-                        )),
-                const SizedBox(width: 8),
-                const Icon(Icons.wifi, color: Colors.white, size: 20),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Future<String> convertImageToBase64(File pickedFile) async {
     // Pick an image using image_picker
     List<int> imageBytes = await pickedFile.readAsBytes();
 
     // Convert to Base64 string
     String base64String = base64Encode(imageBytes);
-    print("Base64 String: $base64String");
+    appLog("Base64 String: $base64String");
 
     return base64String;
   }
@@ -318,13 +249,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
       return response;
     } catch (e) {
-      print("error error: $e");
+      appLog("error error: $e");
       return null;
     }
   }
 
   String? _uploadedImageUrl;
-  Uint8List? _uploadedImage;
   Uint8List? _selectedImageBytes;
 
   Future<Uint8List> _compressImageBytes(Uint8List bytes) async {
@@ -352,27 +282,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await updateProfileImage(image: base64Image).then(
         (value) {
           if (value?.statusCode == 200) {
-            print(jsonDecode(value!.data)["data"]["image"]);
+            appLog(jsonDecode(value!.data)["data"]["image"]);
             CacheHelper.saveData(
                 key: "userImage",
                 value: jsonDecode(value.data)["data"]["image"]);
             if (_selectedImageBytes != null) {
               backgroundImage = MemoryImage(_selectedImageBytes!);
-            } else if (_uploadedImageUrl != null && _uploadedImageUrl!.isNotEmpty) {
+            } else if (_uploadedImageUrl != null &&
+                _uploadedImageUrl!.isNotEmpty) {
               backgroundImage = NetworkImage(_uploadedImageUrl!);
             } else {
-              backgroundImage = NetworkImage(CacheHelper.getdata(key: "userImage") ??
+              backgroundImage = NetworkImage(CacheHelper.getdata(
+                      key: "userImage") ??
                   "https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?s=612x612&w=0&k=20&c=CK49ShLJwDxE4kiroCR42kimTuuhvuo2FH5y_6aSgEo=");
             }
-            setState(() {
-
-            });
+            setState(() {});
           }
         },
       ).catchError((error) {});
       setState(() {
         _selectedImageBytes = bytes;
-        _uploadedImage = null;
       });
     }
   }
@@ -381,18 +310,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await updateProfileImage(image: "").then(
       (value) {
         if (value?.statusCode == 200) {
-          print(jsonDecode(value!.data)["data"]["image"]);
+          appLog(jsonDecode(value!.data)["data"]["image"]);
           CacheHelper.saveData(
               key: "userImage", value: jsonDecode(value.data)["data"]["image"]);
           setState(() {
-            backgroundImage = NetworkImage(CacheHelper.getdata(key: "userImage") ?? "");
+            backgroundImage =
+                NetworkImage(CacheHelper.getdata(key: "userImage") ?? "");
           });
         }
       },
     ).catchError((error) {});
     setState(() {
       // _selectedImageBytes = bytes;
-      _uploadedImage = null;
     });
   }
 
@@ -422,7 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Text(
                 AppLocalizations.of(context).translate("my_profile"),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -496,7 +425,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.delete,
                           color: Colors.red,
                           size: 20,

@@ -1,3 +1,4 @@
+import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
 import 'dart:developer';
 import '../core/helper/cache_helper/cache_helper.dart';
@@ -17,8 +18,8 @@ void _handleNotificationResponse(NotificationResponse notificationResponse) {
   if (payloadJson == null) return;
 
   final payload = jsonDecode(payloadJson) as Map;
-  print("from local notification");
-  print(payload['navigate_to']);
+  appLog("from local notification");
+  appLog(payload['navigate_to']);
   if (payload.containsKey('navigate_to')) {
     navigatorKey.currentState?.pushNamed(
       payload['navigate_to'],
