@@ -5,6 +5,8 @@ workflows:
     instance_type: mac_mini_m2
 
     environment:
+      android_signing:
+        - wavex_release_keystore
       vars:
         APP_ENV: testing
         BASE_URL: https://dev-api.wavexsports.com/api/
@@ -29,7 +31,7 @@ workflows:
       - name: Build Android APK
         script: |
           flutter build apk \
-            --debug \
+            --release \
             --dart-define=APP_ENV="$APP_ENV" \
             --dart-define=BASE_URL="$BASE_URL"
 
@@ -46,5 +48,5 @@ workflows:
             build/ios/Runner.app.zip
 
     artifacts:
-      - build/app/outputs/flutter-apk/app-debug.apk
+      - build/app/outputs/flutter-apk/app-release.apk
       - build/ios/Runner.app.zip
