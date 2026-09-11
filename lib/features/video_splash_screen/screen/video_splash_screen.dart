@@ -13,25 +13,40 @@ class VideoSplashScreen extends StatefulWidget {
 
 class _VideoSplashScreenState extends State<VideoSplashScreen> {
   late VideoPlayerController _controller;
+  bool _hasNavigated = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset("assets/videos/intro.mp4")
-      ..initialize().then((_) {
-        setState(() {}); // Refresh when video is ready
-        _controller.play();
-      });
+    _controller = VideoPlayerController.asset("assets/videos/intro.mp4");
+    _controller.addListener(_onVideoChanged);
+    _initializeVideo();
+  }
 
-    _controller.addListener(() {
-      if (_controller.value.position >= _controller.value.duration) {
-        _goToSplash();
-      }
-    });
+  Future<void> _initializeVideo() async {
+    await _controller.initialize();
+    if (!mounted) return;
+
+    setState(() {});
+    await _controller.play();
+  }
+
+  void _onVideoChanged() {
+    final value = _controller.value;
+    final hasFinished = value.isInitialized &&
+        value.duration > Duration.zero &&
+        value.position >= value.duration;
+
+    if (hasFinished) {
+      _goToSplash();
+    }
   }
 
   void _goToSplash() {
-    navigatorKey.currentState!.pushNamedAndRemoveUntil(
+    if (_hasNavigated) return;
+    _hasNavigated = true;
+
+    navigatorKey.currentState?.pushNamedAndRemoveUntil(
       RouteStrings.splashScreen,
       (route) => false,
     );
@@ -39,6 +54,7 @@ class _VideoSplashScreenState extends State<VideoSplashScreen> {
 
   @override
   void dispose() {
+    _controller.removeListener(_onVideoChanged);
     _controller.dispose();
     super.dispose();
   }
