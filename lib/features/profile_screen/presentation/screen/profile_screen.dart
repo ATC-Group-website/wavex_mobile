@@ -1,9 +1,9 @@
 import 'package:wavex/core/utils/app_logger.dart';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:crop_your_image/crop_your_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,6 +20,130 @@ import '../../../../core/networks/request_body.dart';
 import '../../../../core/theme/colors.dart';
 import 'package:image/image.dart' as img;
 
+enum ProfileImageUploadStatus { idle, uploading, success, failure }
+
+class _ProfilePhotoCropDialog extends StatefulWidget {
+  const _ProfilePhotoCropDialog({required this.imageBytes});
+
+  final Uint8List imageBytes;
+
+  @override
+  State<_ProfilePhotoCropDialog> createState() =>
+      _ProfilePhotoCropDialogState();
+}
+
+class _ProfilePhotoCropDialogState extends State<_ProfilePhotoCropDialog> {
+  final CropController _cropController = CropController();
+  bool _isCropping = false;
+  String? _cropError;
+
+  void _cropImage() {
+    setState(() {
+      _isCropping = true;
+      _cropError = null;
+    });
+    _cropController.crop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Position your profile photo',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Drag the image to reposition it, or pinch to zoom.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              AspectRatio(
+                aspectRatio: 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Crop(
+                    image: widget.imageBytes,
+                    controller: _cropController,
+                    aspectRatio: 1,
+                    withCircleUi: true,
+                    interactive: true,
+                    fixCropRect: true,
+                    baseColor: AppColors.primaryColor,
+                    maskColor: Colors.black.withAlpha(140),
+                    progressIndicator: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    onCropped: (result) {
+                      if (!mounted) return;
+                      if (result is CropSuccess) {
+                        Navigator.of(context).pop(result.croppedImage);
+                        return;
+                      }
+
+                      final failure = result as CropFailure;
+                      setState(() {
+                        _isCropping = false;
+                        _cropError =
+                            'We could not crop this photo. Please try again.';
+                      });
+                      appLog('Unable to crop profile image: ${failure.cause}');
+                    },
+                  ),
+                ),
+              ),
+              if (_cropError != null) ...[
+                const SizedBox(height: 12),
+                Text(
+                  _cropError!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ],
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed:
+                        _isCropping ? null : () => Navigator.of(context).pop(),
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: _isCropping ? null : _cropImage,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: _isCropping
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text('Use photo'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -29,6 +153,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final int _currentIndex = 2; // Highlight the profile icon in bottom nav
+  ProfileImageUploadStatus _imageUploadStatus = ProfileImageUploadStatus.idle;
+  String? _imageUploadError;
   void _hideLogoutDialog() {
     Navigator.pop(context);
   }
@@ -213,17 +339,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Future<String> convertImageToBase64(File pickedFile) async {
-    // Pick an image using image_picker
-    List<int> imageBytes = await pickedFile.readAsBytes();
-
-    // Convert to Base64 string
-    String base64String = base64Encode(imageBytes);
-    appLog("Base64 String: $base64String");
-
-    return base64String;
-  }
-
   Future<void> _launchUrl({
     required String printUrl,
   }) async {
@@ -236,93 +351,262 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<ApiResponse?> updateProfileImage({required String image}) async {
-    try {
-      ApiResponse? response = await ApiManager.sendRequest(
-        link: 'users',
-        body: RequestBody({
-          "image": image.isNotEmpty ? "data:image/jpg;base64,$image" : "",
-          "first_name": CacheHelper.getdata(key: "firstName"),
-          "last_name": CacheHelper.getdata(key: "lastName"),
-          "gender": CacheHelper.getdata(key: "gender"),
-        }),
-        method: Method.PUT,
-      );
-      return response;
-    } catch (e) {
-      appLog("error error: $e");
-      return null;
+    // The current API validates a full profile update. Retrieve the server's
+    // source of truth first so an avatar change preserves the required fields.
+    final currentProfileResponse = await ApiManager.sendRequest(
+      link: 'user/profile',
+      method: Method.GET,
+    );
+    final currentProfile = _profileDataFromResponse(currentProfileResponse);
+
+    return ApiManager.sendRequest(
+      link: 'users',
+      body: RequestBody({
+        'first_name': _requiredProfileValue(currentProfile, 'first_name'),
+        'last_name': _requiredProfileValue(currentProfile, 'last_name'),
+        'gender': _requiredProfileValue(currentProfile, 'gender'),
+        'country_id': _requiredProfileValue(currentProfile, 'country_id'),
+        "image": image.isNotEmpty ? "data:image/jpeg;base64,$image" : "",
+      }),
+      method: Method.PUT,
+    );
+  }
+
+  Map<String, dynamic> _profileDataFromResponse(ApiResponse? response) {
+    if (response?.statusCode != 200 && response?.statusCode != 201) {
+      throw const FormatException(
+          'We could not load your current profile. Please try again.');
     }
+
+    final payload = _decodeResponseData(response?.data);
+    if (payload is! Map || payload['data'] is! Map) {
+      throw const FormatException(
+          'We could not load your current profile. Please try again.');
+    }
+    return Map<String, dynamic>.from(payload['data'] as Map);
+  }
+
+  dynamic _requiredProfileValue(Map<String, dynamic> profile, String key) {
+    final value = profile[key];
+    if (value == null || (value is String && value.trim().isEmpty)) {
+      throw const FormatException(
+          'Your profile is missing required information. Please update your profile and try again.');
+    }
+    return value;
+  }
+
+  dynamic _decodeResponseData(dynamic data) {
+    return data is String ? jsonDecode(data) : data;
   }
 
   String? _uploadedImageUrl;
   Uint8List? _selectedImageBytes;
 
   Future<Uint8List> _compressImageBytes(Uint8List bytes) async {
-    final image = img.decodeImage(bytes)!;
-    final resized = img.copyResize(image, width: 200);
-    return Uint8List.fromList(img.encodeJpg(resized, quality: 70));
+    final image = img.decodeImage(bytes);
+    if (image == null) {
+      throw const FormatException(
+          'Please choose a JPG, PNG, GIF, or WebP image.');
+    }
+
+    final orientedImage = img.bakeOrientation(image);
+    final longestSide = orientedImage.width > orientedImage.height
+        ? orientedImage.width
+        : orientedImage.height;
+    final resized = longestSide > 800
+        ? img.copyResize(
+            orientedImage,
+            width: orientedImage.width >= orientedImage.height ? 800 : null,
+            height: orientedImage.height > orientedImage.width ? 800 : null,
+          )
+        : orientedImage;
+
+    // The API optimizes profile images as JPEGs. Encoding here keeps the upload
+    // small and makes the data URI match the bytes we send.
+    return Uint8List.fromList(img.encodeJpg(resized, quality: 80));
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (_imageUploadStatus == ProfileImageUploadStatus.uploading) return;
 
-    if (pickedFile != null) {
-      final file = File(pickedFile.path);
-      final base64Image = await convertImageToBase64(file);
-      final bytes = await file.readAsBytes();
-      //
-      final compressedBytes = await _compressImageBytes(bytes);
+    try {
+      final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1600,
+        maxHeight: 1600,
+        imageQuality: 90,
+      );
+      if (pickedFile == null) return;
 
-      if (compressedBytes.length > 20000) {
-        throw Exception(
-            'Image must be smaller than 20KB (current: ${compressedBytes.length ~/ 1024}KB)');
-      }
+      final originalBytes = await pickedFile.readAsBytes();
+      if (!mounted) return;
 
-      await updateProfileImage(image: base64Image).then(
-        (value) {
-          if (value?.statusCode == 200) {
-            appLog(jsonDecode(value!.data)["data"]["image"]);
-            CacheHelper.saveData(
-                key: "userImage",
-                value: jsonDecode(value.data)["data"]["image"]);
-            if (_selectedImageBytes != null) {
-              backgroundImage = MemoryImage(_selectedImageBytes!);
-            } else if (_uploadedImageUrl != null &&
-                _uploadedImageUrl!.isNotEmpty) {
-              backgroundImage = NetworkImage(_uploadedImageUrl!);
-            } else {
-              backgroundImage = NetworkImage(CacheHelper.getdata(
-                      key: "userImage") ??
-                  "https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?s=612x612&w=0&k=20&c=CK49ShLJwDxE4kiroCR42kimTuuhvuo2FH5y_6aSgEo=");
-            }
-            setState(() {});
-          }
-        },
-      ).catchError((error) {});
+      final croppedImage = await _showImageEditor(originalBytes);
+      if (croppedImage == null || !mounted) return;
+
+      await _uploadProfileImage(await _compressImageBytes(croppedImage));
+    } catch (error, stackTrace) {
+      appLog('Unable to prepare profile image: $error\n$stackTrace');
+      if (!mounted) return;
       setState(() {
-        _selectedImageBytes = bytes;
+        _imageUploadStatus = ProfileImageUploadStatus.failure;
+        _imageUploadError = _friendlyImageError(error);
       });
     }
   }
 
-  Future<void> deleteProfileImage() async {
-    await updateProfileImage(image: "").then(
-      (value) {
-        if (value?.statusCode == 200) {
-          appLog(jsonDecode(value!.data)["data"]["image"]);
-          CacheHelper.saveData(
-              key: "userImage", value: jsonDecode(value.data)["data"]["image"]);
-          setState(() {
-            backgroundImage =
-                NetworkImage(CacheHelper.getdata(key: "userImage") ?? "");
-          });
-        }
-      },
-    ).catchError((error) {});
+  Future<Uint8List?> _showImageEditor(Uint8List imageBytes) {
+    return showDialog<Uint8List>(
+      context: context,
+      builder: (_) => _ProfilePhotoCropDialog(imageBytes: imageBytes),
+    );
+  }
+
+  Future<void> _uploadProfileImage(Uint8List imageBytes) async {
     setState(() {
-      // _selectedImageBytes = bytes;
+      _imageUploadStatus = ProfileImageUploadStatus.uploading;
+      _imageUploadError = null;
     });
+
+    try {
+      final response =
+          await updateProfileImage(image: base64Encode(imageBytes));
+      final imageUrl = _imageUrlFromResponse(response);
+      if (imageUrl == null || imageUrl.isEmpty) {
+        throw const FormatException(
+            'The server did not return a profile image.');
+      }
+
+      await CacheHelper.saveData(key: 'userImage', value: imageUrl);
+      if (!mounted) return;
+      setState(() {
+        _selectedImageBytes = imageBytes;
+        _uploadedImageUrl = imageUrl;
+        backgroundImage = MemoryImage(imageBytes);
+        _imageUploadStatus = ProfileImageUploadStatus.success;
+      });
+    } catch (error, stackTrace) {
+      appLog('Unable to upload profile image: $error\n$stackTrace');
+      if (!mounted) return;
+      setState(() {
+        _imageUploadStatus = ProfileImageUploadStatus.failure;
+        _imageUploadError = _friendlyImageError(error);
+      });
+    }
+  }
+
+  String? _imageUrlFromResponse(ApiResponse? response) {
+    if (response?.statusCode != 200 && response?.statusCode != 201) {
+      return null;
+    }
+
+    final dynamic payload = _decodeResponseData(response?.data);
+    if (payload is! Map) return null;
+
+    final data = payload['data'];
+    return data is Map ? data['image'] as String? : null;
+  }
+
+  String _friendlyImageError(Object error) {
+    if (error is FormatException) return error.message;
+    final message = error.toString().replaceFirst('Exception: ', '');
+    return message.isEmpty
+        ? 'We could not upload your photo. Please try again.'
+        : message;
+  }
+
+  Future<void> deleteProfileImage() async {
+    if (_imageUploadStatus == ProfileImageUploadStatus.uploading) return;
+
+    setState(() {
+      _imageUploadStatus = ProfileImageUploadStatus.uploading;
+      _imageUploadError = null;
+    });
+
+    try {
+      final response = await updateProfileImage(image: '');
+      final imageUrl = _imageUrlFromResponse(response);
+      if (imageUrl == null || imageUrl.isEmpty) {
+        throw const FormatException(
+            'The server did not return a profile image.');
+      }
+
+      await CacheHelper.saveData(key: 'userImage', value: imageUrl);
+      if (!mounted) return;
+      setState(() {
+        _selectedImageBytes = null;
+        _uploadedImageUrl = imageUrl;
+        backgroundImage = NetworkImage(imageUrl);
+        _imageUploadStatus = ProfileImageUploadStatus.success;
+      });
+    } catch (error, stackTrace) {
+      appLog('Unable to remove profile image: $error\n$stackTrace');
+      if (!mounted) return;
+      setState(() {
+        _imageUploadStatus = ProfileImageUploadStatus.failure;
+        _imageUploadError = _friendlyImageError(error);
+      });
+    }
+  }
+
+  Widget _buildImageUploadStatus() {
+    switch (_imageUploadStatus) {
+      case ProfileImageUploadStatus.idle:
+        return const SizedBox.shrink();
+      case ProfileImageUploadStatus.uploading:
+        return const Padding(
+          padding: EdgeInsets.only(top: 14),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Uploading profile photo…',
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+            ],
+          ),
+        );
+      case ProfileImageUploadStatus.success:
+        return const Padding(
+          padding: EdgeInsets.only(top: 14),
+          child: Row(
+            children: [
+              Icon(Icons.check_circle_outline, size: 18, color: Colors.white),
+              SizedBox(width: 6),
+              Text(
+                'Profile photo updated',
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+            ],
+          ),
+        );
+      case ProfileImageUploadStatus.failure:
+        return Padding(
+          padding: const EdgeInsets.only(top: 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.error_outline, size: 18, color: Colors.white),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  _imageUploadError ??
+                      'We could not upload your photo. Please try again.',
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+        );
+    }
   }
 
   Widget _buildProfileCard() {
@@ -397,13 +681,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //   ),
                     // ),
                   ),
+                  if (_imageUploadStatus == ProfileImageUploadStatus.uploading)
+                    const Positioned.fill(
+                      child: IgnorePointer(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Color(0x66000000),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: SizedBox(
+                              width: 28,
+                              height: 28,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: InkWell(
                       onTap: CacheHelper.getdata(key: "userToken") == null
                           ? () => showLoginRequiredDialog(context)
-                          : _pickImage,
+                          : _imageUploadStatus ==
+                                  ProfileImageUploadStatus.uploading
+                              ? null
+                              : _pickImage,
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         child: SvgPicture.asset(
@@ -419,7 +727,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: InkWell(
                       onTap: CacheHelper.getdata(key: "userToken") == null
                           ? () => showLoginRequiredDialog(context)
-                          : deleteProfileImage,
+                          : _imageUploadStatus ==
+                                  ProfileImageUploadStatus.uploading
+                              ? null
+                              : deleteProfileImage,
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
@@ -472,6 +783,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
+          _buildImageUploadStatus(),
         ],
       ),
     );
