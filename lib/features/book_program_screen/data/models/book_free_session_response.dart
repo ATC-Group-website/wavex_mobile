@@ -25,6 +25,8 @@ class BookFreeSessionResponse {
 class Data {
   int? userId;
   int? sessionId;
+  int? slots;
+  int? bookingsCount;
   String? bookingReference;
   String? bookingDate;
   String? bookingStatus;
@@ -37,6 +39,8 @@ class Data {
   Data(
       {this.userId,
       this.sessionId,
+      this.slots,
+      this.bookingsCount,
       this.bookingReference,
       this.bookingDate,
       this.bookingStatus,
@@ -49,6 +53,8 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     sessionId = json['session_id'];
+    slots = json['slots'];
+    bookingsCount = json['bookings_count'];
     bookingReference = json['booking_reference'];
     bookingDate = json['booking_date'];
     bookingStatus = json['booking_status'];
@@ -64,6 +70,8 @@ class Data {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['user_id'] = userId;
     data['session_id'] = sessionId;
+    data['slots'] = slots;
+    data['bookings_count'] = bookingsCount;
     data['booking_reference'] = bookingReference;
     data['booking_date'] = bookingDate;
     data['booking_status'] = bookingStatus;

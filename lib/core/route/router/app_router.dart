@@ -275,6 +275,7 @@ class AppRouter {
             value: getIt<BookProgramCubit>(),
             child: TransactionFailedScreen(
               sessionId: data["sessionId"],
+              slots: data["slots"],
               label: data["label"],
             ),
           ),

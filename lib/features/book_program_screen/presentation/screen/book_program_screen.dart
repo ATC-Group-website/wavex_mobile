@@ -40,6 +40,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
   List<programs.ProgramData> programFilters = [];
   List<SessionData> sessions = [];
   int sessionsAnimationKey = 0;
+  final Map<int, int> _selectedSlots = {};
 
   bool _isPaymentInProgress = false;
   bool isLoading = false;
@@ -81,12 +82,49 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
     );
   }
 
-  Future<void> _processPayment(BuildContext context, int sessionId) async {
+  int _slotsFor(SessionData session) {
+    final availableSeats =
+        (session.maxCapacity ?? 0) - (session.currentBookings ?? 0);
+    final selectedSlots = _selectedSlots[session.id] ?? 1;
+    return selectedSlots
+        .clamp(1, availableSeats > 0 ? availableSeats : 1)
+        .toInt();
+  }
+
+  void _updateSlots(SessionData session, int slots) {
+    final sessionId = session.id;
+    if (sessionId == null) return;
+
+    final availableSeats =
+        (session.maxCapacity ?? 0) - (session.currentBookings ?? 0);
+    if (availableSeats < 1) return;
+
+    setState(() {
+      _selectedSlots[sessionId] = slots.clamp(1, availableSeats).toInt();
+    });
+  }
+
+  String _totalSessionPrice(SessionData session) {
+    final unitPriceValue = session.discountedPrice ?? session.price;
+    final unitPrice = double.tryParse(unitPriceValue?.toString() ?? '');
+    if (unitPrice == null) return unitPriceValue?.toString() ?? '';
+
+    final total = unitPrice * _slotsFor(session);
+    return total == total.roundToDouble()
+        ? total.toInt().toString()
+        : total.toStringAsFixed(2);
+  }
+
+  Future<void> _processPayment(
+    BuildContext context,
+    int sessionId,
+    int slots,
+  ) async {
     try {
       await Stripe.instance.presentPaymentSheet();
       if (!context.mounted) return;
 
-      // Stripe accepted the card; the legacy backend webhook completes the booking.
+      // Stripe accepted the card; the V2 backend webhook completes the booking.
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
@@ -109,12 +147,20 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
       if (errorMessage.contains("canceled")) {
         navigatorKey.currentState!.pushNamed(
           RouteStrings.transactionFailedScreen,
-          arguments: {"sessionId": sessionId, "label": "Canceled"},
+          arguments: {
+            "sessionId": sessionId,
+            "slots": slots,
+            "label": "Canceled",
+          },
         );
       } else {
         navigatorKey.currentState!.pushNamed(
           RouteStrings.transactionFailedScreen,
-          arguments: {"sessionId": sessionId, "label": "Failed"},
+          arguments: {
+            "sessionId": sessionId,
+            "slots": slots,
+            "label": "Failed",
+          },
         );
       }
 
@@ -145,15 +191,26 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
 
       navigatorKey.currentState!.pushNamed(
         RouteStrings.transactionFailedScreen,
-        arguments: {"sessionId": sessionId, "label": "Payment canceled"},
+        arguments: {
+          "sessionId": sessionId,
+          "slots": slots,
+          "label": "Payment canceled",
+        },
       );
     }
   }
 
   Future<void> makePayment(
-      String? paymentIntentClientSecret, int sessionId) async {
+    String? paymentIntentClientSecret,
+    int sessionId,
+    int slots,
+  ) async {
     try {
-      if (paymentIntentClientSecret == null) return;
+      if (paymentIntentClientSecret == null ||
+          paymentIntentClientSecret.isEmpty) {
+        throw StateError(
+            'The payment service did not return a Stripe client secret.');
+      }
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: paymentIntentClientSecret,
@@ -161,8 +218,13 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
         ),
       );
       if (!mounted) return;
-      await _processPayment(context, sessionId);
-    } catch (_) {}
+      await _processPayment(context, sessionId, slots);
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.toString())));
+    }
   }
 
   int? loadingSessionId;
@@ -197,11 +259,18 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
       return;
     }
 
+    final slots = _slotsFor(session);
     setState(() => loadingSessionId = session.id);
     if (session.isFree == true) {
-      BookProgramCubit.get(context).bookFreeSession(sessionId: session.id ?? 0);
+      BookProgramCubit.get(context).bookFreeSession(
+        sessionId: session.id ?? 0,
+        slots: slots,
+      );
     } else {
-      BookProgramCubit.get(context).payment(sessionId: session.id ?? 0);
+      BookProgramCubit.get(context).payment(
+        sessionId: session.id ?? 0,
+        slots: slots,
+      );
     }
   }
 
@@ -217,10 +286,23 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
               if (state is PaymentSuccessState) {
                 setState(() => loadingSessionId = null);
                 if (_isPaymentInProgress) return;
+
+                if (!state.paymentResponse.supportsStripePaymentSheet) {
+                  setState(() => isLoading = false);
+                  final message = state.paymentResponse.gateway == 'paymob'
+                      ? 'Paymob checkout is not supported in this version of the app.'
+                      : 'Stripe checkout is temporarily unavailable. Please try again.';
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(SnackBar(content: Text(message)));
+                  return;
+                }
+
                 _isPaymentInProgress = true;
                 await makePayment(
                   state.paymentResponse.clientSecret,
                   state.sessionId,
+                  state.slots,
                 );
                 if (!context.mounted) return;
                 _isPaymentInProgress = false;
@@ -673,7 +755,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
   Widget _buildLocationCard(SessionData session, int index) {
     final remainingSeats =
         (session.maxCapacity ?? 0) - (session.currentBookings ?? 0);
-    final isFullyBooked = remainingSeats == 0;
+    final isFullyBooked = remainingSeats <= 0;
     final hasLimitedSeats = remainingSeats > 0 && remainingSeats <= 3;
     final statusText = isFullyBooked
         ? AppLocalizations.of(context).translate("bookProgram_fully_booked")
@@ -860,6 +942,11 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                   ),
                 ],
 
+                if (!isFullyBooked) ...[
+                  const SizedBox(height: 12),
+                  _buildSlotSelector(session, remainingSeats),
+                ],
+
                 // Modified pricing section to handle free sessions
                 if (session.isFree !=
                     true) // Only show pricing for paid sessions
@@ -1002,7 +1089,7 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
                               // Modified button text for free sessions
                               session.isFree == true
                                   ? "${AppLocalizations.of(context).translate("bookProgram_book_session")} - FREE"
-                                  : "${AppLocalizations.of(context).translate("bookProgram_book_session")} ${CacheHelper.getdata(key: "selectedCurrency") == "GBP" ? "£" : CacheHelper.getdata(key: "selectedCurrency") == "USD" ? "\$" : CacheHelper.getdata(key: "selectedCurrency") == "EGP" ? "ج.م" : "£"}${session.discountedPrice ?? session.price ?? ""}",
+                                  : "${AppLocalizations.of(context).translate("bookProgram_book_session")} ${CacheHelper.getdata(key: "selectedCurrency") == "GBP" ? "£" : CacheHelper.getdata(key: "selectedCurrency") == "USD" ? "\$" : CacheHelper.getdata(key: "selectedCurrency") == "EGP" ? "ج.م" : "£"}${_totalSessionPrice(session)}",
                               style: GoogleFonts.inter().copyWith(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -1017,6 +1104,64 @@ class _BookProgramScreenState extends State<BookProgramScreen> with RouteAware {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSlotSelector(SessionData session, int remainingSeats) {
+    final slots = _slotsFor(session);
+    final canAdjustSlots = loadingSessionId == null && !isLoading;
+
+    return Row(
+      children: [
+        const Text(
+          'Seats',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF2F545F),
+          ),
+        ),
+        const Spacer(),
+        IconButton(
+          tooltip: 'Remove seat',
+          onPressed: canAdjustSlots && slots > 1
+              ? () => _updateSlots(session, slots - 1)
+              : null,
+          icon: const Icon(Icons.remove_circle_outline),
+          color: AppColors.primaryColor,
+        ),
+        Container(
+          constraints: const BoxConstraints(minWidth: 36),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            '$slots',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF2F545F),
+            ),
+          ),
+        ),
+        IconButton(
+          tooltip: 'Add seat',
+          onPressed: canAdjustSlots && slots < remainingSeats
+              ? () => _updateSlots(session, slots + 1)
+              : null,
+          icon: const Icon(Icons.add_circle_outline),
+          color: AppColors.primaryColor,
+        ),
+        Text(
+          'of $remainingSeats available',
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xFF45818B),
+          ),
+        ),
+      ],
     );
   }
 

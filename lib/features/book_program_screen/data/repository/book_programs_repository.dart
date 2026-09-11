@@ -5,6 +5,29 @@ import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';
 
 class BookProgramsRepository {
+  static const paymentEndpoint = 'v2/payment';
+  static const freeBookingEndpoint = 'v2/book_free_session';
+
+  static Map<String, dynamic> paymentPayload({
+    required int sessionId,
+    required int slots,
+  }) {
+    return {
+      'session_id': sessionId,
+      'slots': slots,
+    };
+  }
+
+  static Map<String, dynamic> freeBookingPayload({
+    required int sessionId,
+    required int slots,
+  }) {
+    return {
+      'session_id': sessionId,
+      'slots': slots,
+    };
+  }
+
   Future<ApiResponse?> getProgramById({required int id}) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
@@ -84,13 +107,12 @@ class BookProgramsRepository {
 
   Future<ApiResponse?> payment({
     required int sessionId,
+    required int slots,
   }) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
-        link: 'payment',
-        body: RequestBody({
-          "session_id": sessionId,
-        }),
+        link: paymentEndpoint,
+        body: RequestBody(paymentPayload(sessionId: sessionId, slots: slots)),
         method: Method.POST,
       );
       return response;
@@ -102,13 +124,13 @@ class BookProgramsRepository {
 
   Future<ApiResponse?> bookFreeSession({
     required int sessionId,
+    required int slots,
   }) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
-        link: 'book_free_session',
-        body: RequestBody({
-          "session_id": sessionId,
-        }),
+        link: freeBookingEndpoint,
+        body:
+            RequestBody(freeBookingPayload(sessionId: sessionId, slots: slots)),
         method: Method.POST,
       );
       return response;

@@ -90,10 +90,10 @@ class BookProgramCubit extends Cubit<BookProgramState> {
     });
   }
 
-  payment({required int sessionId}) {
+  payment({required int sessionId, required int slots}) {
     emit(PaymentLoadingState());
 
-    repository.payment(sessionId: sessionId).then(
+    repository.payment(sessionId: sessionId, slots: slots).then(
       (value) {
         if (value!.statusCode == 200 || value.statusCode == 201) {
           emit(
@@ -101,7 +101,8 @@ class BookProgramCubit extends Cubit<BookProgramState> {
                 paymentResponse: PaymentResponse.fromJson(
                   jsonDecode(value.data),
                 ),
-                sessionId: sessionId),
+                sessionId: sessionId,
+                slots: slots),
           );
         } else {
           // هنا السيرفر راجع error زي 422
@@ -117,10 +118,10 @@ class BookProgramCubit extends Cubit<BookProgramState> {
     });
   }
 
-  bookFreeSession({required int sessionId}) {
+  bookFreeSession({required int sessionId, required int slots}) {
     emit(BookFreeSessionLoadingState());
 
-    repository.bookFreeSession(sessionId: sessionId).then(
+    repository.bookFreeSession(sessionId: sessionId, slots: slots).then(
       (value) {
         if (value!.statusCode == 200 || value.statusCode == 201) {
           emit(
@@ -128,7 +129,8 @@ class BookProgramCubit extends Cubit<BookProgramState> {
                 bookFreeSessionResponse: BookFreeSessionResponse.fromJson(
                   jsonDecode(value.data),
                 ),
-                sessionId: sessionId),
+                sessionId: sessionId,
+                slots: slots),
           );
         } else {
           // هنا السيرفر راجع error زي 422

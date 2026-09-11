@@ -10,9 +10,11 @@ import '../../../../core/components/header_widget.dart';
 import '../../../book_program_screen/logic/book_program_cubit.dart';
 
 class TransactionFailedScreen extends StatelessWidget {
-  const TransactionFailedScreen({super.key, this.sessionId, this.label});
+  const TransactionFailedScreen(
+      {super.key, this.sessionId, this.slots, this.label});
 
   final int? sessionId;
+  final int? slots;
   final String? label;
 
   @override
@@ -121,8 +123,10 @@ class TransactionFailedScreen extends StatelessWidget {
                                 // Handle try again action
                                 if (sessionId != null) {
                                   // استدعي عملية الدفع من Cubit
-                                  BookProgramCubit.get(context)
-                                      .payment(sessionId: sessionId!);
+                                  BookProgramCubit.get(context).payment(
+                                    sessionId: sessionId!,
+                                    slots: slots ?? 1,
+                                  );
 
                                   // ممكن تعمل pop علشان يرجع تاني لشاشة BookProgramScreen
                                   Navigator.pop(context);

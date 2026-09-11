@@ -66,8 +66,13 @@ final class PaymentLoadingState extends BookProgramState {}
 final class PaymentSuccessState extends BookProgramState {
   final PaymentResponse paymentResponse;
   final int sessionId;
+  final int slots;
 
-  PaymentSuccessState({required this.paymentResponse, required this.sessionId});
+  PaymentSuccessState({
+    required this.paymentResponse,
+    required this.sessionId,
+    required this.slots,
+  });
 }
 
 final class PaymentErrorState extends BookProgramState {
@@ -81,9 +86,12 @@ final class BookFreeSessionLoadingState extends BookProgramState {}
 final class BookFreeSessionSuccessState extends BookProgramState {
   final BookFreeSessionResponse bookFreeSessionResponse;
   final int sessionId;
+  final int slots;
 
   BookFreeSessionSuccessState(
-      {required this.bookFreeSessionResponse, required this.sessionId});
+      {required this.bookFreeSessionResponse,
+      required this.sessionId,
+      required this.slots});
 }
 
 final class BookFreeSessionErrorState extends BookProgramState {
