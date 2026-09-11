@@ -7,9 +7,10 @@ workflows:
     environment:
       android_signing:
         - wavex_release_keystore
+      groups:
+        - wavex_testing
       vars:
         APP_ENV: testing
-        BASE_URL: https://dev-api.wavexsports.com/api/
       flutter: stable
 
     scripts:
@@ -33,7 +34,8 @@ workflows:
           flutter build apk \
             --release \
             --dart-define=APP_ENV="$APP_ENV" \
-            --dart-define=BASE_URL="$BASE_URL"
+            --dart-define=BASE_URL="$BASE_URL" \
+            --dart-define=STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY"
 
       - name: Build iOS app without code signing
         script: |
@@ -41,7 +43,62 @@ workflows:
             --release \
             --no-codesign \
             --dart-define=APP_ENV="$APP_ENV" \
-            --dart-define=BASE_URL="$BASE_URL"
+            --dart-define=BASE_URL="$BASE_URL" \
+            --dart-define=STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY"
+
+          ditto -c -k --sequesterRsrc --keepParent \
+            build/ios/iphoneos/Runner.app \
+            build/ios/Runner.app.zip
+
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+      - build/ios/Runner.app.zip
+
+  production:
+    name: Wavex Android and iOS Production
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    environment:
+      android_signing:
+        - wavex_release_keystore
+      groups:
+        - wavex_production
+      vars:
+        APP_ENV: production
+      flutter: stable
+
+    scripts:
+      - name: Set up Flutter Android configuration
+        script: |
+          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
+
+      - name: Get Flutter packages
+        script: flutter pub get
+
+      - name: Analyze Flutter project
+        script: flutter analyze
+        ignore_failure: true
+
+      - name: Run Flutter tests
+        script: flutter test
+
+      - name: Build Android APK
+        script: |
+          flutter build apk \
+            --release \
+            --dart-define=APP_ENV="$APP_ENV" \
+            --dart-define=BASE_URL="$BASE_URL" \
+            --dart-define=STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY"
+
+      - name: Build iOS app without code signing
+        script: |
+          flutter build ios \
+            --release \
+            --no-codesign \
+            --dart-define=APP_ENV="$APP_ENV" \
+            --dart-define=BASE_URL="$BASE_URL" \
+            --dart-define=STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY"
 
           ditto -c -k --sequesterRsrc --keepParent \
             build/ios/iphoneos/Runner.app \
