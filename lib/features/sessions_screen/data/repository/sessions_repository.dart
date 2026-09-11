@@ -5,6 +5,21 @@ import '../../../../core/networks/api_manager.dart';
 import '../../../../core/networks/api_response.dart';
 
 class SessionsRepository {
+  static const sessionRefundEndpoint = 'v2/refunds/request';
+
+  static Map<String, dynamic> sessionRefundPayload({
+    required int bookingId,
+    required String reason,
+  }) {
+    return {
+      'booking_id': bookingId,
+      'reason': reason,
+    };
+  }
+
+  static String cancellationEndpoint(int bookingId) =>
+      'bookings/$bookingId/cancel';
+
   Future<ApiResponse?> getSessions({
     int? page,
   }) async {
@@ -39,13 +54,15 @@ class SessionsRepository {
   }
 
   Future<ApiResponse?> makeRefund({
-    required int sessionId,
+    required int bookingId,
     required String reason,
   }) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
-        link: 'refunds/request',
-        body: RequestBody({"session_id": sessionId, "reason": reason}),
+        link: sessionRefundEndpoint,
+        body: RequestBody(
+          sessionRefundPayload(bookingId: bookingId, reason: reason),
+        ),
         method: Method.POST,
       );
       return response;
@@ -56,12 +73,12 @@ class SessionsRepository {
   }
 
   Future<ApiResponse?> cancelSession({
-    required int sessionId,
+    required int bookingId,
     required String reason,
   }) async {
     try {
       ApiResponse? response = await ApiManager.sendRequest(
-        link: 'bookings/$sessionId/cancel',
+        link: cancellationEndpoint(bookingId),
         body: RequestBody({
           "cancellation_reason": reason,
         }),

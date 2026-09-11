@@ -97,6 +97,7 @@ class User {
 
 class Sessions {
   int? id;
+  int? bookingId;
   int? programId;
   int? instructorId;
   int? locationId;
@@ -114,6 +115,7 @@ class Sessions {
 
   Sessions(
       {this.id,
+      this.bookingId,
       this.programId,
       this.bookingDate,
       this.instructorId,
@@ -130,6 +132,7 @@ class Sessions {
 
   Sessions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    bookingId = json['booking_id'];
     programId = json['program_id'];
     instructorId = json['instructor_id'];
     isFree = json['is_free'];
@@ -153,6 +156,7 @@ class Sessions {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['booking_id'] = bookingId;
     data['program_id'] = programId;
     data['instructor_id'] = instructorId;
     data['is_free'] = isFree;

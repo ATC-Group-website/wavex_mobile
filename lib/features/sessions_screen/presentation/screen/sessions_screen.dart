@@ -1605,29 +1605,31 @@ class _RefundDialogState extends State<RefundDialog> {
             ElevatedButton(
               onPressed: selectedReason == null
                   ? null
-                  : widget.isFree
-                      ? () {
-                          Navigator.of(context).pop();
-                          // Call the parent widget's refund processing method
-                          // context
-                          //     .findAncestorStateOfType<_SessionsScreenState>()
-                          //     ?._processRefund(widget.session, selectedReason!);
+                  : () {
+                      final bookingId = widget.session.bookingId;
+                      if (bookingId == null) {
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Unable to find this booking.'),
+                          ),
+                        );
+                        return;
+                      }
 
-                          SessionsCubit.get(context).cancelSession(
-                              sessionId: widget.session.id ?? 0,
-                              reason: selectedReason ?? "");
-                        }
-                      : () {
-                          Navigator.of(context).pop();
-                          // Call the parent widget's refund processing method
-                          // context
-                          //     .findAncestorStateOfType<_SessionsScreenState>()
-                          //     ?._processRefund(widget.session, selectedReason!);
-
-                          SessionsCubit.get(context).makeRefund(
-                              sessionId: widget.session.id ?? 0,
-                              reason: selectedReason ?? "");
-                        },
+                      Navigator.of(context).pop();
+                      if (widget.isFree) {
+                        SessionsCubit.get(context).cancelSession(
+                          bookingId: bookingId,
+                          reason: selectedReason!,
+                        );
+                      } else {
+                        SessionsCubit.get(context).makeRefund(
+                          bookingId: bookingId,
+                          reason: selectedReason!,
+                        );
+                      }
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: selectedReason == null
                     ? Colors.grey.shade300

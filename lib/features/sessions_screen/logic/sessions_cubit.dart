@@ -58,12 +58,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   makeRefund({
-    required int sessionId,
+    required int bookingId,
     required String reason,
   }) {
     emit(MakeRefundLoadingState());
 
-    repository.makeRefund(sessionId: sessionId, reason: reason).then(
+    repository.makeRefund(bookingId: bookingId, reason: reason).then(
       (value) {
         if (value!.statusCode == 200 || value.statusCode == 201) {
           emit(
@@ -87,12 +87,12 @@ class SessionsCubit extends Cubit<SessionsState> {
   }
 
   cancelSession({
-    required int sessionId,
+    required int bookingId,
     required String reason,
   }) {
     emit(CancelSessionLoadingState());
 
-    repository.cancelSession(sessionId: sessionId, reason: reason).then(
+    repository.cancelSession(bookingId: bookingId, reason: reason).then(
       (value) {
         if (value!.statusCode == 200 || value.statusCode == 201) {
           emit(
