@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:wavex/core/utils/app_logger.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/foundation.dart';
@@ -27,9 +29,6 @@ void main() async {
   await _initializeApp();
   final String? selectedLanguage =
       CacheHelper.getdata(key: 'selectedLanguage') ?? 'en';
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   // runApp(
   //   DevicePreview(
   //     enabled: !kReleaseMode,
@@ -53,6 +52,21 @@ void main() async {
       ),
     ),
   );
+
+  // Do not keep the native launch screen up while Firebase starts. Firebase
+  // Messaging is first used after the intro/splash flow, so it can initialize
+  // while the intro video is already playing.
+  unawaited(_initializeFirebase());
+}
+
+Future<void> _initializeFirebase() async {
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (error) {
+    appLog("Error initializing Firebase: $error");
+  }
 }
 
 Future<void> _initializeApp() async {
