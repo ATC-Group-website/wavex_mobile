@@ -52,7 +52,7 @@ class _VideoSplashScreenState extends State<VideoSplashScreen> {
               children: [
                 SizedBox.expand(
                   child: FittedBox(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     child: SizedBox(
                       width: _controller.value.size.width,
                       height: _controller.value.size.height,
